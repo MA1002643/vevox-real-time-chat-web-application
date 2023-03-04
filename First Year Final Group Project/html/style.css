@@ -1,0 +1,685 @@
+:root {
+    --white: white;
+    --black: black;
+    --blue1: #232526;
+    --blue2: -webkit-linear-gradient(to right, #414345, #232526);
+    --blue3: linear-gradient(to right, #414345, #232526);
+    --tittle: #1a2a6c;
+    --tittle1: -webkit-linear-gradient(to right, #fdbb2d, #b21f1f, #1a2a6c);
+    --tittle2: linear-gradient(to right, #fdbb2d, #b21f1f, #1a2a6c);
+    --one: #8e0e00;
+    --one1: -webkit-linear-gradient(to right, #1f1c18, #8e0e00);
+    --one2: linear-gradient(to right, #1f1c18, #8e0e00);
+    --mT: #000428;
+    --mT1: -webkit-linear-gradient(to right, #004e92, #000428);
+    --mT2: linear-gradient(to right, #004e92, #000428);
+    --m: #a73737;
+    --m1: -webkit-linear-gradient(to right, #7a2828, #a73737);
+    --m2: linear-gradient(to right, #7a2828, #a73737);
+    --navbar: #b92b27;
+    --navbar1: -webkit-linear-gradient(to right, #1565c0, #b92b27);
+    --navbar2: linear-gradient(to right, #1565c0, #b92b27);
+}
+
+body {
+    background-color: var(--black);
+}
+
+body.active {
+    --black: white;
+    --white: black;
+    --blue1: #355c7d;
+    --blue2: -webkit-linear-gradient(to right, #c06c84, #6c5b7b, #355c7d);
+    --blue3: linear-gradient(to right, #c06c84, #6c5b7b, #355c7d);
+    --tittle: #23074d;
+    --tittle1: -webkit-linear-gradient(to right, #cc5333, #23074d);
+    --tittle2: linear-gradient(to top, #cc5333, #23074d);
+    --one: #833ab4;
+    --one1: -webkit-linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+    --one2: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+    --mT: #000000;
+    --mT1: -webkit-linear-gradient(to right, #434343, #000000);
+    --mT2: linear-gradient(to right, #434343, #000000);
+    --m: #3c3b3f;
+    --m1: -webkit-linear-gradient(to right, #605c3c, #3c3b3f);
+    --m2: linear-gradient(to right, #605c3c, #3c3b3f);
+    --navbar: #fc5c7d;
+    --navbar1: -webkit-linear-gradient(to right, #6a82fb, #fc5c7d);
+    --navbar2: linear-gradient(to right, #6a82fb, #fc5c7d);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Nunito", sans-serif;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    font-family: "Courier New", Courier, monospace;
+}
+
+
+/*Chat room section*/
+
+.pic {
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 22rem 0;
+}
+
+.chats {
+    position: absolute;
+    top: 70px;
+    height: 82.9%;
+    width: 80%;
+    left: 20%;
+    right: 30%;
+    color: white;
+    font-size: 0.9em;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.messageText {
+    width: 60%;
+    word-wrap: break-word;
+    background: var(--m);
+    background: var(--mT1);
+    background: var(--mT2);
+    padding: 7px 10px;
+    border-radius: 10px 10px 10px 0;
+    margin: 20px 0 20px 410px;
+    font-weight: bold;
+}
+
+.message {
+    object-position: right;
+    max-width: 60%;
+    margin: auto;
+    right: 0%;
+    word-wrap: break-word;
+    background: var(--m);
+    background: var(--m1);
+    background: var(--m2);
+    padding: 7px 10px;
+    border-radius: 10px 10px 0 10px;
+    margin: 20px 0 20px 20px;
+    font-weight: bold;
+}
+
+.menu-tittle {
+    width: 100%;
+    height: 70px;
+    background: var(--one);
+    background: var(--one1);
+    background: var(--one2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-tittle h2 {
+    background: var(--tittle);
+    background: var(--tittle1);
+    background: var(--tittle2);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Zen Tokyo Zoo", cursive;
+    font-size: 40px;
+}
+
+.navbar {
+    width: 20%;
+    height: auto;
+    position: absolute;
+    background: var(--navbar);
+    background: var(--navbar1);
+    background: var(--navbar2);
+}
+
+.navbar .room li {
+    list-style: none;
+    font-weight: bold;
+    color: var(--white);
+    font-size: 20px;
+    padding: 22.5px 24px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto;
+    text-align: center;
+    font-family: futura Md BT;
+    border-top: 1px solid var(--white);
+}
+
+.navbar .room li:hover {
+    background: var(--one);
+    background: var(--one1);
+    background: var(--one2);
+    color: var(--white);
+    transition: all 0.2s ease-out;
+    text-transform: uppercase;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease-in-out;
+    background: var(--white);
+}
+
+#theme-toggler {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    padding: 15px 20px;
+    font-size: 30px;
+    background: var(--one);
+    background: var(--one1);
+    background: var(--one2);
+    color: var(--white);
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+
+@media screen and (max-width: 800px) {
+    .navbar .room li {
+        list-style: none;
+        color: var(--white);
+        font-size: 18px;
+        padding: 22.5px 24px;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: auto;
+        text-align: center;
+        border-top: 1px solid var(--white);
+        transition: all 0.2s ease-out;
+    }
+    .navbar .room li:hover {
+        background: var(--one);
+        background: var(--one1);
+        background: var(--one2);
+        color: var(--white);
+        transition: all 0.2s ease-out;
+        text-transform: uppercase;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #mobile-menu {
+        position: absolute;
+        left: 10%;
+    }
+    #theme-toggler {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        transition: 0.4s ease-in-out;
+    }
+    .chats {
+        position: absolute;
+        top: 70px;
+        left: 0%;
+        height: 82.9%;
+        width: 100%;
+        color: white;
+        font-size: 0.9em;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .messageText {
+        width: 60%;
+        word-wrap: break-word;
+        background: var(--m);
+        background: var(--mT1);
+        background: var(--mT2);
+        padding: 7px 10px;
+        border-radius: 10px 10px 10px 0;
+        margin: 20px 0 20px 300px;
+        font-weight: bold;
+    }
+    .message {
+        object-position: right;
+        max-width: 60%;
+        margin: auto;
+        right: 0%;
+        word-wrap: break-word;
+        background: var(--m);
+        background: var(--m1);
+        background: var(--m2);
+        padding: 7px 10px;
+        border-radius: 10px 10px 0 10px;
+        margin: 20px 0 20px 20px;
+        font-weight: bold;
+    }
+    .navbar {
+        position: relative;
+    }
+    .navbar {
+        display: grid;
+        grid-template-columns: auto;
+        width: 100%;
+        height: auto;
+        position: absolute;
+        background: var(--navbar);
+        background: var(--navbar1);
+        background: var(--navbar2);
+        margin: 0;
+        top: 70px;
+        left: -20%;
+        opacity: 0;
+        transition: all 0.5s ease;
+        z-index: -1;
+    }
+    .navbar.active {
+        background: var(--navbar);
+        background: var(--navbar1);
+        background: var(--navbar2);
+        left: 0;
+        opacity: 1;
+        transition: all 0.5s ease;
+        z-index: 1 !important;
+    }
+    .room.active {
+        text-align: center;
+        line-height: 100%;
+        width: 100%;
+        display: table;
+    }
+    .menu-toggle .bar {
+        display: block;
+        cursor: pointer;
+    }
+    .menu-toggle:hover {
+        cursor: pointer;
+    }
+    #mobile-menu.is-active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    #mobile-menu.is-active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    #mobile-menu.is-active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .messageText {
+        width: 60%;
+        word-wrap: break-word;
+        background: var(--m);
+        background: var(--mT1);
+        background: var(--mT2);
+        padding: 7px 10px;
+        border-radius: 10px 10px 10px 0;
+        margin: 20px 0 20px 200px;
+        font-weight: bold;
+        transition: 0.4s ease-in-out;
+    }
+    .message {
+        object-position: right;
+        max-width: 60%;
+        margin: auto;
+        right: 0%;
+        word-wrap: break-word;
+        background: var(--m);
+        background: var(--m1);
+        background: var(--m2);
+        padding: 7px 10px;
+        border-radius: 10px 10px 0 10px;
+        margin: 20px 0 20px 20px;
+        font-weight: bold;
+    }
+}
+
+
+/* Input message field with send button */
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    background-color: transparent;
+    overflow: hidden;
+    position: absolute;
+    top: 82%;
+    pointer-events: none;
+}
+
+.chat-input * {
+    pointer-events: auto;
+}
+
+.chat-input input {
+    width: 80%;
+    height: 24%;
+    background-color: #414345;
+    border-radius: 50px;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0 2%;
+    left: 10px;
+    position: absolute;
+    bottom: 10%;
+}
+
+.send-btn {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    overflow: hidden;
+    position: absolute;
+    bottom: 7%;
+    left: 81%;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+    border: none;
+}
+
+.send-btn:active {
+    transform: scale(0.85);
+}
+
+.send-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+
+/*Question button*/
+
+#box {
+    width: 100px;
+    position: absolute;
+    bottom: 5%;
+    left: 85%;
+    margin-left: 3px;
+}
+
+.click {
+    background: var(--one);
+    background: var(--one1);
+    background: var(--one2);
+}
+
+.click,
+.links {
+    padding: 12px;
+    font-size: 1.2em;
+    font-family: futura Md BT;
+    border: none;
+    outline: none;
+    width: 200px;
+    color: var(--white);
+    transition: 0.3s;
+}
+
+.list {
+    position: absolute;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: 0.3s;
+    bottom: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.newlist {
+    transform: scaleY(1) !important;
+}
+
+.links {
+    background: var(--blue1);
+    background: var(--blue2);
+    background: var(--blue3);
+}
+
+.links:hover {
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 768px) {
+    .chat-input {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        background-color: transparent;
+        padding: 80px;
+        overflow: hidden;
+        position: absolute;
+        top: 70%;
+    }
+    .chat-input input {
+        position: absolute;
+        width: 60%;
+        height: 23%;
+        bottom: 10%;
+        background-color: #414345;
+        border-radius: 50px;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0 2%;
+        left: 10px;
+        transition: 0.4s ease-in-out;
+    }
+    .send-btn {
+        width: 40px;
+        height: 40px;
+        left: 62%;
+        background-color: transparent;
+        overflow: hidden;
+        position: absolute;
+        bottom: 9.5%;
+        margin-left: 5px;
+        cursor: pointer;
+        transition: 0.4s ease-in-out;
+    }
+    #box {
+        width: 100px;
+        position: absolute;
+        margin-left: 1px;
+        bottom: 8%;
+        left: 70%;
+        transition: 0.4s ease-in-out;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .chat-input {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 10px;
+        background-color: transparent;
+        padding: 80px;
+        overflow: hidden;
+        position: absolute;
+        top: 72%;
+    }
+    .chat-input input {
+        position: absolute;
+        bottom: 11%;
+        width: 48%;
+        height: 23%;
+        background-color: #414345;
+        border-radius: 50px;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0 2%;
+        left: 8px;
+        transition: 0.4s ease-in-out;
+    }
+    .send-btn {
+        width: 40px;
+        height: 40px;
+        left: 49%;
+        background-color: transparent;
+        overflow: hidden;
+        position: absolute;
+        bottom: 10%;
+        margin-left: 5px;
+        cursor: pointer;
+        transition: 0.4s ease-in-out;
+    }
+    #box {
+        position: absolute;
+        bottom: 9%;
+        margin-left: 1px;
+        left: 58%;
+        transition: 0.4s ease-in-out;
+    }
+}
+
+
+/*Login Page section section*/
+
+.background1 {
+    background-color: var(--black);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: darken;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    min-height: 800px;
+}
+
+#container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 500px;
+    margin: 10vh auto;
+    background: transparent;
+    box-shadow: 0 0 15px var(--white);
+    border-radius: 25px;
+}
+
+.questionReplyForm {
+    position: relative;
+    display: contents;
+}
+
+.questionReplyOwn {
+    color: blue;
+    font-weight: bold;
+}
+
+.questionReply {
+    color: white;
+}
+
+.questionReplyAnswer {
+    color: green;
+    font-weight: bold;
+}
+
+.answeredQuestion .markAsAnswerButton {
+    display: none;
+}
+
+input {
+    background: transparent;
+    width: 80%;
+    height: 30px;
+    outline: none;
+    border: none;
+    margin: auto;
+    color: var(--white);
+    font-size: 17px;
+}
+
+form {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 400px;
+}
+
+.form-item {
+    display: flex;
+    width: 90%;
+    background: transparent;
+    margin: 10px auto;
+    border-radius: 15px;
+    align-items: center;
+    border-bottom: 1px solid var(--white);
+}
+
+.form-item:hover {
+    border: 1px solid var(--white);
+}
+
+#logButton[type="button"] {
+    color: var(--white);
+    width: 180px;
+    font-size: 20px;
+    margin: 10px auto;
+    border: none;
+    background: var(--one);
+    background: var(--one1);
+    background: var(--one2);
+}
+
+#logButton[type="button"]:hover {
+    background: transparent;
+    color: #ff8177;
+    range: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+    padding: 5px 15px;
+    border-radius: 4px;
+    border: solid 1px #833ab4;
+    transition: all 0.2s ease-out;
+}
+
+#button {
+    /*don't know what this code is doing here*/
+    font-size: 18px;
+    padding: 5px 16px;
+    margin: 5px 15px;
+    width: 180px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.7s ease;
+}
+
+.questionTitle {
+    font-weight: bold;
+}
+
+a {
+    font-size: 40px;
+    font-family: "Zen Tokyo Zoo", cursive;
+    background: var(--tittle);
+    background: var(--tittle1);
+    background: var(--tittle2);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -mo-text-fill-color: transparent;
+}
+
+@media screen and (max-width: 550px) {
+    .container {
+        width: 90%;
+    }
+}

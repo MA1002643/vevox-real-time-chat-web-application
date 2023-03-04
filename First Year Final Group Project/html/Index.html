@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap");
+    </style>
+    <link rel="stylesheet" href="./style.css" />
+    <title>SE CHATROOM</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <div class="background1"></div>
+
+    <!-- for form container -->
+    <div id="container1">
+      <form name="form" method="POST">
+        <a>login to chat room</a>
+        <div class="form-item">
+          <input type="text" name="Name" id="name" placeholder="Full Name" />
+        </div>
+
+        <div class="form-item">
+          <input type="text" name="Id" id="Room-ID" placeholder="Room-ID" />
+        </div>
+
+        <div class="form-item">
+          <input type="text" name="Pass" id="Password" placeholder="Password" />
+        </div>
+
+        <input
+          type="button"
+          name="Pass"
+          id="logButton"
+          value="Login"
+          onclick="myFunction()"
+        />
+      </form>
+      <div id="theme-toggler" class="fas fa-moon"></div>
+
+      <script>
+        let themeToggler = document.getElementById("theme-toggler");
+
+        themeToggler.onclick = () => {
+          themeToggler.classList.toggle("fa-sun");
+
+          if (themeToggler.classList.contains("fa-sun")) {
+            document.body.classList.add("active");
+          } else {
+            document.body.classList.remove("active");
+          }
+        };
+
+        function myFunction() {
+          var FullName = document.forms["form"]["Name"].value;
+          var RoomID = document.forms["form"]["Room-ID"].value;
+          var Password = document.forms["form"]["Password"].value;
+
+          if (
+            /*FullName == "MuhammadAbdullah"  && RoomID == "1122" && Password == "123"*/ true
+          ) {
+            window.location.href = "./Chatroom.html";
+          } else {
+            alert("Invalid UserName and Password");
+          }
+        }
+      </script>
+    </div>
+
+    <script src="./App.js"></script>
+  </body>
+</html>

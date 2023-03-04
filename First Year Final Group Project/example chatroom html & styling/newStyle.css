@@ -1,0 +1,120 @@
+:root {
+    --darkgray: #212329;
+    --lightgray: #505058;
+    --altdarkgray: #313238;
+    --brightred: #F9423D;
+    --white: #fff;
+    --lightred: #f9433dcc;
+    --darkorange: #ff8177;
+    --red: #ff0844;
+    --lightorange: #ffb199;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    scroll-behavior: smooth;
+    background-color: var(--altdarkgray);
+}
+
+#containerMain{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#navbar{
+    flex: 5;
+    background-color: var(--darkgray);
+}
+
+#messages{
+    display:flex;
+    flex-direction:column-reverse;
+    flex: 85;
+    background-color: var(--lightgray);
+    overflow-y: scroll;
+    width: 60vw;
+    margin-left: 18vw;
+    margin-right: auto;
+}
+#messageContainer{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--lightgray);
+}
+
+#chatbox{
+    display: flex;
+    flex: 10;
+    background-color: var(--darkgray);
+    width: 60vw;
+    margin-left: 18vw;
+    margin-right: auto;
+}
+
+#navbar-logo {
+    background-color: var(--darkorange);
+    background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+    background-size: 100%;
+
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+
+    text-decoration: none;
+    justify-self: start;
+
+    margin-left: 2vw;
+    margin-top: 1vh;
+}
+#send-msg{
+    flex: 90;
+    height: 100%;
+    box-sizing: border-box;
+    color: whitesmoke;
+    padding-left: 5px;
+    padding-top: 5px;
+
+    border: none;
+    resize: none;
+    outline: none;
+    background-color: transparent;
+}
+#send-btn{
+    flex: 10;
+    overflow-y: scroll;
+}
+
+.incomingMessage {
+    width: 50%;
+    word-wrap: break-word;
+    background-color: grey;
+    padding: 7px 10px;
+    border-radius: 10px 10px 10px 0;
+    margin: 15px 2.5vw;
+}
+.outgoingMessage {
+    width: 50%;
+    word-wrap: break-word;
+    background-color: lightblue;
+    padding: 7px 10px;
+    border-radius: 10px 10px 0 10px;
+    margin: 5px 2.5vw 5px auto;
+}
+
+
+
+::-webkit-scrollbar{
+    width: 12px;
+}
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(transparent, purple);
+    background: rgb(41, 39, 39);
+}
+::-webkit-scrollbar-thumb:hover{
+    background: linear-gradient(transparent, purple);
+}

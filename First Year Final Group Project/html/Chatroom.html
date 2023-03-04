@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap");
+    </style>
+    <link rel="stylesheet" href="style.css" />
+    <script src="./MessageEvents.js"></script>
+    <script src="./clientSide.js"></script>
+    <script src="./App.js"></script>
+    <title>SE CHATROOM</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <!-- Navbar menu -->
+
+    <div class="menu-tittle">
+      <div id="theme-toggler" class="fas fa-moon"></div>
+      <h2 id="navbar-logo">SE CHATROOM</h2>
+      <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+
+    <div id="myNavbar" class="navbar">
+      <div class="room" id="roomList"></div>
+    </div>
+
+    <!-- content center screen -->
+    <div class="pic" id="pic">
+      <div class="container">
+        <div class="chat-box"></div>
+      </div>
+
+      <div class="chats" id="messageContainer">
+        <div class="messageText">
+          Welcome! Please select a room from the side to begin.
+        </div>
+      </div>
+
+      <!-- input text message container -->
+
+      <div class="chat-input">
+        <input
+          id="send-msg"
+          type="text"
+          class="text"
+          placeholder="Enter Message"
+        />
+        <button id="send-btn" class="send-btn">
+          <img src="./Send.png" alt="send-btn" />
+        </button>
+        <div class="box" id="box">
+          <button id="selected-message-category" class="click">
+            Question Category
+          </button>
+          <div id="list22" class="list">
+            <button id="select-category-question" class="links">
+              Question
+            </button>
+            <button id="select-category-message" class="links">Message</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question/Answer button -->
+
+      <script>
+        let click = document.querySelector(".click");
+        let list = document.querySelector(".list");
+        click.addEventListener("click", () => {
+          document.getElementById("list22").classList.toggle("newlist");
+        });
+
+        const menu = document.querySelector("#mobile-menu");
+        const menuLink = document.querySelector(".navbar");
+        const navLogo = document.querySelector("#navbar__logo");
+
+        menu.addEventListener("click", function () {
+          menu.classList.toggle("is-active");
+          menuLink.classList.toggle("active");
+        });
+
+        let themeToggler = document.getElementById("theme-toggler");
+
+        themeToggler.onclick = () => {
+          themeToggler.classList.toggle("fa-sun");
+
+          if (themeToggler.classList.contains("fa-sun")) {
+            document.body.classList.add("active");
+          } else {
+            document.body.classList.remove("active");
+          }
+        };
+      </script>
+    </div>
+  </body>
+</html>
