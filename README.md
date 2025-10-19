@@ -1,4 +1,4 @@
-<div id="top">
+<div id="top"></div>
 
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
@@ -29,13 +29,13 @@
 
 - [Overview](#-overview)
 - [Getting Started](#-getting-started)
-    - [Prerequisites](#-prerequisites)
-    - [Installation](#-installation)
-    - [Usage](#-usage)
-    - [Testing](#-testing)
+  - [Prerequisites](#-prerequisites)
+  - [Installation](#-installation)
+  - [Usage](#-usage)
+  - [Testing](#-testing)
 - [Features](#-features)
 - [Project Structure](#-project-structure)
-    - [Project Index](#-project-index)
+  - [Project Index](#-project-index)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -51,19 +51,60 @@ Built with a modular architecture, Vevox demonstrates **scalable, event-driven c
 
 ---
 
-## 📌 Features
+## 🎨 UI Preview
 
-|      | Component            | Details                                                                                     |
-| :--- | :------------------- | :------------------------------------------------------------------------------------------ |
-| ⚙️  | **Architecture**     | <ul><li>Client-server model with WebSocket for real-time communication</li><li>Node.js backend using Express</li><li>Frontend built with plain HTML, CSS, JavaScript</li></ul> |
-| 🔩 | **Code Quality**     | <ul><li>Modular code structure with separate folders for server and client</li><li>Consistent naming conventions</li><li>Uses ESLint for linting (implied by standard JS practices)</li></ul> |
-| 📄 | **Documentation**    | <ul><li>Basic README with project overview</li><li>Comments within codebase</li><li>No extensive external docs or API references</li></ul> |
-| 🔌 | **Integrations**      | <ul><li>WebSocket (`ws`) for real-time messaging</li><li>MySQL (`mysql2`) for persistent storage</li><li>Environment variables via `env-cmd`</li></ul> |
-| 🧩 | **Modularity**        | <ul><li>Separate modules for server logic, database access, and client scripts</li><li>Uses `package.json` scripts for build and start processes</li></ul> |
-| 🧪 | **Testing**           | <ul><li>Uses Mocha for unit testing</li><li>Test scripts likely in `/test` folder</li><li>Limited info on coverage or integration tests</li></ul> |
-| ⚡️  | **Performance**       | <ul><li>Real-time WebSocket communication minimizes latency</li><li>Database queries optimized with `mysql2`</li></ul> |
-| 🛡️ | **Security**          | <ul><li>Basic security via environment variables</li><li>Potential lack of advanced security measures (e.g., input validation, authentication)</li></ul> |
-| 📦 | **Dependencies**      | <ul><li>Core dependencies: `express`, `ws`, `mysql2`, `uuid`, `env-cmd`, `mocha`</li><li>Package managed via `package.json`</li></ul> |
+|                     Chatroom Interface                     |                  Real-Time Messaging                  |
+| :--------------------------------------------------------: | :---------------------------------------------------: |
+| ![Chatroom interface screenshot](screenshots/chatroom.png) | ![Live chat in action GIF](screenshots/live-chat.gif) |
+
+---
+
+## 🚀 Key Features
+
+| Feature                             | Description                                                                                         |
+| :---------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| 💬 **Real-Time Messaging**          | Enables instant bi-directional communication between clients and the server using WebSocket (`ws`). |
+| 🧑‍🤝‍🧑 **Room Management**              | Allows users to create, join, and manage chat rooms dynamically for group conversations.            |
+| 🗄️ **Persistent Storage**           | Uses **MySQL** to store chat history, user data, and Q&A interactions for long-term access.         |
+| 🧩 **Modular Design**               | Separates concerns into client, server, and database modules for scalability and maintainability.   |
+| 🧪 **Automated Testing**            | Implements unit testing with **Mocha** to ensure reliable server and database functionality.        |
+| ⚡ **Low Latency**                  | Optimized socket communication ensures real-time responsiveness with minimal delay.                 |
+| 🔒 **Secure Configuration**         | Environment variables managed via **env-cmd** to protect sensitive configuration data.              |
+| 🎨 **User-Friendly Interface**      | Intuitive HTML/CSS frontend with interactive message display and input areas.                       |
+| 🧰 **Developer Tools Integration**  | Uses **npm** scripts and configuration files for streamlined development and testing.               |
+| 🌐 **Cross-Platform Compatibility** | Runs seamlessly in any modern browser and Node.js environment.                                      |
+
+---
+
+## 🧰 Tech Stack
+
+<details>
+
+<summary><b>👨‍💻 Programming and Markup Languages</b></summary>
+<br/>
+
+</details>
+
+<details>
+
+<summary><b>🧰 Frameworks and Libraries</b></summary>
+<br/>
+
+</details>
+
+<details>
+
+<summary><b>🗄️ Databases and Cloud Hosting</b></summary>
+<br/>
+
+</details>
+
+<details>
+
+<summary><b>💻 Software and Tools</b></summary>
+<br/>
+
+</details>
 
 ---
 
@@ -202,7 +243,7 @@ Built with a modular architecture, Vevox demonstrates **scalable, event-driven c
 						</tr>
 						<tr style='border-bottom: 1px solid #eee;'>
 							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/html/MessageEvents.js'>MessageEvents.js</a></b></td>
-							<td style='padding: 8px;'>- Defines a comprehensive set of websocket event classes for managing real-time chat interactions, including messaging, question handling, acknowledgements, and room management<br>- Facilitates structured communication between clients and server, enabling seamless message exchange, question marking, and room data synchronization within the chat application architecture.</td>
+							<td style='padding: 8px;'>- Defines a comprehensive set of websocket event classes for managing real-time chat interactions, including messaging, question handling, acknowledgements, and room management<br>- Facilitates structured communication between clients and server, enabling seamless message exchange, question marking, and room data synchronisation within the chat application architecture.</td>
 						</tr>
 						<tr style='border-bottom: 1px solid #eee;'>
 							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/html/Index.html'>Index.html</a></b></td>
@@ -232,23 +273,23 @@ Build vevox-real-time-chat-web-application from the source and install dependenc
 
 1. **Clone the repository:**
 
-    ```sh
-    ❯ git clone https://github.com/MA1002643/vevox-real-time-chat-web-application
-    ```
+   ```sh
+   ❯ git clone https://github.com/MA1002643/vevox-real-time-chat-web-application
+   ```
 
 2. **Navigate to the project directory:**
 
-    ```sh
-    ❯ cd vevox-real-time-chat-web-application
-    ```
+   ```sh
+   ❯ cd vevox-real-time-chat-web-application
+   ```
 
 3. **Install the dependencies:**
 
-**Using [npm](https://www.npmjs.com/):**
+   **Using [npm](https://www.npmjs.com/):**
 
-```sh
-❯ npm install
-```
+   ```sh
+   ❯ npm install
+   ```
 
 ### 💻 Usage
 
@@ -262,13 +303,35 @@ npm start
 
 ### 🧪 Testing
 
-Vevox-real-time-chat-web-application uses the {__test_framework__} test framework. Run the test suite with:
+Vevox-real-time-chat-web-application uses the {**test_framework**} test framework. Run the test suite with:
 
 **Using [npm](https://www.npmjs.com/):**
 
 ```sh
 npm test
 ```
+
+---
+
+## 🎓 Learning Outcomes
+
+- Implemented real-time WebSocket communication from scratch.
+- Gained practical experience in server–client synchronization using `ws`.
+- Strengthened understanding of asynchronous programming and event-driven architecture.
+- Built and tested full-stack Node.js systems with MySQL integration.
+- Applied modular software design principles for maintainability and scalability.
+
+---
+
+## 📈 Roadmap
+
+- [ ] **`Task 1`**: Implement WebSocket message broadcasting
+- [ ] **`Task 2`**: Integrate MySQL persistence
+- [ ] **`Task 3`**: Add Mocha testing suite
+- [ ] **`Task 4`**: Implement authentication layer
+- [ ] **`Task 5`**: Develop admin moderation features
+- [ ] **`Task 6`**: Add Mocha testing suite.
+- [ ] **`Task 7`**: Deploy cloud-hosted version (Render + MySQL Atlas)
 
 ---
 
@@ -315,16 +378,23 @@ npm test
 
 ---
 
-## 📜 License
-
-Vevox-real-time-chat-web-application is protected under the [LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
 ## ✨ Acknowledgments
 
-- Credit `contributors`, `inspiration`, `references`, etc.
-
-<div align="left"><a href="#top">⬆ Return</a></div>
+- Inspired by collaborative tools such as **Vevox** and **Slack**.
+- Special thanks to **contributors** and **Node.js open-source maintainers**.
+- Created as part of an **academic exploration of real-time systems architecture**.
 
 ---
+
+## 📜 License
+
+This project is licensed under the **[MIT License](https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/LICENSE)**. See the [LICENSE](https://choosealicense.com/licenses/) file for full details.
+
+---
+
+<p align="center">
+  <strong>© 2025 Muhammad Abdullah</strong><br>
+  Developed with 💙 using Node.js & Express<br>
+  <a href="#top"><img alt="Back to Top" src="https://img.shields.io/badge/Back_to_Top-0A0A0A?style=for-the-badge">
+</a>
+</p>
