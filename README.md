@@ -3,11 +3,8 @@
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<img src="vevox-real-time-chat-web-application.png" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
-
-# VEVOX-REAL-TIME-CHAT-WEB-APPLICATION
-
-<em>Transform Conversations, Ignite Collaboration Instantly</em>
+<h1 align="center">💬 VEVOX — Real-Time Chat Web Application</h1>
+<p align="center"><em>Transforming Conversations • Igniting Instant Collaboration</em></p>
 
 <!-- BADGES -->
 <img src="https://img.shields.io/github/license/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
@@ -48,7 +45,9 @@
 
 ## ✨ Overview
 
-
+**Vevox – Real-Time Chat Web Application** is a full-stack chat platform enabling instant communication through **WebSocket technology**.  
+It offers **real-time messaging**, **persistent data storage**, and **dynamic chatroom management**.  
+Built with a modular architecture, Vevox demonstrates **scalable, event-driven communication** — perfect for classrooms, team collaborations, or Q&A sessions.
 
 ---
 
