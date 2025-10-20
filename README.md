@@ -149,29 +149,35 @@
 
 ```sh
 └── vevox-real-time-chat-web-application/
-	├── README.md
-	└── Vevox Chatroom/
-		├── Migrations/
-		│   ├── 1-AddRoomName.sql
-		│   └── 2-AddQuestions.sql
+	├── .github/
+		└── workflows/
+			├── update-project-structure.yml
+			└── update-tech-badges-single-repo.yml
+	├── Vevox Chatroom/
 		├── example chatroom html & styling/
-		│   ├── newChatroom.html
-		│   └── newStyle.css
+			├── newChatroom.html
+			└── newStyle.css
 		├── html/
-		│   ├── Chatroom.html
-		│   ├── Index.html
-		│   ├── MessageEvents.js
-		│   ├── clientSide.js
-		│   └── style.css
+			├── Chatroom.html
+			├── clientSide.js
+			├── Index.html
+			├── MessageEvents.js
+			├── Send.png
+			└── style.css
+		├── Migrations/
+			├── 1-AddRoomName.sql
+			└── 2-AddQuestions.sql
 		├── test/
-		│   ├── database.sql
-		│   └── serverSide.js
-		├── ca.pem
+			├── database.sql
+			└── serverSide.js
 		├── htmlServer.js
 		├── index.js
-		├── package.json
 		├── package-lock.json
+		├── package.json
 		└── webSocketServer.js
+	├── .gitignore
+	├── LICENSE
+	└── README.md
 ```
 
 ---
