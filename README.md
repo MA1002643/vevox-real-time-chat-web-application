@@ -188,57 +188,68 @@
    <details>
       <summary><b>__root__</b></summary>
       <ul>
+         <li><b><a href="./.gitignore">.gitignore</a></b> — File.</li>
+         <li><b><a href="./LICENSE">LICENSE</a></b> — File.</li>
          <li><b><a href="./README.md">README.md</a></b> — Project documentation, overview and setup instructions.</li>
       </ul>
    </details>
    <details>
+      <summary><b>.github</b></summary>
+      <details>
+         <summary><b>workflows</b></summary>
+      <ul>
+         <li><b><a href=".github/workflows/update-project-index.yml">update-project-index.yml</a></b> — File.</li>
+         <li><b><a href=".github/workflows/update-project-structure.yml">update-project-structure.yml</a></b> — File.</li>
+         <li><b><a href=".github/workflows/update-tech-badges-single-repo.yml">update-tech-badges-single-repo.yml</a></b> — File.</li>
+      </ul>
+      </details>
+   </details>
+
+   <details>
       <summary><b>Vevox Chatroom</b></summary>
       <ul>
-         <li><b><a href="Vevox Chatroom/webSocketServer.js">webSocketServer.js</a></b> — WebSocket server that manages connections, broadcasts and persistence hooks.</li>
          <li><b><a href="Vevox Chatroom/htmlServer.js">htmlServer.js</a></b> — Serves static frontend assets for the chat UI.</li>
          <li><b><a href="Vevox Chatroom/index.js">index.js</a></b> — Main server entrypoint that wires HTTP and WebSocket servers.</li>
-         <li><b><a href="Vevox Chatroom/package.json">package.json</a></b> — Npm manifest (dependencies & scripts).</li>
          <li><b><a href="Vevox Chatroom/package-lock.json">package-lock.json</a></b> — Lockfile with exact dependency versions.</li>
-         <li><b><a href="Vevox Chatroom/ca.pem">ca.pem</a></b> — Certificate used for local TLS testing.</li>
+         <li><b><a href="Vevox Chatroom/package.json">package.json</a></b> — Npm manifest (dependencies & scripts).</li>
+         <li><b><a href="Vevox Chatroom/webSocketServer.js">webSocketServer.js</a></b> — WebSocket server that manages connections, broadcasts and hooks.</li>
       </ul>
       <details>
-         <summary><b>Migrations</b></summary>
-         <ul>
-            <li><b><a href="Vevox Chatroom/Migrations/1-AddRoomName.sql">1-AddRoomName.sql</a></b> — Adds room name column/table changes.</li>
-            <li><b><a href="Vevox Chatroom/Migrations/2-AddQuestions.sql">2-AddQuestions.sql</a></b> — Adds question support schema.</li>
-         </ul>
-      </details>
-      <details>
          <summary><b>example chatroom html & styling</b></summary>
-         <ul>
-            <li><b><a href="Vevox Chatroom/example chatroom html & styling/newChatroom.html">newChatroom.html</a></b> — Example chatroom page demonstrating layout and client-side integration.</li>
-            <li><b><a href="Vevox Chatroom/example chatroom html & styling/newStyle.css">newStyle.css</a></b> — Example stylesheet for the sample chatroom.</li>
-         </ul>
+      <ul>
+         <li><b><a href="Vevox Chatroom/example chatroom html & styling/newChatroom.html">newChatroom.html</a></b> — Example chatroom page demonstrating layout and client-side integration.</li>
+         <li><b><a href="Vevox Chatroom/example chatroom html & styling/newStyle.css">newStyle.css</a></b> — Example stylesheet for the sample chatroom.</li>
+      </ul>
       </details>
       <details>
          <summary><b>html</b></summary>
-         <ul>
-            <li><b><a href="Vevox Chatroom/html/clientSide.js">clientSide.js</a></b> — Client-side JS handling WebSocket events and UI updates.</li>
-            <li><b><a href="Vevox Chatroom/html/Chatroom.html">Chatroom.html</a></b> — Main chatroom UI page.</li>
-            <li><b><a href="Vevox Chatroom/html/MessageEvents.js">MessageEvents.js</a></b> — Structured websocket message/event types.</li>
-            <li><b><a href="Vevox Chatroom/html/Index.html">Index.html</a></b> — Login/landing page for users.</li>
-            <li><b><a href="Vevox Chatroom/html/style.css">style.css</a></b> — Styles used by the HTML UI.</li>
-         </ul>
+      <ul>
+         <li><b><a href="Vevox Chatroom/html/Chatroom.html">Chatroom.html</a></b> — Main chatroom UI page.</li>
+         <li><b><a href="Vevox Chatroom/html/clientSide.js">clientSide.js</a></b> — Client-side JS handling WebSocket events and UI updates.</li>
+         <li><b><a href="Vevox Chatroom/html/Index.html">Index.html</a></b> — Login/landing page for users.</li>
+         <li><b><a href="Vevox Chatroom/html/MessageEvents.js">MessageEvents.js</a></b> — Structured WebSocket message/event types.</li>
+         <li><b><a href="Vevox Chatroom/html/Send.png">Send.png</a></b> — File.</li>
+         <li><b><a href="Vevox Chatroom/html/style.css">style.css</a></b> — Stylesheet for the HTML UI.</li>
+      </ul>
+      </details>
+      <details>
+         <summary><b>Migrations</b></summary>
+      <ul>
+         <li><b><a href="Vevox Chatroom/Migrations/1-AddRoomName.sql">1-AddRoomName.sql</a></b> — Adds room name column/table changes.</li>
+         <li><b><a href="Vevox Chatroom/Migrations/2-AddQuestions.sql">2-AddQuestions.sql</a></b> — Adds question support schema.</li>
+      </ul>
       </details>
       <details>
          <summary><b>test</b></summary>
-         <ul>
-            <li><b><a href="Vevox Chatroom/test/database.sql">database.sql</a></b> — SQL for testing DB schemas and sample data.</li>
-            <li><b><a href="Vevox Chatroom/test/serverSide.js">serverSide.js</a></b> — Test helpers and scripts for server-side WebSocket behavior.</li>
-         </ul>
+      <ul>
+         <li><b><a href="Vevox Chatroom/test/database.sql">database.sql</a></b> — SQL for testing DB schemas and sample data.</li>
+         <li><b><a href="Vevox Chatroom/test/serverSide.js">serverSide.js</a></b> — Test helpers and scripts.</li>
+      </ul>
       </details>
-
    </details>
 
+
 </details>
-
----
-
 ## 🚀 Getting Started
 
 ### 📋 Prerequisites
