@@ -12,7 +12,8 @@ jobs:
     update-badges:
         runs-on: ubuntu-latest
         env:
-            GH_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+            GITHUB_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             REPO_OWNER: ${{ github.repository_owner }}
             REPO_NAME: ${{ github.repository }}
             REPO_FULL: ${{ github.repository }}
@@ -41,7 +42,8 @@ jobs:
 
             - name: Build and run single-repo badge updater
               env:
-                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+                  GITHUB_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   REPO_OWNER: ${{ github.repository_owner }}
                   REPO_NAME: ${{ github.repository }}
                   README_PATH: README.md
@@ -55,17 +57,18 @@ jobs:
                   TOOLS_START: "<!-- TOOLS-ICONS:START -->"
                   TOOLS_END: "<!-- TOOLS-ICONS:END -->"
               run: |
-                  node - <<'NODE'
+                  node --input-type=commonjs - <<'NODE'
                   const fs = require('fs');
                   const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
 
                   const {
-                    GH_TOKEN, REPO_OWNER, REPO_NAME, README_PATH, BADGE_STYLE,
+                    GH_TOKEN, GITHUB_ACTIONS_TOKEN, REPO_OWNER, REPO_NAME, README_PATH, BADGE_STYLE,
                     LANG_START, LANG_END, FWLIB_START, FWLIB_END,
                     DBCLOUD_START, DBCLOUD_END, TOOLS_START, TOOLS_END
                   } = process.env;
 
-                  if (!GH_TOKEN) { console.error('❌ Missing GH_TOKEN'); process.exit(1); }
+                  const TOKEN = GH_TOKEN || GITHUB_ACTIONS_TOKEN;
+                  if (!TOKEN) { console.error('❌ Missing GH_TOKEN or GITHUB_ACTIONS_TOKEN'); process.exit(1); }
                   if (!fs.existsSync(README_PATH)) { console.error(`❌ Missing ${README_PATH}`); process.exit(1); }
 
                   const fetchJSON = async (url, headers={}) => {
@@ -74,7 +77,7 @@ jobs:
                     return res.json();
                   };
 
-                  const REST = (u) => fetchJSON(u, { Authorization:`Bearer ${GH_TOKEN}`, 'Accept':'application/vnd.github+json' });
+                  const REST = (u) => fetchJSON(u, { Authorization:`Bearer ${TOKEN}`, 'Accept':'application/vnd.github+json' });
 
                   // Minimal merge helper
                   function mergeSection(readme, start, end, badges) {
@@ -90,14 +93,14 @@ jobs:
                       const m = b.match(/!\[([^\]]+)\]/); const lbl = m && m[1];
                       return lbl && !existingLabels.has(lbl);
                     });
-                    const next = ['\n', existing, existing?'\n':'', filtered.join('\n'), '\n'].join('');
+                    const next = ['\n', existing, existing? '\n' : '', filtered.join('\n'), '\n'].join('');
                     return before + next + after;
                   }
 
                   async function buildBadgeFn() {
                     const SI = await import('simple-icons');
                     const normalize = (s) => String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-                    const candidatesFor = (label) => [normalize(label).replace(/[\s._-]+/g,'') , normalize(label)];
+                    const candidatesFor = (label) => [normalize(label).replace(/[\s._-]+/g,''), normalize(label)];
                     function hexFromSimpleIcons(label){
                       for (const slug of candidatesFor(label)){
                         const icon = SI.get?.(slug);
