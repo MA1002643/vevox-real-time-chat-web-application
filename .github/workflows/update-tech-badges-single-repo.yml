@@ -1,0 +1,213 @@
+name: Update tech badges
+
+on:
+    schedule:
+        - cron: "0 9 * * 1" # Mondays 09:00 UTC
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    update-badges:
+        runs-on: ubuntu-latest
+        env:
+            GH_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+            REPO_OWNER: ${{ github.repository_owner }}
+            REPO_NAME: ${{ github.repository }}
+            REPO_FULL: ${{ github.repository }}
+            README_PATH: README.md
+            BADGE_STYLE: "for-the-badge"
+            LANG_START: "<!-- LANG-ICONS:START -->"
+            LANG_END: "<!-- LANG-ICONS:END -->"
+            FWLIB_START: "<!-- FWLIB-ICONS:START -->"
+            FWLIB_END: "<!-- FWLIB-ICONS:END -->"
+            DBCLOUD_START: "<!-- DBCLOUD-ICONS:START -->"
+            DBCLOUD_END: "<!-- DBCLOUD-ICONS:END -->"
+            TOOLS_START: "<!-- TOOLS-ICONS:START -->"
+            TOOLS_END: "<!-- TOOLS-ICONS:END -->"
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - name: Install Simple Icons (for brand colors)
+              run: npm i simple-icons@^13
+
+            - name: Build and run single-repo badge updater
+              env:
+                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+                  REPO_OWNER: ${{ github.repository_owner }}
+                  REPO_NAME: ${{ github.repository }}
+                  README_PATH: README.md
+                  BADGE_STYLE: ${{ env.BADGE_STYLE }}
+                  LANG_START: "<!-- LANG-ICONS:START -->"
+                  LANG_END: "<!-- LANG-ICONS:END -->"
+                  FWLIB_START: "<!-- FWLIB-ICONS:START -->"
+                  FWLIB_END: "<!-- FWLIB-ICONS:END -->"
+                  DBCLOUD_START: "<!-- DBCLOUD-ICONS:START -->"
+                  DBCLOUD_END: "<!-- DBCLOUD-ICONS:END -->"
+                  TOOLS_START: "<!-- TOOLS-ICONS:START -->"
+                  TOOLS_END: "<!-- TOOLS-ICONS:END -->"
+              run: |
+                  node - <<'NODE'
+                  const fs = require('fs');
+                  const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
+
+                  const {
+                    GH_TOKEN, REPO_OWNER, REPO_NAME, README_PATH, BADGE_STYLE,
+                    LANG_START, LANG_END, FWLIB_START, FWLIB_END,
+                    DBCLOUD_START, DBCLOUD_END, TOOLS_START, TOOLS_END
+                  } = process.env;
+
+                  if (!GH_TOKEN) { console.error('❌ Missing GH_TOKEN'); process.exit(1); }
+                  if (!fs.existsSync(README_PATH)) { console.error(`❌ Missing ${README_PATH}`); process.exit(1); }
+
+                  const fetchJSON = async (url, headers={}) => {
+                    const res = await fetch(url, { headers });
+                    if (!res.ok) throw new Error(`${res.status} ${url}: ${await res.text()}`);
+                    return res.json();
+                  };
+
+                  const REST = (u) => fetchJSON(u, { Authorization:`Bearer ${GH_TOKEN}`, 'Accept':'application/vnd.github+json' });
+
+                  // Minimal merge helper
+                  function mergeSection(readme, start, end, badges) {
+                    const si = readme.indexOf(start), ei = readme.indexOf(end);
+                    if (si === -1 || ei === -1 || ei < si) throw new Error(`Markers not found: ${start} / ${end}`);
+                    const before = readme.slice(0, si + start.length);
+                    const between = readme.slice(si + start.length, ei);
+                    const after = readme.slice(ei);
+                    const existing = between.trim();
+                    const existingBadges = (existing.match(/!\[[^\]]*\]\([^)]+\)/g)||[]).map(s=>s.trim());
+                    const existingLabels = new Set(existingBadges.map(b => (b.match(/!\[([^\]]+)\]/)||[])[1]).filter(Boolean));
+                    const filtered = badges.filter(b => {
+                      const m = b.match(/!\[([^\]]+)\]/); const lbl = m && m[1];
+                      return lbl && !existingLabels.has(lbl);
+                    });
+                    const next = ['\n', existing, existing?'\n':'', filtered.join('\n'), '\n'].join('');
+                    return before + next + after;
+                  }
+
+                  async function buildBadgeFn() {
+                    const SI = await import('simple-icons');
+                    const normalize = (s) => String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+                    const candidatesFor = (label) => [normalize(label).replace(/[\s._-]+/g,'') , normalize(label)];
+                    function hexFromSimpleIcons(label){
+                      for (const slug of candidatesFor(label)){
+                        const icon = SI.get?.(slug);
+                        if (icon?.hex) return icon.hex;
+                      }
+                      return null;
+                    }
+                    function logoFromSimpleIcons(label){
+                      for (const slug of candidatesFor(label)){
+                        const icon = SI.get?.(slug);
+                        if (icon) return slug;
+                      }
+                      return null;
+                    }
+                    return (label, preferredHex)=>{
+                      const logo = logoFromSimpleIcons(label);
+                      const color = (preferredHex || hexFromSimpleIcons(label) || '444444').replace(/^#/,'');
+                      const enc = encodeURIComponent(label);
+                      let url = `https://img.shields.io/badge/${enc}-${color}?style=${BADGE_STYLE}`;
+                      if (logo) url += `&logo=${encodeURIComponent(logo)}&logoColor=white`;
+                      return `![${label}](${url})`;
+                    };
+                  }
+
+                  // Analyze single repo
+                  const repoFull = REPO_NAME;
+                  const repoApi = `https://api.github.com/repos/${repoFull}`;
+                  const repoData = await REST(repoApi);
+                  const defaultBranch = repoData.default_branch;
+                  const commit = repoData.pushed_at; // not used further but helpful
+
+                  // Languages via languages API
+                  const langs = await REST(`${repoApi}/languages`);
+
+                  // Get tree of default branch
+                  const ref = await REST(`${repoApi}/git/refs/heads/${defaultBranch}`);
+                  const sha = ref.object?.sha || ref?.object?.sha;
+                  let tree = null;
+                  try { const t = await REST(`${repoApi}/git/trees/${sha}?recursive=1`); tree = t.tree || []; } catch(e){ tree = []; }
+
+                  const FILE_PATTERNS = [ /(^|\/)package\.json$/i, /(^|\/)requirements\.txt$/i, /(^|\/)pyproject\.toml$/i, /(^|\/)go\.mod$/i, /(^|\/)pom\.xml$/i, /(^|\/)Dockerfile$/i ];
+
+                  const FWLIB = new Set();
+                  const DBCLOUD = new Set();
+                  const TOOLS = new Set();
+
+                  // Simple detectors (package.json only for node projects)
+                  async function getContent(path){ try{ const j = await REST(`${repoApi}/contents/${encodeURIComponent(path)}`); if (j.encoding==='base64'&&j.content) return Buffer.from(j.content,'base64').toString('utf8'); return j.content||''; }catch(e){ return ''; } }
+
+                  for (const item of tree){
+                    if (item.type !== 'blob') continue;
+                    if (!FILE_PATTERNS.some(rx=>rx.test(item.path))) continue;
+                    const p = item.path.toLowerCase();
+                    const txt = await getContent(item.path);
+                    if (p.endsWith('package.json')){
+                      const j = JSON.parse(txt||'{}');
+                      for (const depGroup of ['dependencies','devDependencies','peerDependencies','optionalDependencies']){
+                        const obj = j[depGroup]||{};
+                        for (const name of Object.keys(obj||{})){
+                          const n = name.toLowerCase();
+                          if (n.includes('express')) FWLIB.add('Express.js');
+                          if (n.includes('react')) FWLIB.add('React');
+                          if (n.includes('next')) FWLIB.add('Next.js');
+                          if (n.includes('mysql')) DBCLOUD.add('MySQL');
+                          if (n.includes('mocha')||n.includes('jest')) TOOLS.add('Mocha');
+                          if (n.includes('typescript')) TOOLS.add('TypeScript');
+                        }
+                      }
+                    }
+                    if (p.endsWith('requirements.txt') || p.endsWith('pyproject.toml')){
+                      if (/django/.test(txt)) FWLIB.add('Django');
+                    }
+                    if (p.endsWith('pom.xml')){
+                      if (/spring-boot/.test(txt)) FWLIB.add('Spring Boot');
+                    }
+                    if (p.endsWith('dockerfile')) TOOLS.add('Docker');
+                  }
+
+                  // Merge with language stats
+                  const langTotals = new Map(Object.entries(langs||{}));
+                  const langSorted = [...langTotals.keys()].slice(0,10);
+
+                  const make = await buildBadgeFn();
+
+                  const langBadges = langSorted.map(l=>make(l));
+                  const fwBadges = [...FWLIB].sort().map(l=>make(l));
+                  const dbBadges = [...DBCLOUD].sort().map(l=>make(l));
+                  const toolBadges = [...TOOLS].sort().map(l=>make(l));
+
+                  let readme = fs.readFileSync(README_PATH,'utf8');
+                  readme = mergeSection(readme, LANG_START, LANG_END, langBadges);
+                  readme = mergeSection(readme, FWLIB_START, FWLIB_END, fwBadges);
+                  readme = mergeSection(readme, DBCLOUD_START, DBCLOUD_END, dbBadges);
+                  readme = mergeSection(readme, TOOLS_START, TOOLS_END, toolBadges);
+                  fs.writeFileSync(README_PATH, readme,'utf8');
+                  console.log('✅ README updated for single repo.');
+                  NODE
+
+            - name: Commit & push
+              env:
+                  PAT_OR_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+              run: |
+                  if git diff --quiet; then
+                    echo "No changes."
+                    exit 0
+                  fi
+                  git config user.name  "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add "${README_PATH}"
+                  git commit -m "chore: refresh tech badges (single-repo scan)"
+                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:${GITHUB_REF_NAME:-main} || \
+                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main || \
+                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:master

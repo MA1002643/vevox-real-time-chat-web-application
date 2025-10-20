@@ -7,18 +7,25 @@
 <p align="center"><em>Transforming Conversations • Igniting Instant Collaboration</em></p>
 
 <!-- BADGES -->
-<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/LICENSE" alt="license">
-   <img src="https://img.shields.io/github/license/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license" />
+
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/LICENSE" alt="license">
+   <img src="https://img.shields.io/badge/license-MIT-green?style=flat&logo=opensourceinitiative&logoColor=white" alt="MIT License" />
 </a>
 <img src="https://img.shields.io/github/last-commit/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
 <a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/discussions" alt="Discussions">
    <img src="https://img.shields.io/github/discussions/MA1002643/vevox-real-time-chat-web-application" alt="Discussions" />
 </a>
-<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/actions/workflows/daily-tests.yml">
-   <img src="https://img.shields.io/github/actions/workflow/status/MA1002643/vevox-real-time-chat-web-application/daily-tests.yml?label=daily%20tests" alt="Daily Tests Status" />
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/stargazers">
+   <img src="https://custom-icon-badges.demolab.com/github/stars/MA1002643/vevox-real-time-chat-web-application?logo=star&style=flat" alt="stars" />
+</a>
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/issues">
+   <img src="https://custom-icon-badges.demolab.com/github/issues-raw/MA1002643/vevox-real-time-chat-web-application?logo=issue" alt="issues" />
 </a>
 <a href="https://coveralls.io/github/MA1002643/vevox-real-time-chat-web-application">
    <img src="https://img.shields.io/coveralls/github/MA1002643/vevox-real-time-chat-web-application" alt="Code Coverage" />
+</a>
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/actions/workflows/build.yml">
+   <img src="https://img.shields.io/github/actions/workflow/status/MA1002643/vevox-real-time-chat-web-application/build.yml?branch=main" alt="build" />
 </a>
 <br>
 </div>
@@ -83,28 +90,32 @@
 
 <summary><b>👨‍💻 Programming and Markup Languages</b></summary>
 <br/>
-
+<!-- LANG-ICONS:START -->
+<!-- LANG-ICONS:END -->
 </details>
 
 <details>
 
 <summary><b>🧰 Frameworks and Libraries</b></summary>
 <br/>
-
+<!-- FWLIB-ICONS:START -->
+<!-- FWLIB-ICONS:END -->
 </details>
 
 <details>
 
 <summary><b>🗄️ Databases and Cloud Hosting</b></summary>
 <br/>
-
+<!-- DBCLOUD-ICONS:START -->
+<!-- DBCLOUD-ICONS:END -->
 </details>
 
 <details>
 
 <summary><b>💻 Software and Tools</b></summary>
 <br/>
-
+<!-- TOOLS-ICONS:START -->
+<!-- TOOLS-ICONS:END -->
 </details>
 
 ---
