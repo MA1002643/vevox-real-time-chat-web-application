@@ -149,6 +149,7 @@
 └── vevox-real-time-chat-web-application/
 	├── .github/
 		└── workflows/
+			├── update-project-index.yml
 			├── update-project-structure.yml
 			└── update-tech-badges-single-repo.yml
 	├── Vevox Chatroom/
