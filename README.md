@@ -247,9 +247,10 @@
       </ul>
       </details>
    </details>
-
-
 </details>
+
+---
+
 ## 🚀 Getting Started
 
 ### 📋 Prerequisites
