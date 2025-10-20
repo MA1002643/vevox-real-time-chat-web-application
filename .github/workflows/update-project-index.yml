@@ -1,4 +1,4 @@
-name: Update Project Index in README
+name: Update Index
 
 on:
   push:
