@@ -144,7 +144,10 @@
 ```sh
 └── vevox-real-time-chat-web-application/
 	├── .github/
+		├── scripts/
+			└── update-contributors.js
 		└── workflows/
+			├── update-contributors.yml
 			├── update-project-index.yml
 			├── update-project-structure.yml
 			└── update-tech-badges-single-repo.yml
