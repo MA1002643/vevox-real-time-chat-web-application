@@ -12,11 +12,7 @@ jobs:
     update-badges:
         runs-on: ubuntu-latest
         env:
-            GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-            GITHUB_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            REPO_OWNER: ${{ github.repository_owner }}
-            REPO_NAME: ${{ github.repository }}
-            REPO_FULL: ${{ github.repository }}
+            GH_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
             README_PATH: README.md
             BADGE_STYLE: "for-the-badge"
             LANG_START: "<!-- LANG-ICONS:START -->"
@@ -40,46 +36,27 @@ jobs:
             - name: Install Simple Icons (for brand colors)
               run: npm i simple-icons@^13
 
-            - name: Build and run single-repo badge updater
-              env:
-                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-                  GITHUB_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  REPO_OWNER: ${{ github.repository_owner }}
-                  REPO_NAME: ${{ github.repository }}
-                  README_PATH: README.md
-                  BADGE_STYLE: ${{ env.BADGE_STYLE }}
-                  LANG_START: "<!-- LANG-ICONS:START -->"
-                  LANG_END: "<!-- LANG-ICONS:END -->"
-                  FWLIB_START: "<!-- FWLIB-ICONS:START -->"
-                  FWLIB_END: "<!-- FWLIB-ICONS:END -->"
-                  DBCLOUD_START: "<!-- DBCLOUD-ICONS:START -->"
-                  DBCLOUD_END: "<!-- DBCLOUD-ICONS:END -->"
-                  TOOLS_START: "<!-- TOOLS-ICONS:START -->"
-                  TOOLS_END: "<!-- TOOLS-ICONS:END -->"
+            - name: Scan this repo and update README badges
               run: |
-                  node --input-type=commonjs - <<'NODE'
+                  node - <<'NODE'
                   const fs = require('fs');
-                  const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
+                  const path = require('path');
 
                   const {
-                    GH_TOKEN, GITHUB_ACTIONS_TOKEN, REPO_OWNER, REPO_NAME, README_PATH, BADGE_STYLE,
+                    GH_TOKEN, README_PATH, BADGE_STYLE,
                     LANG_START, LANG_END, FWLIB_START, FWLIB_END,
                     DBCLOUD_START, DBCLOUD_END, TOOLS_START, TOOLS_END
                   } = process.env;
 
-                  const TOKEN = GH_TOKEN || GITHUB_ACTIONS_TOKEN;
-                  if (!TOKEN) { console.error('❌ Missing GH_TOKEN or GITHUB_ACTIONS_TOKEN'); process.exit(1); }
                   if (!fs.existsSync(README_PATH)) { console.error(`❌ Missing ${README_PATH}`); process.exit(1); }
 
+                  // ---------- helpers ----------
                   const fetchJSON = async (url, headers={}) => {
                     const res = await fetch(url, { headers });
                     if (!res.ok) throw new Error(`${res.status} ${url}: ${await res.text()}`);
                     return res.json();
                   };
 
-                  const REST = (u) => fetchJSON(u, { Authorization:`Bearer ${TOKEN}`, 'Accept':'application/vnd.github+json' });
-
-                  // Minimal merge helper
                   function mergeSection(readme, start, end, badges) {
                     const si = readme.indexOf(start), ei = readme.indexOf(end);
                     if (si === -1 || ei === -1 || ei < si) throw new Error(`Markers not found: ${start} / ${end}`);
@@ -93,110 +70,322 @@ jobs:
                       const m = b.match(/!\[([^\]]+)\]/); const lbl = m && m[1];
                       return lbl && !existingLabels.has(lbl);
                     });
-                    const next = ['\n', existing, existing? '\n' : '', filtered.join('\n'), '\n'].join('');
+                    const next = ['\n', existing, existing?'\n':'', filtered.join('\n'), '\n'].join('');
                     return before + next + after;
                   }
 
+                  // ===== Badge builder with fallbacks (Simple Icons → alexandresanlim → Ileriayo) =====
                   async function buildBadgeFn() {
                     const SI = await import('simple-icons');
-                    const normalize = (s) => String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-                    const candidatesFor = (label) => [normalize(label).replace(/[\s._-]+/g,''), normalize(label)];
-                    function hexFromSimpleIcons(label){
-                      for (const slug of candidatesFor(label)){
+
+                    const normalize = (s) =>
+                      String(s || '')
+                        .normalize('NFKD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .toLowerCase()
+                        .trim();
+
+                    function candidatesFor(label) {
+                      const compact = (x) => x.replace(/[\s._-]+/g, '');
+                      const noDots  = (x) => x.replace(/\./g, '');
+                      const andFix  = (x) => x.replace(/&/g, 'and');
+                      const plusFix = (x) => x.replace(/\+/g, 'plus');
+
+                      let base = normalize(label);
+                      base = base.replace(/\bc\+\+\b/g, 'cplusplus')
+                                 .replace(/\bc#\b/g, 'csharp')
+                                 .replace(/(^|\W)\.net(\W|$)/g, '$1dotnet$2')
+                                 .replace(/node\.?\s*js\b/g, 'nodedotjs')
+                                 .replace(/next\.?\s*js\b/g, 'nextdotjs')
+                                 .replace(/three\.?\s*js\b/g, 'threedotjs')
+                                 .replace(/angular\.?\s*js\b/g, 'angularjs')
+                                 .replace(/\bvs\s*code\b/g, 'visualstudiocode')
+                                 .replace(/\bvisual\s*studio\s*code\b/g, 'visualstudiocode')
+                                 .replace(/\bmicrosoft\s*azure\b/g, 'microsoftazure')
+                                 .replace(/\bazure\s*dev\s*ops\b/g, 'azuredevops')
+                                 .replace(/\bgoogle\s*cloud\b/g, 'googlecloud')
+                                 .replace(/\bgcp\b/g, 'googlecloud')
+                                 .replace(/\bamazon\s*web\s*services\b/g, 'amazonaws');
+
+                      const forms = [];
+                      const add = (s) => { if (s && !forms.includes(s)) forms.push(s); };
+                      add(compact(base));
+                      add(compact(andFix(base)));
+                      add(compact(plusFix(base)));
+                      add(compact(noDots(base)));
+                      add(compact(andFix(noDots(base))));
+                      add(compact(plusFix(noDots(base))));
+                      add(base); add(andFix(base)); add(plusFix(base));
+                      add(noDots(base)); add(andFix(noDots(base))); add(plusFix(noDots(base)));
+                      return forms;
+                    }
+
+                    async function fetchText(url) {
+                      const res = await fetch(url, { headers: { 'Accept': 'text/plain' } });
+                      if (!res.ok) return '';
+                      return await res.text();
+                    }
+                    function decodeLabelPart(s) { try { return decodeURIComponent(s); } catch { return s; } }
+
+                    function parseBadgeCatalog(md) {
+                      const map = new Map();
+                      if (!md) return map;
+                      const rx = /https:\/\/img\.shields\.io\/badge\/([^?\s)]+)-([0-9A-Fa-f]{3,6})\?[^)\s]*?(?:logo=([^&)\s]+))?/g;
+                      let m;
+                      while ((m = rx.exec(md)) !== null) {
+                        const rawLabel = m[1];
+                        const color = (m[2] || '').replace(/^#/, '');
+                        const logo  = m[3] ? m[3] : null;
+                        const label = decodeLabelPart(rawLabel).replace(/-/g, ' ').trim();
+                        const key = normalize(label);
+                        if (!map.has(key)) map.set(key, { logo, color: color || null });
+                      }
+                      return map;
+                    }
+
+                    const alexMd = await fetchText('https://raw.githubusercontent.com/alexandresanlim/Badges4-README.md-Profile/main/README.md');
+                    const ileriayoMd = await fetchText('https://raw.githubusercontent.com/Ileriayo/markdown-badges/master/README.md');
+                    const ALEX = parseBadgeCatalog(alexMd);
+                    const ILERIAYO = parseBadgeCatalog(ileriayoMd);
+
+                    function hexFromSimpleIcons(label) {
+                      for (const slug of candidatesFor(label)) {
                         const icon = SI.get?.(slug);
                         if (icon?.hex) return icon.hex;
                       }
+                      if (typeof COLOR_MAP !== 'undefined' && COLOR_MAP[label]) return COLOR_MAP[label];
                       return null;
                     }
-                    function logoFromSimpleIcons(label){
-                      for (const slug of candidatesFor(label)){
+                    function logoFromAllSources(label) {
+                      for (const slug of candidatesFor(label)) {
                         const icon = SI.get?.(slug);
-                        if (icon) return slug;
+                        if (icon) return { logo: slug, source: 'si' };
                       }
-                      return null;
+                      const keysToTry = new Set([normalize(label)]);
+                      for (const c of candidatesFor(label)) keysToTry.add(c);
+                      for (const key of keysToTry) {
+                        const hitA = ALEX.get(key);
+                        if (hitA?.logo) return { logo: hitA.logo, source: 'alex' };
+                        const hitI = ILERIAYO.get(key);
+                        if (hitI?.logo) return { logo: hitI.logo, source: 'ileriayo' };
+                      }
+                      return { logo: null, source: null };
                     }
-                    return (label, preferredHex)=>{
-                      const logo = logoFromSimpleIcons(label);
-                      const color = (preferredHex || hexFromSimpleIcons(label) || '444444').replace(/^#/,'');
-                      const enc = encodeURIComponent(label);
-                      let url = `https://img.shields.io/badge/${enc}-${color}?style=${BADGE_STYLE}`;
-                      if (logo) url += `&logo=${encodeURIComponent(logo)}&logoColor=white`;
+                    function colorFromAllSources(label) {
+                      const siHex = hexFromSimpleIcons(label);
+                      if (siHex) return { hex: siHex, source: 'si' };
+                      const keysToTry = new Set([normalize(label)]);
+                      for (const c of candidatesFor(label)) keysToTry.add(c);
+                      for (const key of keysToTry) {
+                        const hitA = ALEX.get(key);
+                        if (hitA?.color) return { hex: hitA.color, source: 'alex' };
+                        const hitI = ILERIAYO.get(key);
+                        if (hitI?.color) return { hex: hitI.color, source: 'ileriayo' };
+                      }
+                      return { hex: null, source: null };
+                    }
+
+                    return (label, preferredHex) => {
+                      const { logo } = logoFromAllSources(label);
+                      const colorPref = preferredHex || (colorFromAllSources(label).hex);
+                      const hex = (colorPref || '444444').replace(/^#/, '');
+                      const encLabel = encodeURIComponent(label);
+                      let url = `https://img.shields.io/badge/${encLabel}-${hex}?style=${BADGE_STYLE}`;
+                      if (logo) {
+                        const encLogo = encodeURIComponent(logo);
+                        url += `&logo=${encLogo}&logoColor=white`;
+                      }
                       return `![${label}](${url})`;
                     };
                   }
+                  // ---------- minimal fallback colors ----------
+                  const COLOR_MAP = {
+                    "Python":"3776AB","JavaScript (ES6+)":"F7DF1E","TypeScript":"3178C6","HTML5":"E34F26","CSS3":"1572B6",
+                    "Java":"007396","C#":"239120","C++":"00599C","Go":"00ADD8","Rust":"000000","SQL":"4479A1",
+                    "MySQL":"4479A1","SQLite":"003B57","MongoDB":"47A248","Redis":"DC382D",
+                    "Git":"F05032","GitHub":"181717","Postman":"FF6C37","Ubuntu":"E95420","VS Code":"007ACC","Visual Studio":"5C2D91",
+                    "Node.js":"339933","Express":"000000","Socket.IO":"010101"
+                  };
 
-                  // Analyze single repo
-                  const repoFull = REPO_NAME;
-                  const repoApi = `https://api.github.com/repos/${repoFull}`;
-                  const repoData = await REST(repoApi);
-                  const defaultBranch = repoData.default_branch;
-                  const commit = repoData.pushed_at; // not used further but helpful
+                  // ---------- file patterns & keyword maps ----------
+                  const FILE_PATTERNS = [
+                    /(^|\/)package\.json$/i, /(^|\/)pnpm\-lock\.yaml$/i, /(^|\/)yarn\.lock$/i, /(^|\/)package\-lock\.json$/i,
+                    /(^|\/)requirements\.txt$/i, /(^|\/)pyproject\.toml$/i, /(^|\/)Pipfile$/i, /(^|\/)Pipfile\.lock$/i,
+                    /(^|\/)Dockerfile$/i, /(^|\/)docker\-compose\.ya?ml$/i,
+                    /(^|\/)README(\.md|\.rst|\.adoc)?$/i
+                  ];
 
-                  // Languages via languages API
-                  const langs = await REST(`${repoApi}/languages`);
+                  const FWLIB_KW = {
+                    "express":"Express","expressjs":"Express","socket.io":"Socket.IO","socketio":"Socket.IO",
+                    "ws":"ws","cors":"CORS","dotenv":"dotenv","nodemon":"Nodemon",
+                    "react":"React","next":"Next.js","tailwindcss":"Tailwind CSS","three":"Three.js"
+                  };
 
-                  // Get tree of default branch
-                  const ref = await REST(`${repoApi}/git/refs/heads/${defaultBranch}`);
-                  const sha = ref.object?.sha || ref?.object?.sha;
-                  let tree = null;
-                  try { const t = await REST(`${repoApi}/git/trees/${sha}?recursive=1`); tree = t.tree || []; } catch(e){ tree = []; }
+                  const DB_KW = {
+                    "mongoose":"Mongoose","prisma":"Prisma","mysql":"MySQL","mysql2":"MySQL",
+                    "pg":"PostgreSQL","postgres":"PostgreSQL","sqlite":"SQLite","sqlite3":"SQLite",
+                    "mongodb":"MongoDB","redis":"Redis","firebase":"Firebase"
+                  };
 
-                  const FILE_PATTERNS = [ /(^|\/)package\.json$/i, /(^|\/)requirements\.txt$/i, /(^|\/)pyproject\.toml$/i, /(^|\/)go\.mod$/i, /(^|\/)pom\.xml$/i, /(^|\/)Dockerfile$/i ];
+                  const TOOLS_KW = {
+                    "eslint":"ESLint","prettier":"Prettier","jest":"Jest","vitest":"Vitest","mocha":"Mocha","chai":"Chai",
+                    "cypress":"Cypress","playwright":"Playwright","ts-node":"TS Node","typescript":"TypeScript",
+                    "nodemon":"Nodemon","pm2":"PM2","nyc":"nyc/Istanbul","webpack":"Webpack","vite":"Vite",
+                    "yarn":"Yarn","npm":"npm","pnpm":"pnpm","docker":"Docker","docker-compose":"Docker Compose",
+                    "commitlint":"commitlint","lint-staged":"lint-staged","husky":"Husky","jest-cli":"Jest"
+                  };
 
-                  const FWLIB = new Set();
-                  const DBCLOUD = new Set();
-                  const TOOLS = new Set();
+                  const ALWAYS_LANGS = [];
+                  const ALWAYS_FWLIB = [];
+                  const ALWAYS_DBCLOUD = [];
+                  const ALWAYS_TOOLS = ["Git","GitHub","Postman","VS Code","Ubuntu"];
 
-                  // Simple detectors (package.json only for node projects)
-                  async function getContent(path){ try{ const j = await REST(`${repoApi}/contents/${encodeURIComponent(path)}`); if (j.encoding==='base64'&&j.content) return Buffer.from(j.content,'base64').toString('utf8'); return j.content||''; }catch(e){ return ''; } }
+                  // ---------- language sizing by extension ----------
+                  const EXT_LANG = new Map(Object.entries({
+                    "js":"JavaScript (ES6+)","jsx":"JavaScript (ES6+)","mjs":"JavaScript (ES6+)",
+                    "ts":"TypeScript","tsx":"TypeScript",
+                    "py":"Python",
+                    "java":"Java",
+                    "cs":"C#",
+                    "cpp":"C++","cc":"C++","cxx":"C++","hpp":"C++","hh":"C++",
+                    "go":"Go","rs":"Rust",
+                    "html":"HTML5","htm":"HTML5",
+                    "css":"CSS3",
+                    "sql":"SQL"
+                  }));
 
-                  for (const item of tree){
-                    if (item.type !== 'blob') continue;
-                    if (!FILE_PATTERNS.some(rx=>rx.test(item.path))) continue;
-                    const p = item.path.toLowerCase();
-                    const txt = await getContent(item.path);
-                    if (p.endsWith('package.json')){
-                      const j = JSON.parse(txt||'{}');
-                      for (const depGroup of ['dependencies','devDependencies','peerDependencies','optionalDependencies']){
-                        const obj = j[depGroup]||{};
-                        for (const name of Object.keys(obj||{})){
-                          const n = name.toLowerCase();
-                          if (n.includes('express')) FWLIB.add('Express.js');
-                          if (n.includes('react')) FWLIB.add('React');
-                          if (n.includes('next')) FWLIB.add('Next.js');
-                          if (n.includes('mysql')) DBCLOUD.add('MySQL');
-                          if (n.includes('mocha')||n.includes('jest')) TOOLS.add('Mocha');
-                          if (n.includes('typescript')) TOOLS.add('TypeScript');
+                  const IGNORE_DIRS = new Set(['.git','node_modules','.next','dist','build','coverage','vendor','target','bin','obj','.venv','.cache']);
+
+                  async function walk(dir) {
+                    const out = [];
+                    const stack = [dir];
+                    while (stack.length) {
+                      const cur = stack.pop();
+                      const entries = fs.readdirSync(cur, { withFileTypes: true });
+                      for (const e of entries) {
+                        const p = path.join(cur, e.name);
+                        if (e.isDirectory()) {
+                          if (!IGNORE_DIRS.has(e.name)) stack.push(p);
+                        } else if (e.isFile()) {
+                          out.push(p);
                         }
                       }
                     }
-                    if (p.endsWith('requirements.txt') || p.endsWith('pyproject.toml')){
-                      if (/django/.test(txt)) FWLIB.add('Django');
-                    }
-                    if (p.endsWith('pom.xml')){
-                      if (/spring-boot/.test(txt)) FWLIB.add('Spring Boot');
-                    }
-                    if (p.endsWith('dockerfile')) TOOLS.add('Docker');
+                    return out;
                   }
 
-                  // Merge with language stats
-                  const langTotals = new Map(Object.entries(langs||{}));
-                  const langSorted = [...langTotals.keys()].slice(0,10);
+                  function readTextSafe(p) {
+                    try { return fs.readFileSync(p, 'utf8'); } catch { return ''; }
+                  }
 
-                  const make = await buildBadgeFn();
+                  function parseJSON(t) { try { return JSON.parse(t); } catch { return null; } }
 
-                  const langBadges = langSorted.map(l=>make(l));
-                  const fwBadges = [...FWLIB].sort().map(l=>make(l));
-                  const dbBadges = [...DBCLOUD].sort().map(l=>make(l));
-                  const toolBadges = [...TOOLS].sort().map(l=>make(l));
+                  (async () => {
+                    const makeBadge = await buildBadgeFn();
 
-                  let readme = fs.readFileSync(README_PATH,'utf8');
-                  readme = mergeSection(readme, LANG_START, LANG_END, langBadges);
-                  readme = mergeSection(readme, FWLIB_START, FWLIB_END, fwBadges);
-                  readme = mergeSection(readme, DBCLOUD_START, DBCLOUD_END, dbBadges);
-                  readme = mergeSection(readme, TOOLS_START, TOOLS_END, toolBadges);
-                  fs.writeFileSync(README_PATH, readme,'utf8');
-                  console.log('✅ README updated for single repo.');
+                    // accumulators
+                    const langTotals = new Map();
+                    const fwlib = new Set();
+                    const dbcloud = new Set();
+                    const tools = new Set();
+
+                    // walk current repo
+                    const files = await walk(process.cwd());
+
+                    // language sizes
+                    for (const f of files) {
+                      const ext = path.extname(f).replace('.','').toLowerCase();
+                      const lang = EXT_LANG.get(ext);
+                      if (lang) {
+                        const size = fs.statSync(f).size || 0;
+                        langTotals.set(lang, (langTotals.get(lang)||0) + size);
+                      }
+                    }
+
+                    // parse manifests / configs
+                    for (const f of files) {
+                      const rel = f.replace(process.cwd() + path.sep, '');
+                      if (!FILE_PATTERNS.some(rx => rx.test(rel))) continue;
+
+                      const lower = rel.toLowerCase();
+                      const txt = readTextSafe(f);
+
+                      if (lower.endsWith('package.json')) {
+                        const j = parseJSON(txt) || {};
+                        const buckets = [j.dependencies, j.devDependencies, j.peerDependencies, j.optionalDependencies];
+                        for (const b of buckets) {
+                          if (!b) continue;
+                          for (const [name] of Object.entries(b)) {
+                            const n = name.toLowerCase();
+                            for (const k of Object.keys(FWLIB_KW)) if (n === k || n.startsWith(k)) fwlib.add(FWLIB_KW[k]);
+                            for (const k of Object.keys(DB_KW)) if (n === k || n.startsWith(k)) dbcloud.add(DB_KW[k]);
+                            for (const k of Object.keys(TOOLS_KW)) if (n === k || n.startsWith(k)) tools.add(TOOLS_KW[k]);
+                            if (n === 'node' || n === 'nodejs') tools.add('Node.js');
+                          }
+                        }
+                        for (const cmd of Object.values(j.scripts || {})) {
+                          const c=String(cmd);
+                          if (/eslint/.test(c)) tools.add('ESLint');
+                          if (/prettier/.test(c)) tools.add('Prettier');
+                          if (/jest/.test(c)) tools.add('Jest');
+                          if (/cypress/.test(c)) tools.add('Cypress');
+                          if (/playwright/.test(c)) tools.add('Playwright');
+                          if (/vite/.test(c)) tools.add('Vite');
+                          if (/webpack/.test(c)) tools.add('Webpack');
+                        }
+                      }
+
+                      if (lower.endsWith('requirements.txt')) {
+                        const pkgs = (txt||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>l.split(/[\s<>=!~\[]/,1)[0].toLowerCase());
+                        for (const n of pkgs) {
+                          if (FWLIB_KW[n]) fwlib.add(FWLIB_KW[n]);
+                          if (DB_KW[n]) dbcloud.add(DB_KW[n]);
+                          if (TOOLS_KW[n]) tools.add(TOOLS_KW[n]);
+                        }
+                      }
+
+                      if ((/^dockerfile$/i).test(path.basename(lower))) {
+                        tools.add('Docker');
+                        if (/mongo/i.test(txt)) dbcloud.add('MongoDB');
+                        if (/mysql/i.test(txt)) dbcloud.add('MySQL');
+                        if (/redis/i.test(txt)) dbcloud.add('Redis');
+                      }
+
+                      if (/docker-compose\.ya?ml$/i.test(lower)) {
+                        tools.add('Docker Compose');
+                        const s = txt.toLowerCase();
+                        if (/mongo/.test(s)) dbcloud.add('MongoDB');
+                        if (/postgres/.test(s)) dbcloud.add('PostgreSQL');
+                        if (/mysql/.test(s)) dbcloud.add('MySQL');
+                        if (/redis/.test(s)) dbcloud.add('Redis');
+                      }
+                    }
+
+                    for (const t of ALWAYS_TOOLS) tools.add(t);
+                    for (const l of ALWAYS_LANGS) langTotals.set(l, (langTotals.get(l)||0)+1);
+                    for (const f of ALWAYS_FWLIB) fwlib.add(f);
+                    for (const d of ALWAYS_DBCLOUD) dbcloud.add(d);
+
+                    // sort & badge
+                    const langsSorted = [...langTotals.entries()].sort((a,b)=>b[1]-a[1]).map(([l])=>l);
+                    const fwlibSorted = [...fwlib].sort();
+                    const dbcloudSorted = [...dbcloud].sort();
+                    const toolsSorted = [...tools].sort();
+
+                    const langBadges = langsSorted.map(l => makeBadge(l));
+                    const fwlibBadges = fwlibSorted.map(l => makeBadge(l));
+                    const dbcloudBadges = dbcloudSorted.map(l => makeBadge(l));
+                    const toolsBadges = toolsSorted.map(l => makeBadge(l));
+
+                    let readme = fs.readFileSync(README_PATH, 'utf8');
+                    readme = mergeSection(readme, LANG_START, LANG_END, langBadges);
+                    readme = mergeSection(readme, FWLIB_START, FWLIB_END, fwlibBadges);
+                    readme = mergeSection(readme, DBCLOUD_START, DBCLOUD_END, dbcloudBadges);
+                    readme = mergeSection(readme, TOOLS_START, TOOLS_END, toolsBadges);
+                    fs.writeFileSync(README_PATH, readme, 'utf8');
+
+                    console.log('✅ README updated for THIS repository only.');
+                  })().catch(e => { console.error('❌ Failed:', e); process.exit(1); });
                   NODE
 
             - name: Commit & push
@@ -210,7 +399,7 @@ jobs:
                   git config user.name  "github-actions[bot]"
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git add "${README_PATH}"
-                  git commit -m "chore: refresh tech badges (single-repo scan)"
+                  git commit -m "chore: refresh tech badges for this repo only"
                   git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:${GITHUB_REF_NAME:-main} || \
                   git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main || \
                   git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:master
