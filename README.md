@@ -184,14 +184,12 @@
 
 <details open>
    <summary><b>VEVOX-REAL-TIME-CHAT-WEB-APPLICATION/</b></summary>
-
    <details>
       <summary><b>__root__</b></summary>
       <ul>
          <li><b><a href="./README.md">README.md</a></b> — Project documentation, overview and setup instructions.</li>
       </ul>
    </details>
-
    <details>
       <summary><b>Vevox Chatroom</b></summary>
       <ul>
@@ -202,7 +200,6 @@
          <li><b><a href="Vevox Chatroom/package-lock.json">package-lock.json</a></b> — Lockfile with exact dependency versions.</li>
          <li><b><a href="Vevox Chatroom/ca.pem">ca.pem</a></b> — Certificate used for local TLS testing.</li>
       </ul>
-
       <details>
          <summary><b>Migrations</b></summary>
          <ul>
@@ -210,7 +207,6 @@
             <li><b><a href="Vevox Chatroom/Migrations/2-AddQuestions.sql">2-AddQuestions.sql</a></b> — Adds question support schema.</li>
          </ul>
       </details>
-
       <details>
          <summary><b>example chatroom html & styling</b></summary>
          <ul>
@@ -218,7 +214,6 @@
             <li><b><a href="Vevox Chatroom/example chatroom html & styling/newStyle.css">newStyle.css</a></b> — Example stylesheet for the sample chatroom.</li>
          </ul>
       </details>
-
       <details>
          <summary><b>html</b></summary>
          <ul>
@@ -229,7 +224,6 @@
             <li><b><a href="Vevox Chatroom/html/style.css">style.css</a></b> — Styles used by the HTML UI.</li>
          </ul>
       </details>
-
       <details>
          <summary><b>test</b></summary>
          <ul>

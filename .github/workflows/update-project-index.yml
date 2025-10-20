@@ -1,0 +1,240 @@
+name: Update Project Index
+
+on:
+    push:
+        branches: ["**"]
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    update-index:
+        runs-on: ubuntu-latest
+        env:
+            README_PATH: README.md
+            INDEX_HEADING: "### 📑 Project Index"
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - name: Rebuild Project Index and update README
+              run: |
+                  node - <<'NODE'
+                  const fs = require('fs');
+                  const path = require('path');
+
+                  const README_PATH = process.env.README_PATH || 'README.md';
+                  const INDEX_HEADING = process.env.INDEX_HEADING || '### 📑 Project Index';
+
+                  if (!fs.existsSync(README_PATH)) {
+                    console.error(`❌ README not found at ${README_PATH}`);
+                    process.exit(1);
+                  }
+
+                  // ---------- SETTINGS ----------
+                  const IGNORE = new Set([
+                    '.git','node_modules','.DS_Store','.idea','.vscode','.env','.venv',
+                    '.next','dist','build','coverage','.turbo','.cache'
+                  ]);
+
+                  // Generate a one-liner description for a file based on its name/content
+                  function describeFile(rel, textSample = '') {
+                    const n = rel.toLowerCase();
+
+                    // Exact or common names
+                    if (n.endsWith('/readme.md') || n === 'readme.md') return 'Project documentation, overview and setup instructions.';
+                    if (n.endsWith('package.json')) return 'Npm manifest (dependencies & scripts).';
+                    if (n.endsWith('package-lock.json') || n.endsWith('pnpm-lock.yaml') || n.endsWith('yarn.lock')) return 'Lockfile with exact dependency versions.';
+                    if (n.endsWith('.pem')) return 'Certificate/PEM material (local TLS/testing).';
+
+                    // Special project files by name
+                    if (n.endsWith('websocketserver.js')) return 'WebSocket server that manages connections, broadcasts and hooks.';
+                    if (n.endsWith('htmlserver.js')) return 'Serves static frontend assets for the chat UI.';
+                    if (n.endsWith('/index.js') || n === 'index.js') return 'Main server entrypoint that wires HTTP and WebSocket servers.';
+
+                    // Directory-based hints
+                    if (n.includes('/migrations/') && n.endsWith('.sql')) {
+                      if (/addroomname/i.test(n)) return 'Adds room name column/table changes.';
+                      if (/addquestions/i.test(n)) return 'Adds question support schema.';
+                      return 'Database migration script.';
+                    }
+                    if (n.includes('/test/')) {
+                      if (n.endsWith('.sql')) return 'SQL for testing DB schemas and sample data.';
+                      if (n.endsWith('.js')) return 'Test helpers and scripts.';
+                      return 'Test artifact.';
+                    }
+                    if (n.includes('/html/')) {
+                      if (n.endsWith('.html')) {
+                        if (/chatroom\.html$/i.test(n)) return 'Main chatroom UI page.';
+                        if (/index\.html$/i.test(n)) return 'Login/landing page for users.';
+                        return 'HTML page.';
+                      }
+                      if (n.endsWith('.css')) return 'Stylesheet for the HTML UI.';
+                      if (/clientside\.js$/i.test(n)) return 'Client-side JS handling WebSocket events and UI updates.';
+                      if (/messageevents\.js$/i.test(n)) return 'Structured WebSocket message/event types.';
+                    }
+                    if (n.includes('example chatroom html & styling')) {
+                      if (n.endsWith('.html')) return 'Example chatroom page demonstrating layout and client-side integration.';
+                      if (n.endsWith('.css')) return 'Example stylesheet for the sample chatroom.';
+                    }
+
+                    // Content-based hints (very light, to keep it fast)
+                    if (n.endsWith('.js')) {
+                      if (/socket|websocket|ws/i.test(textSample)) return 'WebSocket-related JavaScript.';
+                      if (/express|http\.createServer/i.test(textSample)) return 'Server-side JavaScript.';
+                      return 'JavaScript file.';
+                    }
+                    if (n.endsWith('.html')) return 'HTML page.';
+                    if (n.endsWith('.css')) return 'Stylesheet.';
+                    if (n.endsWith('.sql')) return 'SQL script.';
+                    return 'File.';
+                  }
+
+                  // Recursively list files/folders (excluding IGNORE)
+                  function listDir(abs) {
+                    return fs.readdirSync(abs, { withFileTypes: true })
+                      .filter(e => !IGNORE.has(e.name))
+                      .sort((a, b) => {
+                        if (a.isDirectory() !== b.isDirectory()) return a.isDirectory() ? -1 : 1;
+                        return a.name.localeCompare(b.name);
+                      });
+                  }
+
+                  function readSample(fileAbs) {
+                    try {
+                      const b = fs.readFileSync(fileAbs);
+                      return b.toString('utf8', 0, Math.min(b.length, 4096)); // first 4KB
+                    } catch { return ''; }
+                  }
+
+                  // Build nested HTML <details>/<ul> structure
+                  function buildDetailsForDir(rootAbs, relDir) {
+                    const abs = path.join(rootAbs, relDir);
+                    const entries = listDir(abs);
+
+                    // Files directly within this directory
+                    const files = entries.filter(e => e.isFile());
+                    const dirs  = entries.filter(e => e.isDirectory());
+
+                    let html = '';
+                    // Render files in a <ul>
+                    if (files.length) {
+                      html += '      <ul>\n';
+                      for (const f of files) {
+                        const relPath = path.posix.join(relDir, f.name).replace(/\\/g, '/');
+                        const sample = readSample(path.join(abs, f.name));
+                        const desc = describeFile(relPath, sample);
+                        // Keep spaces in href to match your current README style
+                        html += `         <li><b><a href="${relPath}">${f.name}</a></b> — ${desc}</li>\n`;
+                      }
+                      html += '      </ul>\n';
+                    }
+
+                    // Render child directories as nested <details>
+                    for (const d of dirs) {
+                      const childRel = path.posix.join(relDir, d.name).replace(/\\/g, '/');
+                      html += '      <details>\n';
+                      html += `         <summary><b>${d.name}</b></summary>\n`;
+                      html += buildDetailsForDir(rootAbs, childRel);
+                      html += '      </details>\n';
+                    }
+
+                    return html;
+                  }
+
+                  function buildProjectIndex() {
+                    const repoName = (process.env.GITHUB_REPOSITORY || '').split('/').pop()
+                      || path.basename(process.cwd());
+                    const repoNameUpper = repoName.toUpperCase();
+
+                    // Top wrapper
+                    let out = '';
+                    out += `${INDEX_HEADING}\n\n`;
+                    out += '<details open>\n';
+                    out += `   <summary><b>${repoNameUpper}/</b></summary>\n`;
+
+                    // Root files
+                    const rootFiles = listDir(process.cwd()).filter(e => e.isFile());
+                    if (rootFiles.length) {
+                      out += '   <details>\n';
+                      out += '      <summary><b>__root__</b></summary>\n';
+                      out += '      <ul>\n';
+                      for (const f of rootFiles) {
+                        const sample = readSample(path.join(process.cwd(), f.name));
+                        const desc = describeFile(f.name, sample);
+                        out += `         <li><b><a href="./${f.name}">${f.name}</a></b> — ${desc}</li>\n`;
+                      }
+                      out += '      </ul>\n';
+                      out += '   </details>\n';
+                    }
+
+                    // Top-level directories
+                    const topDirs = listDir(process.cwd()).filter(e => e.isDirectory());
+                    for (const d of topDirs) {
+                      const rel = d.name;
+                      out += '   <details>\n';
+                      out += `      <summary><b>${d.name}</b></summary>\n`;
+                      out += buildDetailsForDir(process.cwd(), rel);
+                      out += '   </details>\n\n';
+                    }
+
+                    out += '\n</details>';
+                    return out;
+                  }
+
+                  // Replace the whole Project Index section (from heading to before next ##/### or EOF)
+                  function replaceSection(readme) {
+                    const startIdx = readme.indexOf(INDEX_HEADING);
+                    if (startIdx === -1) {
+                      console.error(`❌ Heading "${INDEX_HEADING}" not found in README.`);
+                      process.exit(1);
+                    }
+                    const after = readme.slice(startIdx + INDEX_HEADING.length);
+                    // Find the next heading of the same or higher level
+                    const nextHeadingMatch = after.match(/\n#{2,3}\s+/);
+                    const endIdx = nextHeadingMatch
+                      ? startIdx + INDEX_HEADING.length + nextHeadingMatch.index
+                      : readme.length;
+
+                    const before = readme.slice(0, startIdx);
+                    const updatedSection = buildProjectIndex();
+                    const tail = readme.slice(endIdx);
+
+                    return before + updatedSection + tail;
+                  }
+
+                  const readme = fs.readFileSync(README_PATH, 'utf8');
+                  const updated = replaceSection(readme);
+
+                  if (updated === readme) {
+                    console.log('No changes to Project Index.');
+                    process.exit(0);
+                  }
+
+                  fs.writeFileSync(README_PATH, updated, 'utf8');
+                  console.log('✅ Project Index updated in README.');
+                  NODE
+
+            - name: Commit & push if changed
+              env:
+                  PAT_OR_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+                  README_PATH: README.md
+              run: |
+                  if git diff --quiet -- "${README_PATH}"; then
+                    echo "No changes."
+                    exit 0
+                  fi
+                  git config user.name  "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add "${README_PATH}"
+                  git commit -m "docs: auto-update 📑 Project Index"
+                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:${GITHUB_REF_NAME:-main} || \
+                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main || \
+                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:master
