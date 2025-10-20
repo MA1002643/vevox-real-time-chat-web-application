@@ -86,7 +86,6 @@
 <br/>
 
 <!-- LANG-ICONS:START -->
-
 ![JavaScript (ES6+)](<https://img.shields.io/badge/JavaScript%20(ES6%2B)-F7DF1E?style=for-the-badge>)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge)
@@ -102,7 +101,6 @@
 <br/>
 
 <!-- FWLIB-ICONS:START -->
-
 ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge)
 ![ws](https://img.shields.io/badge/ws-444444?style=for-the-badge)
 
@@ -116,7 +114,6 @@
 <br/>
 
 <!-- DBCLOUD-ICONS:START -->
-
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge)
 
 <!-- DBCLOUD-ICONS:END -->
@@ -129,7 +126,6 @@
 <br/>
 
 <!-- TOOLS-ICONS:START -->
-
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge)
 ![Mocha](https://img.shields.io/badge/Mocha-444444?style=for-the-badge)
