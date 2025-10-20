@@ -7,47 +7,48 @@
 <p align="center"><em>Transforming Conversations • Igniting Instant Collaboration</em></p>
 
 <!-- BADGES -->
-<img src="https://img.shields.io/github/license/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/LICENSE" alt="license">
+   <img src="https://img.shields.io/github/license/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license" />
+</a>
 <img src="https://img.shields.io/github/last-commit/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-<img src="https://img.shields.io/github/languages/top/MA1002643/vevox-real-time-chat-web-application?style=flat&color=0080ff" alt="repo-top-language">
-<img src="https://img.shields.io/github/languages/count/MA1002643/vevox-real-time-chat-web-application?style=flat&color=0080ff" alt="repo-language-count">
-
-<em>Built with the tools and technologies:</em>
-
-<img src="https://img.shields.io/badge/Express-000000.svg?style=flat&logo=Express&logoColor=white" alt="Express">
-<img src="https://img.shields.io/badge/JSON-000000.svg?style=flat&logo=JSON&logoColor=white" alt="JSON">
-<img src="https://img.shields.io/badge/npm-CB3837.svg?style=flat&logo=npm&logoColor=white" alt="npm">
-<img src="https://img.shields.io/badge/Mocha-8D6748.svg?style=flat&logo=Mocha&logoColor=white" alt="Mocha">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=flat&logo=JavaScript&logoColor=black" alt="JavaScript">
-
-</div>
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/discussions" alt="Discussions">
+   <img src="https://img.shields.io/github/discussions/MA1002643/vevox-real-time-chat-web-application" alt="Discussions" />
+</a>
+<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/actions/workflows/daily-tests.yml">
+   <img src="https://img.shields.io/github/actions/workflow/status/MA1002643/vevox-real-time-chat-web-application/daily-tests.yml?label=daily%20tests" alt="Daily Tests Status" />
+</a>
+<a href="https://coveralls.io/github/MA1002643/vevox-real-time-chat-web-application">
+   <img src="https://img.shields.io/coveralls/github/MA1002643/vevox-real-time-chat-web-application" alt="Code Coverage" />
+</a>
 <br>
+</div>
 
 ---
 
 ## 📄 Table of Contents
 
 - [Overview](#-overview)
+- [UI Preview](#-ui-preview)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+  - [Project Index](#-project-index)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#-prerequisites)
   - [Installation](#-installation)
   - [Usage](#-usage)
   - [Testing](#-testing)
-- [Features](#-features)
-- [Project Structure](#-project-structure)
-  - [Project Index](#-project-index)
+- [Learning Outcomes](#-learning-outcomes)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
+- [Acknowledgments](#-acknowledgments)
 - [License](#-license)
-- [Acknowledgment](#-acknowledgment)
 
 ---
 
 ## ✨ Overview
 
-**Vevox – Real-Time Chat Web Application** is a full-stack chat platform enabling instant communication through **WebSocket technology**.  
-It offers **real-time messaging**, **persistent data storage**, and **dynamic chatroom management**.  
-Built with a modular architecture, Vevox demonstrates **scalable, event-driven communication** — perfect for classrooms, team collaborations, or Q&A sessions.
+**Vevox – Real-Time Chat Web Application** is a full-stack chat platform built on WebSockets for low-latency, bi-directional messaging. It provides real-time messaging, persistent MySQL-backed storage, and dynamic chatroom management for Q&A and group collaboration.
 
 ---
 
@@ -61,18 +62,18 @@ Built with a modular architecture, Vevox demonstrates **scalable, event-driven c
 
 ## 🚀 Key Features
 
-| Feature                             | Description                                                                                         |
-| :---------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| 💬 **Real-Time Messaging**          | Enables instant bi-directional communication between clients and the server using WebSocket (`ws`). |
-| 🧑‍🤝‍🧑 **Room Management**              | Allows users to create, join, and manage chat rooms dynamically for group conversations.            |
-| 🗄️ **Persistent Storage**           | Uses **MySQL** to store chat history, user data, and Q&A interactions for long-term access.         |
-| 🧩 **Modular Design**               | Separates concerns into client, server, and database modules for scalability and maintainability.   |
-| 🧪 **Automated Testing**            | Implements unit testing with **Mocha** to ensure reliable server and database functionality.        |
-| ⚡ **Low Latency**                  | Optimized socket communication ensures real-time responsiveness with minimal delay.                 |
-| 🔒 **Secure Configuration**         | Environment variables managed via **env-cmd** to protect sensitive configuration data.              |
-| 🎨 **User-Friendly Interface**      | Intuitive HTML/CSS frontend with interactive message display and input areas.                       |
-| 🧰 **Developer Tools Integration**  | Uses **npm** scripts and configuration files for streamlined development and testing.               |
-| 🌐 **Cross-Platform Compatibility** | Runs seamlessly in any modern browser and Node.js environment.                                      |
+| Feature                                | Description                                                                                              |
+| :------------------------------------- | :------------------------------------------------------------------------------------------------------- |
+| 💬 **Real-Time Messaging (WebSocket)** | webSocketServer.js provides low-latency, bi-directional messaging between clients and the server.        |
+| 🧑‍🤝‍🧑 **Room & Session Management**       | Dynamic room creation and joining, managed in server logic and persisted to the database.                |
+| 🗄️ **Persistent MySQL Storage**        | SQL migrations and `test/database.sql` define schemas for rooms, messages, and questions.                |
+| 🧩 **Separation of Concerns**          | `htmlServer.js`, `webSocketServer.js` and `index.js` keep frontend serving, sockets and routing modular. |
+| 🧪 **Testing & Dev Utilities**         | `test/serverSide.js` and Mocha-based tests support server behaviour validation and CI checks.            |
+| ⚡ **Low Latency & Broadcast**         | Message broadcasting and efficient event routing for responsive chat UX.                                 |
+| 🔒 **Optional TLS / Secure Config**    | `ca.pem` and env-managed configs support local TLS testing and secure credentials handling.              |
+| 🎨 **Client Interface & Examples**     | `html/` and `example chatroom html & styling/` provide sample UI, scripts and styles for integration.    |
+| 🧰 **npm Scripts & Tooling**           | `package.json` exposes scripts for running servers, installing deps and running tests.                   |
+| 🌐 **Cross-Platform**                  | Works across macOS, Windows and Linux; README includes quick install snippets for each platform.         |
 
 ---
 
@@ -112,16 +113,29 @@ Built with a modular architecture, Vevox demonstrates **scalable, event-driven c
 
 ```sh
 └── vevox-real-time-chat-web-application/
-    └── Vevox Chatroom
-        ├── Migrations
-        ├── example chatroom html & styling
-        ├── html
-        ├── htmlServer.js
-        ├── index.js
-        ├── package-lock.json
-        ├── package.json
-        ├── test
-        └── webSocketServer.js
+	├── README.md
+	└── Vevox Chatroom/
+		├── Migrations/
+		│   ├── 1-AddRoomName.sql
+		│   └── 2-AddQuestions.sql
+		├── example chatroom html & styling/
+		│   ├── newChatroom.html
+		│   └── newStyle.css
+		├── html/
+		│   ├── Chatroom.html
+		│   ├── Index.html
+		│   ├── MessageEvents.js
+		│   ├── clientSide.js
+		│   └── style.css
+		├── test/
+		│   ├── database.sql
+		│   └── serverSide.js
+		├── ca.pem
+		├── htmlServer.js
+		├── index.js
+		├── package.json
+		├── package-lock.json
+		└── webSocketServer.js
 ```
 
 ---
@@ -129,131 +143,63 @@ Built with a modular architecture, Vevox demonstrates **scalable, event-driven c
 ### 📑 Project Index
 
 <details open>
-	<summary><b><code>VEVOX-REAL-TIME-CHAT-WEB-APPLICATION/</code></b></summary>
-	<!-- __root__ Submodule -->
-	<details>
-		<summary><b>__root__</b></summary>
-		<blockquote>
-			<div class='directory-path' style='padding: 8px 0; color: #666;'>
-				<code><b>⦿ __root__</b></code>
-			<table style='width: 100%; border-collapse: collapse;'>
-			<thead>
-				<tr style='background-color: #f8f9fa;'>
-					<th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-					<th style='text-align: left; padding: 8px;'>Summary</th>
-				</tr>
-			</thead>
-			</table>
-		</blockquote>
-	</details>
-	<!-- Vevox Chatroom Submodule -->
-	<details>
-		<summary><b>Vevox Chatroom</b></summary>
-		<blockquote>
-			<div class='directory-path' style='padding: 8px 0; color: #666;'>
-				<code><b>⦿ Vevox Chatroom</b></code>
-			<table style='width: 100%; border-collapse: collapse;'>
-			<thead>
-				<tr style='background-color: #f8f9fa;'>
-					<th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-					<th style='text-align: left; padding: 8px;'>Summary</th>
-				</tr>
-			</thead>
-				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/webSocketServer.js'>webSocketServer.js</a></b></td>
-					<td style='padding: 8px;'>- Establishes and manages a WebSocket server facilitating real-time chat communication within the application<br>- Handles client connections, message broadcasting, and interaction with the database for message storage, retrieval, and question management<br>- Integrates seamlessly with the overall architecture to enable live messaging, question handling, and room management, ensuring synchronized communication across clients in the chat environment.</td>
-				</tr>
-				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/htmlServer.js'>htmlServer.js</a></b></td>
-					<td style='padding: 8px;'>- Serves as the static content server for the project, delivering HTML and related assets to clients<br>- It facilitates the frontend interface by hosting web resources on a designated port, enabling seamless access to the user interface within the overall architecture<br>- This component ensures that the client-side experience is reliably served alongside backend functionalities.</td>
-				</tr>
-				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/package.json'>package.json</a></b></td>
-					<td style='padding: 8px;'>- Defines the backend server setup and core runtime environment for the chat application, orchestrating essential services such as WebSocket communication, database interactions, and environment configurations<br>- It serves as the central entry point that enables real-time chat functionality and data management, integrating various dependencies to support the overall architecture of the chatroom system.</td>
-				</tr>
-				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/index.js'>index.js</a></b></td>
-					<td style='padding: 8px;'>- Establishes the core server infrastructure for the Vevox Chatroom application, enabling client connections and managing user login requests<br>- Integrates HTML and WebSocket servers to facilitate real-time communication and user interactions within chat rooms<br>- Serves as the central entry point for handling HTTP requests and orchestrating the overall chatroom architecture.</td>
-				</tr>
-			</table>
-			<!-- test Submodule -->
-			<details>
-				<summary><b>test</b></summary>
-				<blockquote>
-					<div class='directory-path' style='padding: 8px 0; color: #666;'>
-						<code><b>⦿ Vevox Chatroom.test</b></code>
-					<table style='width: 100%; border-collapse: collapse;'>
-					<thead>
-						<tr style='background-color: #f8f9fa;'>
-							<th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-							<th style='text-align: left; padding: 8px;'>Summary</th>
-						</tr>
-					</thead>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/test/database.sql'>database.sql</a></b></td>
-							<td style='padding: 8px;'>- Defines the database schema for managing chat rooms, messages, and questions within the application<br>- Facilitates storage and retrieval of room details, user messages, and question-answer interactions, supporting real-time chat functionality and structured Q&A sessions in the platforms architecture<br>- Ensures data integrity and relationships among chat components for seamless user experience.</td>
-						</tr>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/test/serverSide.js'>serverSide.js</a></b></td>
-							<td style='padding: 8px;'>- Facilitates comprehensive server-side WebSocket testing for chatroom functionalities, including message handling, database storage, room retrieval, question management, and event responses<br>- Ensures robust communication protocols and data integrity within the overall architecture, validating real-time interactions and persistent data updates essential for the chat applications reliability and user experience.</td>
-						</tr>
-					</table>
-				</blockquote>
-			</details>
-			<!-- example chatroom html & styling Submodule -->
-			<details>
-				<summary><b>example chatroom html & styling</b></summary>
-				<blockquote>
-					<div class='directory-path' style='padding: 8px 0; color: #666;'>
-						<code><b>⦿ Vevox Chatroom.example chatroom html & styling</b></code>
-					<table style='width: 100%; border-collapse: collapse;'>
-					<thead>
-						<tr style='background-color: #f8f9fa;'>
-							<th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-							<th style='text-align: left; padding: 8px;'>Summary</th>
-						</tr>
-					</thead>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/example chatroom html & styling/newChatroom.html'>newChatroom.html</a></b></td>
-							<td style='padding: 8px;'>- Defines the user interface for a chatroom within the Vevox platform, enabling real-time messaging during lectures<br>- It structures the layout, including message display and input areas, and integrates styling and client-side scripting to facilitate seamless communication<br>- This HTML file serves as the core frontend component for user interaction in the chatroom architecture.</td>
-						</tr>
-					</table>
-				</blockquote>
-			</details>
-			<!-- html Submodule -->
-			<details>
-				<summary><b>html</b></summary>
-				<blockquote>
-					<div class='directory-path' style='padding: 8px 0; color: #666;'>
-						<code><b>⦿ Vevox Chatroom.html</b></code>
-					<table style='width: 100%; border-collapse: collapse;'>
-					<thead>
-						<tr style='background-color: #f8f9fa;'>
-							<th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-							<th style='text-align: left; padding: 8px;'>Summary</th>
-						</tr>
-					</thead>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/html/clientSide.js'>clientSide.js</a></b></td>
-							<td style='padding: 8px;'>- Facilitates real-time chat interactions within the platform by managing WebSocket communication, handling message exchange, and dynamically updating the user interface<br>- Supports features like room selection, message sending, question-answer workflows, and reply threading, ensuring seamless and interactive communication across chat rooms<br>- Integrates client-side event handling to maintain synchronized chat states and user engagement.</td>
-						</tr>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/html/Chatroom.html'>Chatroom.html</a></b></td>
-							<td style='padding: 8px;'>- Provides the main user interface for the chat application, enabling users to select chat rooms, send messages, and toggle themes<br>- It orchestrates layout, navigation, and interaction elements, serving as the central entry point for user engagement within the overall chat system architecture.</td>
-						</tr>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/html/MessageEvents.js'>MessageEvents.js</a></b></td>
-							<td style='padding: 8px;'>- Defines a comprehensive set of websocket event classes for managing real-time chat interactions, including messaging, question handling, acknowledgements, and room management<br>- Facilitates structured communication between clients and server, enabling seamless message exchange, question marking, and room data synchronisation within the chat application architecture.</td>
-						</tr>
-						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/master/Vevox Chatroom/html/Index.html'>Index.html</a></b></td>
-							<td style='padding: 8px;'>- Facilitates user authentication and access to the chatroom interface within the web application<br>- It provides a login form for users to enter their credentials and transitions them to the main chat environment upon validation<br>- Serves as the entry point, orchestrating user flow and theme toggling, thereby integrating user identity with real-time communication features of the overall chat system.</td>
-						</tr>
-					</table>
-				</blockquote>
-			</details>
-		</blockquote>
-	</details>
+   <summary><b>VEVOX-REAL-TIME-CHAT-WEB-APPLICATION/</b></summary>
+
+   <details>
+      <summary><b>__root__</b></summary>
+      <ul>
+         <li><b><a href="./README.md">README.md</a></b> — Project documentation, overview and setup instructions.</li>
+      </ul>
+   </details>
+
+   <details>
+      <summary><b>Vevox Chatroom</b></summary>
+      <ul>
+         <li><b><a href="Vevox Chatroom/webSocketServer.js">webSocketServer.js</a></b> — WebSocket server that manages connections, broadcasts and persistence hooks.</li>
+         <li><b><a href="Vevox Chatroom/htmlServer.js">htmlServer.js</a></b> — Serves static frontend assets for the chat UI.</li>
+         <li><b><a href="Vevox Chatroom/index.js">index.js</a></b> — Main server entrypoint that wires HTTP and WebSocket servers.</li>
+         <li><b><a href="Vevox Chatroom/package.json">package.json</a></b> — Npm manifest (dependencies & scripts).</li>
+         <li><b><a href="Vevox Chatroom/package-lock.json">package-lock.json</a></b> — Lockfile with exact dependency versions.</li>
+         <li><b><a href="Vevox Chatroom/ca.pem">ca.pem</a></b> — Certificate used for local TLS testing.</li>
+      </ul>
+
+      <details>
+         <summary><b>Migrations</b></summary>
+         <ul>
+            <li><b><a href="Vevox Chatroom/Migrations/1-AddRoomName.sql">1-AddRoomName.sql</a></b> — Adds room name column/table changes.</li>
+            <li><b><a href="Vevox Chatroom/Migrations/2-AddQuestions.sql">2-AddQuestions.sql</a></b> — Adds question support schema.</li>
+         </ul>
+      </details>
+
+      <details>
+         <summary><b>example chatroom html & styling</b></summary>
+         <ul>
+            <li><b><a href="Vevox Chatroom/example chatroom html & styling/newChatroom.html">newChatroom.html</a></b> — Example chatroom page demonstrating layout and client-side integration.</li>
+            <li><b><a href="Vevox Chatroom/example chatroom html & styling/newStyle.css">newStyle.css</a></b> — Example stylesheet for the sample chatroom.</li>
+         </ul>
+      </details>
+
+      <details>
+         <summary><b>html</b></summary>
+         <ul>
+            <li><b><a href="Vevox Chatroom/html/clientSide.js">clientSide.js</a></b> — Client-side JS handling WebSocket events and UI updates.</li>
+            <li><b><a href="Vevox Chatroom/html/Chatroom.html">Chatroom.html</a></b> — Main chatroom UI page.</li>
+            <li><b><a href="Vevox Chatroom/html/MessageEvents.js">MessageEvents.js</a></b> — Structured websocket message/event types.</li>
+            <li><b><a href="Vevox Chatroom/html/Index.html">Index.html</a></b> — Login/landing page for users.</li>
+            <li><b><a href="Vevox Chatroom/html/style.css">style.css</a></b> — Styles used by the HTML UI.</li>
+         </ul>
+      </details>
+
+      <details>
+         <summary><b>test</b></summary>
+         <ul>
+            <li><b><a href="Vevox Chatroom/test/database.sql">database.sql</a></b> — SQL for testing DB schemas and sample data.</li>
+            <li><b><a href="Vevox Chatroom/test/serverSide.js">serverSide.js</a></b> — Test helpers and scripts for server-side WebSocket behavior.</li>
+         </ul>
+      </details>
+
+   </details>
+
 </details>
 
 ---
@@ -267,49 +213,82 @@ This project requires the following dependencies:
 - **Programming Language:** JavaScript
 - **Package Manager:** Npm
 
+Recommended local prerequisites:
+
+- **Node.js (v14+ or v16+)** — Runtime for the server and build tools.
+- **npm** — Package manager used for installing dependencies and running scripts.
+- **MySQL (or compatible)** — Database used for persistent storage of rooms, messages and questions.
+- **Git** — Recommended for version control when cloning and contributing to the project.
+- **OpenSSL (optional)** — Useful for generating local certs (e.g., `ca.pem`) if you test TLS locally.
+
+Recommended versions & download links:
+
+- Node.js (recommended v16+ LTS): https://nodejs.org/
+- npm (bundled with Node.js): https://docs.npmjs.com/
+- MySQL (recommended v8+): https://dev.mysql.com/downloads/mysql/
+- Git: https://git-scm.com/
+- OpenSSL (optional): https://www.openssl.org/
+
+Quick install (examples)
+
+macOS (Homebrew)
+
+```bash
+brew update
+brew install node mysql git openssl
+# Start MySQL (optional)
+brew services start mysql
+```
+
+Windows (Chocolatey)
+
+```powershell
+choco install nodejs-lts mysql git openssl -y
+# After installing MySQL, run the MySQL installer or init steps as required
+```
+
+Debian / Ubuntu (apt — Node via NodeSource recommended)
+
+```bash
+sudo apt update
+sudo apt install -y curl git mysql-server
+# Install Node.js (example uses NodeSource for a modern Node LTS)
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+# Secure MySQL (optional interactive step)
+sudo mysql_secure_installation
+```
+
 ### ⚙️ Installation
 
-Build vevox-real-time-chat-web-application from the source and install dependencies:
+Clone the repository, install dependencies and configure the database connection.
 
-1. **Clone the repository:**
-
-   ```sh
-   ❯ git clone https://github.com/MA1002643/vevox-real-time-chat-web-application
-   ```
-
-2. **Navigate to the project directory:**
-
-   ```sh
-   ❯ cd vevox-real-time-chat-web-application
-   ```
-
-3. **Install the dependencies:**
-
-   **Using [npm](https://www.npmjs.com/):**
-
-   ```sh
-   ❯ npm install
-   ```
+```bash
+git clone https://github.com/MA1002643/vevox-real-time-chat-web-application.git
+cd vevox-real-time-chat-web-application/Vevox\ Chatroom
+npm install
+# Configure your MySQL connection (see README Prerequisites) before starting the servers.
+```
 
 ### 💻 Usage
 
-Run the project with:
+Start the application using the npm script. This will run the server(s) defined in `package.json`.
 
-**Using [npm](https://www.npmjs.com/):**
-
-```sh
+```bash
 npm start
 ```
 
+If the project uses separate scripts for the HTML server and WebSocket server, run the specific scripts (e.g. `npm run start:html` / `npm run start:ws`).
+
 ### 🧪 Testing
 
-Vevox-real-time-chat-web-application uses the {**test_framework**} test framework. Run the test suite with:
+Automated tests use Mocha. Run the test suite with:
 
-**Using [npm](https://www.npmjs.com/):**
-
-```sh
+```bash
 npm test
 ```
+
+For a focused run, you can run individual test files with Mocha directly, e.g.: `npx mocha test/serverSide.js`.
 
 ---
 
@@ -325,13 +304,16 @@ npm test
 
 ## 📈 Roadmap
 
-- [ ] **`Task 1`**: Implement WebSocket message broadcasting
-- [ ] **`Task 2`**: Integrate MySQL persistence
-- [ ] **`Task 3`**: Add Mocha testing suite
-- [ ] **`Task 4`**: Implement authentication layer
-- [ ] **`Task 5`**: Develop admin moderation features
-- [ ] **`Task 6`**: Add Mocha testing suite.
-- [ ] **`Task 7`**: Deploy cloud-hosted version (Render + MySQL Atlas)
+- [ ] **`Task 1`**: Implement secure **authentication system** with JWT and user roles (`user`, `moderator`, `admin`).
+- [ ] **`Task 2`**: Add **real-time user presence**, typing indicators, and message read receipts.
+- [ ] **`Task 3`**: Integrate **file and media uploads** (images, documents) with cloud storage (e.g., AWS S3).
+- [ ] **`Task 4`**: Implement **message search**, threaded replies, and emoji reactions for advanced chat interaction.
+- [ ] **`Task 5`**: Add **Redis Pub/Sub** for scalable WebSocket message distribution across multiple instances.
+- [ ] **`Task 6`**: Introduce **database migrations** and schema optimisation with Prisma or Knex.
+- [ ] **`Task 7`**: Strengthen **security and rate limiting** using Helmet, CORS, and payload validation.
+- [ ] **`Task 8`**: Expand **testing coverage** with integration, end-to-end (E2E), and performance tests.
+- [ ] **`Task 9`**: Implement **PWA features** (offline mode, message queue, push notifications) for modern UX.
+- [ ] **`Task 10`**: Add **DevOps enhancements** including Docker setup, CI/CD pipeline, and observability tools.
 
 ---
 
@@ -339,7 +321,7 @@ npm test
 
 - **💬 [Join the Discussions](https://github.com/MA1002643/vevox-real-time-chat-web-application/discussions)**: Share your insights, provide feedback, or ask questions.
 - **🐛 [Report Issues](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues)**: Submit bugs found or log feature requests for the `vevox-real-time-chat-web-application` project.
-- **💡 [Submit Pull Requests](https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+- **💡 [Submit Pull Requests](https://github.com/MA1002643/vevox-real-time-chat-web-application/pulls)**: Review open PRs, and submit your own PRs.
 
 <details closed>
 <summary>Contributing Guidelines</summary>
@@ -388,7 +370,7 @@ npm test
 
 ## 📜 License
 
-This project is licensed under the **[MIT License](https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/LICENSE)**. See the [LICENSE](https://choosealicense.com/licenses/) file for full details.
+This project is licensed under the **[MIT License](https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/LICENSE)**. See the **[LICENSE](https://choosealicense.com/licenses/)** file for full details.
 
 ---
 
