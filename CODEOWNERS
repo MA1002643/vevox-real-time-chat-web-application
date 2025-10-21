@@ -1,0 +1,11 @@
+# CODEOWNERS
+
+# All files in this repository are owned by @MA1002643.
+
+# GitHub will request a review from this user when files are changed.
+
+# To require code-owner reviews, enable "Require review from Code Owners" in
+
+# branch protection rules for the target branch (e.g., main).
+
+- @MA1002643
