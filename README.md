@@ -222,6 +222,7 @@
    <details>
       <summary><b>.github</b></summary>
       <ul>
+         <li><b><a href=".github/CODEOWNERS">CODEOWNERS</a></b> — File.</li>
          <li><b><a href=".github/pull_request_template.md">pull_request_template.md</a></b> — File.</li>
       </ul>
       <details>
@@ -241,6 +242,7 @@
       <details>
          <summary><b>workflows</b></summary>
       <ul>
+         <li><b><a href=".github/workflows/ci.yml">ci.yml</a></b> — File.</li>
          <li><b><a href=".github/workflows/update-contributors.yml">update-contributors.yml</a></b> — File.</li>
          <li><b><a href=".github/workflows/update-project-index.yml">update-project-index.yml</a></b> — File.</li>
          <li><b><a href=".github/workflows/update-project-structure.yml">update-project-structure.yml</a></b> — File.</li>
