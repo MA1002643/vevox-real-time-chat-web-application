@@ -412,9 +412,11 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
    </a>
 </p>
 <p align="left">
+<p align="left">
 <!-- CONTRIBUTORS:START -->
 <a href="https://github.com/MA1002643" title="MA1002643"><img src="https://avatars.githubusercontent.com/u/87866666?v=4&s=48" alt="MA1002643" width="48" height="48" style="border-radius:50%;vertical-align:middle;margin-right:6px;margin-bottom:6px;"/></a>
 <!-- CONTRIBUTORS:END -->
+</p>
 </p>
 </details>
 
