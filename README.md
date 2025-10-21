@@ -26,29 +26,7 @@
 
 ---
 
-## 📄 Table of Contents
-
-- [✨ Overview](#✨-overview)
-- [🎨 UI Preview](#🎨-ui-preview)
-- [🚀 Key Features](#🚀-key-features)
-- [🧰 Tech Stack](#🧰-tech-stack)
-- [📁 Project Structure](#📁-project-structure)
-  - [📑 Project Index](#📑-project-index)
-- [🚀 Getting Started](#🚀-getting-started)
-  - [📋 Prerequisites](#📋-prerequisites)
-  - [⚙️ Installation](#⚙️-installation)
-  - [💻 Usage](#💻-usage)
-  - [🧪 Testing](#🧪-testing)
-- [🎓 Learning Outcomes](#🎓-learning-outcomes)
-- [📈 Roadmap](#📈-roadmap)
-- [🤝 Contributors](#🤝-contributors)
-- [✨ Acknowledgments](#✨-acknowledgments)
-- [📜 License](#📜-license)
-
----
-
-<details>
-<summary><strong>Compatibility TOC (no-emoji anchors)</strong></summary>
+## Table of Contents
 
 - [Overview](#overview)
 - [UI Preview](#ui-preview)
@@ -67,7 +45,7 @@
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
 
-</details>
+---
 
 ## ✨ Overview
 
