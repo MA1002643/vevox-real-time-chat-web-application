@@ -203,6 +203,14 @@
    <details>
       <summary><b>.github</b></summary>
       <details>
+         <summary><b>ISSUE_TEMPLATE</b></summary>
+      <ul>
+         <li><b><a href=".github/ISSUE_TEMPLATE/bug_report.yml">bug_report.yml</a></b> — File.</li>
+         <li><b><a href=".github/ISSUE_TEMPLATE/config.yml">config.yml</a></b> — File.</li>
+         <li><b><a href=".github/ISSUE_TEMPLATE/feature_request.yml">feature_request.yml</a></b> — File.</li>
+      </ul>
+      </details>
+      <details>
          <summary><b>scripts</b></summary>
       <ul>
          <li><b><a href=".github/scripts/update-contributors.js">update-contributors.js</a></b> — JavaScript file.</li>
