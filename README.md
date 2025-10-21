@@ -165,10 +165,12 @@
 		├── scripts/
 			└── update-contributors.js
 		├── workflows/
+			├── ci.yml
 			├── update-contributors.yml
 			├── update-project-index.yml
 			├── update-project-structure.yml
 			└── update-tech-badges-single-repo.yml
+		├── CODEOWNERS
 		└── pull_request_template.md
 	├── Vevox Chatroom/
 		├── example chatroom html & styling/
