@@ -4,7 +4,8 @@
  * - Finds the <details> with <summary>Contributor Graph</summary>
  * - Inserts/updates a row of clickable avatar images between markers
  *   <!-- CONTRIBUTORS:START --> ... <!-- CONTRIBUTORS:END -->
- * - Leaves the contrib.rocks image & existing styling intact
+ * - Uses an image proxy to return pre-masked circular PNGs with a white border
+ *   (works on GitHub README without relying on inline styles)
  */
 
 const fs = require("fs");
@@ -21,6 +22,17 @@ const END = process.env.END_MARKER || "<!-- CONTRIBUTORS:END -->";
 const AVATAR_SIZE = parseInt(process.env.AVATAR_SIZE || "48", 10);
 const MAX_CONTRIB = parseInt(process.env.MAX_CONTRIBUTORS || "200", 10);
 
+// Circular mask/border settings (applied by proxy, not CSS)
+const AVATAR_BORDER_COLOR = process.env.AVATAR_BORDER_COLOR || "white";
+const AVATAR_BORDER_WIDTH = parseInt(
+  process.env.AVATAR_BORDER_WIDTH || "2",
+  10
+);
+
+// You can switch proxy if you prefer another service with mask support
+const IMAGE_PROXY_BASE =
+  process.env.IMAGE_PROXY_BASE || "https://images.weserv.nl/";
+
 const REPO = process.env.GITHUB_REPOSITORY; // owner/repo
 
 if (!REPO) {
@@ -29,6 +41,7 @@ if (!REPO) {
 }
 if (!fs.existsSync(README_PATH)) {
   console.error(`❌ README not found at ${README_PATH}`);
+  console.error("   Tip: ensure actions/checkout has pulled your README.");
   process.exit(1);
 }
 
@@ -66,6 +79,35 @@ async function getAllContributors(ownerRepo) {
   return list.slice(0, MAX_CONTRIB);
 }
 
+// Helper: strip scheme for images.weserv.nl (expects url param without protocol)
+function stripScheme(u) {
+  return u.replace(/^https?:\/\//i, "");
+}
+
+// Build a circular, bordered avatar URL via proxy.
+// We ask GitHub for a 2x source (retina) and downscale to AVATAR_SIZE.
+function circularAvatarURL(avatarBaseUrl, desiredSize) {
+  const highRes = desiredSize * 2; // retina source for sharper downscale
+  const sep = avatarBaseUrl.includes("?") ? "&" : "?";
+  const src = `${avatarBaseUrl}${sep}s=${highRes}`;
+  const srcNoScheme = stripScheme(src);
+  // images.weserv.nl parameters:
+  // - url=<host/path>
+  // - w/h=<size>
+  // - fit=cover (crop to square if needed)
+  // - mask=circle (apply circular mask)
+  // - border=<css color>  (e.g. white/#fff)
+  // - borderwidth=<px>
+  return (
+    `${IMAGE_PROXY_BASE}?` +
+    `url=${encodeURIComponent(srcNoScheme)}` +
+    `&w=${desiredSize}&h=${desiredSize}` +
+    `&fit=cover&mask=circle` +
+    `&border=${encodeURIComponent(AVATAR_BORDER_COLOR)}` +
+    `&borderwidth=${AVATAR_BORDER_WIDTH}`
+  );
+}
+
 // Main
 (async function main() {
   try {
@@ -84,13 +126,13 @@ async function getAllContributors(ownerRepo) {
       return !isBot && !c.site_admin;
     });
 
-    // 2) Build avatars row (clickable); inline styles scoped per <img>
+    // 2) Build avatars row (clickable)
     const avatars = contributors
       .map((c) => {
         const base = c.avatar_url || `https://github.com/${c.login}.png`;
-        const sep = base.includes("?") ? "&" : "?";
-        const avatarUrl = `${base}${sep}s=${AVATAR_SIZE}`;
-        return `<a href="https://github.com/${c.login}" title="${c.login}"><img src="${avatarUrl}" alt="${c.login}" width="${AVATAR_SIZE}" height="${AVATAR_SIZE}" style="border-radius:50%;vertical-align:middle;margin-right:6px;margin-bottom:6px;"/></a>`;
+        const avatarUrl = circularAvatarURL(base, AVATAR_SIZE);
+        // No inline styles (GitHub sanitizes style=""); rely on pre-masked PNG.
+        return `<a href="https://github.com/${c.login}" title="${c.login}"><img src="${avatarUrl}" alt="${c.login}" width="${AVATAR_SIZE}" height="${AVATAR_SIZE}" /></a>`;
       })
       .join("");
 
@@ -164,7 +206,9 @@ async function getAllContributors(ownerRepo) {
     }
 
     fs.writeFileSync(README_PATH, newReadme, "utf8");
-    console.log("✅ Contributor avatars updated in README.");
+    console.log(
+      "✅ Contributor avatars updated in README (circular, with white border)."
+    );
   } catch (err) {
     console.error("❌ Failed:", err);
     process.exit(1);
