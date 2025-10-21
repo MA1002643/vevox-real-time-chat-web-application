@@ -154,11 +154,12 @@
 			└── feature_request.yml
 		├── scripts/
 			└── update-contributors.js
-		└── workflows/
+		├── workflows/
 			├── update-contributors.yml
 			├── update-project-index.yml
 			├── update-project-structure.yml
 			└── update-tech-badges-single-repo.yml
+		└── pull_request_template.md
 	├── Vevox Chatroom/
 		├── example chatroom html & styling/
 			├── newChatroom.html
@@ -182,8 +183,10 @@
 		├── package.json
 		└── webSocketServer.js
 	├── .gitignore
+	├── CONTRIBUTING.md
 	├── LICENSE
-	└── README.md
+	├── README.md
+	└── SECURITY.md
 ```
 
 ---
