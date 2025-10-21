@@ -1,0 +1,24 @@
+# CODEOWNERS
+
+# Default owner for everything
+
+-       @MA1002643
+
+# Frontend
+
+frontend/** @MA1002643
+apps/frontend/** @MA1002643
+
+# Backend
+
+backend/** @MA1002643
+apps/backend/** @MA1002643
+
+# Infra/CI
+
+.github/\*\* @MA1002643
+
+# Documentation
+
+docs/\*_ @MA1002643
+_.md @MA1002643
