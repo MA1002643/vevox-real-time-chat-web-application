@@ -410,6 +410,9 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 <details closed>
 <summary>Contributor Graph</summary>
 <br>
+<p>
+
+</p>
 </details>
 
 ---
