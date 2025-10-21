@@ -222,6 +222,7 @@
    <details>
       <summary><b>.github</b></summary>
       <ul>
+         <li><b><a href=".github/CODEOWNERS">CODEOWNERS</a></b> — File.</li>
          <li><b><a href=".github/pull_request_template.md">pull_request_template.md</a></b> — File.</li>
       </ul>
       <details>
