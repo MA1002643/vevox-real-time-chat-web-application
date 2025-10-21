@@ -1,4 +1,4 @@
-name: Update Contributor Graph (avatars)
+name: Update Contributor
 
 on:
     push:
