@@ -60,7 +60,7 @@ This repository serves as a community space to:
 
 #### 🐞 Reporting an Issue
 
-1. Go to the [Issues tab](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new)
+1. Open the Bug Report form: [Create a Bug Report](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new?assignees=&labels=bug%2C+needs+triage&template=bug_report.yml&title=%5BUG%5D+)
 2. Choose the appropriate template (Bug Report or Feature Request)
 3. Provide as much detail as possible:
    - Steps to reproduce
@@ -73,7 +73,7 @@ This repository serves as a community space to:
 
 #### ✨ Requesting a New Feature
 
-1. Go to the [Issues tab](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new)
+1. Open the Feature Request form: [Create a Feature Request](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new?assignees=&labels=enhancement%2C+idea&template=feature_request.yml&title=%5BFEATURE%5D+)
 2. Use the Feature Request template
 3. Describe clearly:
    - The feature you'd like to see
