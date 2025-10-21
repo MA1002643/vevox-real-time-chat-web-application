@@ -28,22 +28,22 @@
 
 ## 📄 Table of Contents
 
-- [Overview](#-overview)
-- [UI Preview](#-ui-preview)
-- [Key Features](#-key-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-  - [Project Index](#-project-index)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#-prerequisites)
-  - [Installation](#-installation)
-  - [Usage](#-usage)
-  - [Testing](#-testing)
-- [Learning Outcomes](#-learning-outcomes)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [Acknowledgments](#-acknowledgments)
-- [License](#-license)
+- [✨ Overview](#✨-overview)
+- [🎨 UI Preview](#🎨-ui-preview)
+- [🚀 Key Features](#🚀-key-features)
+- [🧰 Tech Stack](#🧰-tech-stack)
+- [📁 Project Structure](#📁-project-structure)
+  - [📑 Project Index](#📑-project-index)
+- [🚀 Getting Started](#🚀-getting-started)
+  - [📋 Prerequisites](#📋-prerequisites)
+  - [⚙️ Installation](#⚙️-installation)
+  - [💻 Usage](#💻-usage)
+  - [🧪 Testing](#🧪-testing)
+- [🎓 Learning Outcomes](#🎓-learning-outcomes)
+- [📈 Roadmap](#📈-roadmap)
+- [🤝 Contributors](#🤝-contributors)
+- [✨ Acknowledgments](#✨-acknowledgments)
+- [📜 License](#📜-license)
 
 ---
 
@@ -277,7 +277,6 @@
       </ul>
       </details>
    </details>
-
 
 </details>
 
