@@ -5,63 +5,37 @@ We welcome issues, feature requests, bug reports, and pull requests.
 
 ## Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Branching Model](#branching-model)
-- [Commit Messages](#commit-messages)
-- [Pull Requests](#pull-requests)
-- [Issue Labels & Templates](#issue-labels--templates)
-- [Style & Conventions](#style--conventions)
-- [Testing](#testing)
-- [Security](#security)
+- [📜 Code of Conduct](#code-of-conduct)
+- [🧭 Getting Started](#getting-started)
+- [🗂️ Vevox — Community & Issue Hub](#vevox--community--issue-hub)
+  - [🎯 Purpose](#purpose)
+  - [🛠️ How to Contribute](#how-to-contribute)
+    - [🐞 Reporting an Issue](#reporting-an-issue)
+    - [✨ Requesting a New Feature](#requesting-a-new-feature)
+    - [🔌 Proposing an Integration or Extension](#proposing-an-integration-or-extension)
+  - [🏷️ Issue Status & Labels](#issue-status--labels)
+- [🙌 Contributing Guide](#contributing-guide)
+  - [📚 What You Can Contribute](#what-you-can-contribute)
+  - [⚡ Quick Contribution Steps](#quick-contribution-steps)
+  - [✅ Contribution Guidelines & Best Practices](#contribution-guidelines--best-practices)
+  - [📝 Credit & License](#credit--license)
+  - [❓ Questions or Feedback](#questions-or-feedback)
 
-## Code of Conduct
+## 📜 Code of Conduct
 
 Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-## Getting Started
-
-1. **Fork** the repository and **clone** your fork.
-2. Create a new branch from `main`:
-   ```bash
-   git checkout -b feat/short-topic
-   ```
-
-## 🤝 Contributing
+## 🧭 Getting Started
 
 - **💬 [Join the Discussions](https://github.com/MA1002643/vevox-real-time-chat-web-application/discussions)**: Share your insights, provide feedback, or ask questions about Vevox.
 - **🐛 [Report Issues](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues)**: Submit bugs found or log feature requests for the `vevox-real-time-chat-web-application` project.
 - **💡 [Submit Pull Requests](https://github.com/MA1002643/vevox-real-time-chat-web-application/pulls)**: Review open PRs, and submit your own PRs.
 
-### Contributing Guidelines
-
-1. **Fork the Repository**: Start by forking the project repository to your github account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
-   ```sh
-   git clone https://github.com/MA1002643/vevox-real-time-chat-web-application
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to github**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
-</details>
-
-## Vevox — Community & Issue Hub
+## 🗂️ Vevox — Community & Issue Hub
 
 This project welcomes community feedback and feature suggestions.
 
-### Purpose
+### 🎯 Purpose
 
 This repository serves as a community space to:
 
@@ -70,9 +44,9 @@ This repository serves as a community space to:
 - Propose integrations or ideas for extending Vevox (for example: MCP-style adapters, plugins, or example integrations)
 - Track the status of reported issues and feature requests
 
-### How to Contribute
+### 🛠️ How to Contribute
 
-#### Reporting an Issue
+#### 🐞 Reporting an Issue
 
 1. Go to the [Issues tab](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new)
 2. Choose the appropriate template (Bug Report or Feature Request)
@@ -83,7 +57,7 @@ This repository serves as a community space to:
    - Relevant logs or screenshots
    - System information (Node.js version, OS, browser)
 
-#### Requesting a New Feature
+#### ✨ Requesting a New Feature
 
 1. Go to the [Issues tab](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new)
 2. Use the Feature Request template
@@ -92,7 +66,7 @@ This repository serves as a community space to:
    - Why it would be valuable for Vevox users
    - Any design/implementation ideas or trade-offs
 
-#### Proposing an Integration or Extension
+#### 🔌 Proposing an Integration or Extension
 
 1. Open a new issue and use the available template
 2. Include:
@@ -101,7 +75,7 @@ This repository serves as a community space to:
    - Sample implementation or code snippets (optional)
    - References to similar tools or standards
 
-### Issue Status & Labels
+### 🏷️ Issue Status & Labels
 
 We use labels to indicate issue state. Common labels include:
 
@@ -110,15 +84,11 @@ We use labels to indicate issue state. Common labels include:
 - `in-progress` — Work is currently being done
 - `needs-more-info` — Additional information required from the reporter
 
-### Code of Conduct
-
-Please keep interactions respectful and constructive. See the repository's `CODE_OF_CONDUCT.md` for details.
-
-## Contributing Guide
+## 🙌 Contributing Guide
 
 Thanks for considering contributing to Vevox! Below is a short, friendly guide to make it easy for first-time contributors.
 
-### What You Can Contribute
+### 📚 What You Can Contribute
 
 - Improve documentation or fix typos
 - Suggest or add useful scripts, tools, or configurations (build scripts, example clients)
@@ -127,7 +97,7 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
 - Add sample integrations or adapters (e.g., connecting Vevox to other platforms)
 - Add tests or improve existing test coverage
 
-### Quick Contribution Steps
+### ⚡ Quick Contribution Steps
 
 1. Fork the repository using the GitHub web UI.
 2. Clone your fork and install dependencies in `Vevox Chatroom`:
@@ -147,7 +117,7 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
    ```
 6. Open a Pull Request to `MA1002643:main` and fill in the PR template. Describe what you changed and why.
 
-### Contribution Guidelines & Best Practices
+### ✅ Contribution Guidelines & Best Practices
 
 - Keep code readable and follow existing project style
 - Add tests for new behaviour where possible
@@ -155,12 +125,12 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
 - Use meaningful commit messages and keep commits focused
 - Be responsive to review feedback and update your PR when requested
 
-### Credit & License
+### 📝 Credit & License
 
 - All contributions will be credited in the Contributors section.
 - By contributing, you agree that your changes will be licensed under the project's MIT License.
 
-### Questions or Feedback
+### ❓ Questions or Feedback
 
 - If you're unsure where to start, open an issue labelled `good-first-issue` or ask in Discussions.
 - For direct questions about contributing workflows, open an issue and tag the maintainer.
