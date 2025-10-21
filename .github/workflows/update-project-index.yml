@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# Prevent concurrent runs on the same ref from racing each other
+concurrency:
+  group: update-index-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-index:
     runs-on: ubuntu-latest
@@ -22,6 +27,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-node@v4
         with:
@@ -264,19 +271,46 @@ jobs:
           })().catch(e => { console.error('❌ Failed:', e); process.exit(1); });
           NODE
 
-      - name: Commit & push if changed
+      - name: Commit, rebase on remote, and push
         env:
-          PAT_OR_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+          # Prefer a Personal Access Token if provided; fall back to GITHUB_TOKEN
+          PAT_OR_TOKEN: ${{ secrets.PERSONAL_TOKEN != '' && secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
           README_PATH: README.md
         run: |
+          set -euo pipefail
+
+          BRANCH="${GITHUB_REF_NAME:-$(git rev-parse --abbrev-ref HEAD)}"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Use token for both fetch/pull and push
+          git remote set-url origin "https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          # Exit early if README didn't change
           if git diff --quiet -- "${README_PATH}"; then
             echo "No changes."
             exit 0
           fi
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Commit local changes
           git add "${README_PATH}"
-          git commit -m "docs: auto-update 📑 Project Index with AI one-liners"
-          git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:${GITHUB_REF_NAME:-main} || \
-          git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main || \
-          git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:master
+          git commit -m "docs: auto-update 📑 Project Index with AI one-liners" || true
+
+          # Rebase on latest remote to avoid non-fast-forward pushes
+          git fetch origin "${BRANCH}"
+          git pull --rebase --autostash origin "${BRANCH}" || true
+
+          # If rebase touched README, ensure it's staged/committed
+          git add "${README_PATH}" || true
+          git commit --no-edit || true
+
+          # Try push; if rejected due to race, sync and retry once
+          if ! git push origin "HEAD:${BRANCH}"; then
+            echo "Push rejected, syncing once and retrying…"
+            git fetch origin "${BRANCH}"
+            git pull --rebase --autostash origin "${BRANCH}" || true
+            git add "${README_PATH}" || true
+            git commit --no-edit || true
+            git push origin "HEAD:${BRANCH}"
+          fi
