@@ -196,12 +196,17 @@
       <summary><b>__root__</b></summary>
       <ul>
          <li><b><a href="./.gitignore">.gitignore</a></b> — File.</li>
+         <li><b><a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></b> — File.</li>
          <li><b><a href="./LICENSE">LICENSE</a></b> — File.</li>
          <li><b><a href="./README.md">README.md</a></b> — Project documentation, overview and setup instructions.</li>
+         <li><b><a href="./SECURITY.md">SECURITY.md</a></b> — File.</li>
       </ul>
    </details>
    <details>
       <summary><b>.github</b></summary>
+      <ul>
+         <li><b><a href=".github/pull_request_template.md">pull_request_template.md</a></b> — File.</li>
+      </ul>
       <details>
          <summary><b>ISSUE_TEMPLATE</b></summary>
       <ul>
