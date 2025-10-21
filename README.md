@@ -47,6 +47,28 @@
 
 ---
 
+<details>
+<summary><strong>Compatibility TOC (no-emoji anchors)</strong></summary>
+
+- [Overview](#overview)
+- [UI Preview](#ui-preview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+  - [Project Index](#project-index)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Testing](#testing)
+- [Learning Outcomes](#learning-outcomes)
+- [Roadmap](#roadmap)
+- [Contributors](#contributors)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
+
+</details>
+
 ## ✨ Overview
 
 **Vevox – Real-Time Chat Web Application** is a full-stack chat platform built on WebSockets for low-latency, bi-directional messaging. It provides real-time messaging, persistent MySQL-backed storage, and dynamic chatroom management for Q&A and group collaboration.
@@ -277,7 +299,6 @@
       </ul>
       </details>
    </details>
-
 
 </details>
 

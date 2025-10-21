@@ -21,6 +21,27 @@ We welcome issues, feature requests, bug reports, and pull requests.
   - [📝 Credit & License](#credit--license)
   - [❓ Questions or Feedback](#questions-or-feedback)
 
+<details>
+<summary><strong>Compatibility TOC (no-emoji anchors)</strong></summary>
+
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Vevox — Community & Issue Hub](#vevox---community--issue-hub)
+  - [Purpose](#purpose)
+  - [How to Contribute](#how-to-contribute)
+    - [Reporting an Issue](#reporting-an-issue)
+    - [Requesting a New Feature](#requesting-a-new-feature)
+    - [Proposing an Integration or Extension](#proposing-an-integration-or-extension)
+  - [Issue Status & Labels](#issue-status--labels)
+- [Contributing Guide](#contributing-guide)
+  - [What You Can Contribute](#what-you-can-contribute)
+  - [Quick Contribution Steps](#quick-contribution-steps)
+  - [Contribution Guidelines & Best Practices](#contribution-guidelines--best-practices)
+  - [Credit & License](#credit--license)
+  - [Questions or Feedback](#questions-or-feedback)
+
+</details>
+
 ## 📜 Code of Conduct
 
 Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
