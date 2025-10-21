@@ -148,6 +148,10 @@
 ```sh
 └── vevox-real-time-chat-web-application/
 	├── .github/
+		├── ISSUE_TEMPLATE/
+			├── bug_report.yml
+			├── config.yml
+			└── feature_request.yml
 		├── scripts/
 			└── update-contributors.js
 		└── workflows/
