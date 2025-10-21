@@ -47,11 +47,15 @@
 
 ---
 
+<a id="overview"></a>
+
 ## ✨ Overview
 
 **Vevox – Real-Time Chat Web Application** is a full-stack chat platform built on WebSockets for low-latency, bi-directional messaging. It provides real-time messaging, persistent MySQL-backed storage, and dynamic chatroom management for Q&A and group collaboration.
 
 ---
+
+<a id="ui-preview"></a>
 
 ## 🎨 UI Preview
 
@@ -60,6 +64,8 @@
 | ![Chatroom interface screenshot](screenshots/chatroom.png) | ![Live chat in action GIF](screenshots/live-chat.gif) |
 
 ---
+
+<a id="key-features"></a>
 
 ## 🚀 Key Features
 
@@ -77,6 +83,8 @@
 | 🌐 **Cross-Platform**                  | Works across macOS, Windows and Linux; README includes quick install snippets for each platform.         |
 
 ---
+
+<a id="tech-stack"></a>
 
 ## 🧰 Tech Stack
 
@@ -143,6 +151,8 @@
 
 ---
 
+<a id="project-structure"></a>
+
 ## 📁 Project Structure
 
 ```sh
@@ -191,6 +201,8 @@
 ```
 
 ---
+
+<a id="project-index"></a>
 
 ### 📑 Project Index
 
@@ -280,12 +292,15 @@
       </details>
    </details>
 
-
 </details>
 
 ---
 
+<a id="getting-started"></a>
+
 ## 🚀 Getting Started
+
+<a id="prerequisites"></a>
 
 ### 📋 Prerequisites
 
@@ -340,6 +355,8 @@ sudo apt install -y nodejs
 sudo mysql_secure_installation
 ```
 
+<a id="installation"></a>
+
 ### ⚙️ Installation
 
 Clone the repository, install dependencies and configure the database connection.
@@ -351,6 +368,8 @@ npm install
 # Configure your MySQL connection (see README Prerequisites) before starting the servers.
 ```
 
+<a id="usage"></a>
+
 ### 💻 Usage
 
 Start the application using the npm script. This will run the server(s) defined in `package.json`.
@@ -360,6 +379,8 @@ npm start
 ```
 
 If the project uses separate scripts for the HTML server and WebSocket server, run the specific scripts (e.g. `npm run start:html` / `npm run start:ws`).
+
+<a id="testing"></a>
 
 ### 🧪 Testing
 
@@ -373,6 +394,8 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 
 ---
 
+<a id="learning-outcomes"></a>
+
 ## 🎓 Learning Outcomes
 
 - Implemented real-time WebSocket communication from scratch.
@@ -382,6 +405,8 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 - Applied modular software design principles for maintainability and scalability.
 
 ---
+
+<a id="roadmap"></a>
 
 ## 📈 Roadmap
 
@@ -398,6 +423,8 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 
 ---
 
+<a id="contributors"></a>
+
 ## 🤝 Contributors
 
 <p align="left">
@@ -408,6 +435,8 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 
 ---
 
+<a id="acknowledgments"></a>
+
 ## ✨ Acknowledgments
 
 - Inspired by collaborative tools such as **Vevox** and **Slack**.
@@ -415,6 +444,8 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 - Created as part of an **academic exploration of real-time systems architecture**.
 
 ---
+
+<a id="license"></a>
 
 ## 📜 License
 

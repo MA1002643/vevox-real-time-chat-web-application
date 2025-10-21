@@ -21,9 +21,13 @@ We welcome issues, feature requests, bug reports, and pull requests.
   - [Credit & License](#credit--license)
   - [Questions or Feedback](#questions-or-feedback)
 
+<a id="code-of-conduct"></a>
+
 ## 📜 Code of Conduct
 
 Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+<a id="getting-started"></a>
 
 ## 🧭 Getting Started
 
@@ -31,9 +35,13 @@ Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 - **🐛 [Report Issues](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues)**: Submit bugs found or log feature requests for the `vevox-real-time-chat-web-application` project.
 - **💡 [Submit Pull Requests](https://github.com/MA1002643/vevox-real-time-chat-web-application/pulls)**: Review open PRs, and submit your own PRs.
 
+<a id="vevox---community--issue-hub"></a>
+
 ## 🗂️ Vevox — Community & Issue Hub
 
 This project welcomes community feedback and feature suggestions.
+
+<a id="purpose"></a>
 
 ### 🎯 Purpose
 
@@ -44,7 +52,11 @@ This repository serves as a community space to:
 - Propose integrations or ideas for extending Vevox (for example: MCP-style adapters, plugins, or example integrations)
 - Track the status of reported issues and feature requests
 
+<a id="how-to-contribute"></a>
+
 ### 🛠️ How to Contribute
+
+<a id="reporting-an-issue"></a>
 
 #### 🐞 Reporting an Issue
 
@@ -57,6 +69,8 @@ This repository serves as a community space to:
    - Relevant logs or screenshots
    - System information (Node.js version, OS, browser)
 
+<a id="requesting-a-new-feature"></a>
+
 #### ✨ Requesting a New Feature
 
 1. Go to the [Issues tab](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new)
@@ -65,6 +79,8 @@ This repository serves as a community space to:
    - The feature you'd like to see
    - Why it would be valuable for Vevox users
    - Any design/implementation ideas or trade-offs
+
+<a id="proposing-an-integration-or-extension"></a>
 
 #### 🔌 Proposing an Integration or Extension
 
@@ -75,6 +91,8 @@ This repository serves as a community space to:
    - Sample implementation or code snippets (optional)
    - References to similar tools or standards
 
+<a id="issue-status--labels"></a>
+
 ### 🏷️ Issue Status & Labels
 
 We use labels to indicate issue state. Common labels include:
@@ -84,9 +102,13 @@ We use labels to indicate issue state. Common labels include:
 - `in-progress` — Work is currently being done
 - `needs-more-info` — Additional information required from the reporter
 
+<a id="contributing-guide"></a>
+
 ## 🙌 Contributing Guide
 
 Thanks for considering contributing to Vevox! Below is a short, friendly guide to make it easy for first-time contributors.
+
+<a id="what-you-can-contribute"></a>
 
 ### 📚 What You Can Contribute
 
@@ -96,6 +118,8 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
 - Report bugs or suggest new features
 - Add sample integrations or adapters (e.g., connecting Vevox to other platforms)
 - Add tests or improve existing test coverage
+
+<a id="quick-contribution-steps"></a>
 
 ### ⚡ Quick Contribution Steps
 
@@ -117,6 +141,8 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
    ```
 6. Open a Pull Request to `MA1002643:main` and fill in the PR template. Describe what you changed and why.
 
+<a id="contribution-guidelines--best-practices"></a>
+
 ### ✅ Contribution Guidelines & Best Practices
 
 - Keep code readable and follow existing project style
@@ -125,10 +151,14 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
 - Use meaningful commit messages and keep commits focused
 - Be responsive to review feedback and update your PR when requested
 
+<a id="credit--license"></a>
+
 ### 📝 Credit & License
 
 - All contributions will be credited in the Contributors section.
 - By contributing, you agree that your changes will be licensed under the project's MIT License.
+
+<a id="questions-or-feedback"></a>
 
 ### ❓ Questions or Feedback
 
