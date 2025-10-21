@@ -213,6 +213,7 @@
       <ul>
          <li><b><a href="./.gitignore">.gitignore</a></b> — File.</li>
          <li><b><a href="./CODE_OF_CONDUCT.md">CODE_OF_CONDUCT.md</a></b> — File.</li>
+         <li><b><a href="./CODEOWNERS">CODEOWNERS</a></b> — File.</li>
          <li><b><a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></b> — File.</li>
          <li><b><a href="./LICENSE">LICENSE</a></b> — File.</li>
          <li><b><a href="./README.md">README.md</a></b> — Project documentation, overview and setup instructions.</li>
@@ -222,7 +223,6 @@
    <details>
       <summary><b>.github</b></summary>
       <ul>
-         <li><b><a href=".github/CODEOWNERS">CODEOWNERS</a></b> — File.</li>
          <li><b><a href=".github/pull_request_template.md">pull_request_template.md</a></b> — File.</li>
       </ul>
       <details>
