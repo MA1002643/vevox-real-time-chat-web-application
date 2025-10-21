@@ -195,8 +195,15 @@
    <details>
       <summary><b>.github</b></summary>
       <details>
+         <summary><b>scripts</b></summary>
+      <ul>
+         <li><b><a href=".github/scripts/update-contributors.js">update-contributors.js</a></b> — JavaScript file.</li>
+      </ul>
+      </details>
+      <details>
          <summary><b>workflows</b></summary>
       <ul>
+         <li><b><a href=".github/workflows/update-contributors.yml">update-contributors.yml</a></b> — File.</li>
          <li><b><a href=".github/workflows/update-project-index.yml">update-project-index.yml</a></b> — File.</li>
          <li><b><a href=".github/workflows/update-project-structure.yml">update-project-structure.yml</a></b> — File.</li>
          <li><b><a href=".github/workflows/update-tech-badges-single-repo.yml">update-tech-badges-single-repo.yml</a></b> — File.</li>
