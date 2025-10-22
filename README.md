@@ -226,7 +226,6 @@
       <summary><b>.github</b></summary>
       <ul>
          <li><b><a href=".github/CODEOWNERS">CODEOWNERS</a></b> — File.</li>
-         <li><b><a href=".github/pull_request_template.md">pull_request_template.md</a></b> — File.</li>
       </ul>
       <details>
          <summary><b>ISSUE_TEMPLATE</b></summary>
@@ -234,6 +233,12 @@
          <li><b><a href=".github/ISSUE_TEMPLATE/bug_report.yml">bug_report.yml</a></b> — File.</li>
          <li><b><a href=".github/ISSUE_TEMPLATE/config.yml">config.yml</a></b> — File.</li>
          <li><b><a href=".github/ISSUE_TEMPLATE/feature_request.yml">feature_request.yml</a></b> — File.</li>
+      </ul>
+      </details>
+      <details>
+         <summary><b>PULL_REQUEST_TEMPLATE</b></summary>
+      <ul>
+         <li><b><a href=".github/PULL_REQUEST_TEMPLATE/pull_request_template.yml">pull_request_template.yml</a></b> — File.</li>
       </ul>
       </details>
       <details>
