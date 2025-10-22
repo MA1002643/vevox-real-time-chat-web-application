@@ -4,7 +4,7 @@ title: "[FEATURE] <your feature title>"
 labels:
   - enhancement
   - idea
-assignees: []
+assignees: MA1002643
 body:
   - type: markdown
     attributes:
@@ -35,6 +35,8 @@ body:
       label: Proposed Solution
       description: "Describe how you'd like this feature to work."
       placeholder: "Integrate with Google Translate API to translate messages in real-time."
+      validations:
+        required: true
 
   - type: textarea
     id: alternatives
