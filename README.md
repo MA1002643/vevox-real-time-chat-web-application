@@ -162,6 +162,8 @@
 			├── bug_report.yml
 			├── config.yml
 			└── feature_request.yml
+		├── PULL_REQUEST_TEMPLATE/
+			└── pull_request_template.yml
 		├── scripts/
 			└── update-contributors.js
 		├── workflows/
@@ -170,8 +172,7 @@
 			├── update-project-index.yml
 			├── update-project-structure.yml
 			└── update-tech-badges-single-repo.yml
-		├── CODEOWNERS
-		└── pull_request_template.md
+		└── CODEOWNERS
 	├── Vevox Chatroom/
 		├── example chatroom html & styling/
 			├── newChatroom.html
