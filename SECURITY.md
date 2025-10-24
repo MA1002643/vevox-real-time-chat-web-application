@@ -13,12 +13,11 @@ We take security seriously for **vevox-real-time-chat-web-application**.
 
 If you discover a security issue:
 
-1. **Do not** open a public issue.
-2. Email **[muhammad.abdullah33176444@gmail.com]** with:
+1. Open a public issue and provide.
    - A detailed description of the vulnerability
    - Steps to reproduce and potential impact
    - Suggested mitigation (if any)
-3. Alternatively, use **GitHub Security Advisories** (Private) for coordinated disclosure.
+2. Alternatively, use **GitHub Security Advisories** (Private) for coordinated disclosure.
 
 We aim to acknowledge reports within **72 hours** and provide a remediation timeline after triage.
 
