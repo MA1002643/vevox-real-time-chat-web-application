@@ -157,50 +157,34 @@
 
 ```sh
 └── vevox-real-time-chat-web-application/
-	├── .github/
-		├── ISSUE_TEMPLATE/
-			├── bug_report.yml
-			├── config.yml
-			└── feature_request.yml
-		├── PULL_REQUEST_TEMPLATE/
-			└── pull_request_template.yml
-		├── scripts/
-			└── update-contributors.js
-		├── workflows/
-			├── ci.yml
-			├── update-contributors.yml
-			├── update-project-index.yml
-			├── update-project-structure.yml
-			└── update-tech-badges-single-repo.yml
-		└── CODEOWNERS
-	├── Vevox Chatroom/
-		├── example chatroom html & styling/
-			├── newChatroom.html
-			└── newStyle.css
-		├── html/
-			├── Chatroom.html
-			├── clientSide.js
-			├── Index.html
-			├── MessageEvents.js
-			├── Send.png
-			└── style.css
-		├── Migrations/
-			├── 1-AddRoomName.sql
-			└── 2-AddQuestions.sql
-		├── test/
-			├── database.sql
-			└── serverSide.js
-		├── htmlServer.js
-		├── index.js
-		├── package-lock.json
-		├── package.json
-		└── webSocketServer.js
-	├── .gitignore
-	├── CODE_OF_CONDUCT.md
-	├── CONTRIBUTING.md
-	├── LICENSE
-	├── README.md
-	└── SECURITY.md
+├── Vevox Chatroom/
+│   ├── example chatroom html & styling/
+│   │   ├── newChatroom.html
+│   │   └── newStyle.css
+│   ├── html/
+│   │   ├── Chatroom.html
+│   │   ├── clientSide.js
+│   │   ├── Index.html
+│   │   ├── MessageEvents.js
+│   │   ├── Send.png
+│   │   └── style.css
+│   ├── Migrations/
+│   │   ├── 1-AddRoomName.sql
+│   │   └── 2-AddQuestions.sql
+│   ├── test/
+│   │   ├── database.sql
+│   │   └── serverSide.js
+│   ├── htmlServer.js
+│   ├── index.js
+│   ├── package-lock.json
+│   ├── package.json
+│   └── webSocketServer.js
+├── .gitignore
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+└── SECURITY.md
 ```
 
 ---
