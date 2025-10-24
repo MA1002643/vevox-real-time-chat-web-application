@@ -286,7 +286,6 @@
       </details>
    </details>
 
-
 </details>
 
 ---
@@ -394,7 +393,7 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 ## 🎓 Learning Outcomes
 
 - Implemented real-time WebSocket communication from scratch.
-- Gained practical experience in server–client synchronization using `ws`.
+- Gained practical experience in server–client synchronisation using `ws`.
 - Strengthened understanding of asynchronous programming and event-driven architecture.
 - Built and tested full-stack Node.js systems with MySQL integration.
 - Applied modular software design principles for maintainability and scalability.
