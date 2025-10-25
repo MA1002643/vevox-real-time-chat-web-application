@@ -286,7 +286,6 @@
       </details>
    </details>
 
-
 </details>
 
 ---
@@ -422,18 +421,11 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 
 ## 🤝 Contributors
 
-<details>
-<summary>Contributor Graph</summary>
-
 <p align="left">
 <!-- CONTRIBUTORS:START -->
-<p align="left">
-<a href="https://github.com/MA1002643" title="MA1002643"><img src="https://avatars.githubusercontent.com/u/87866666?v=4" width="48" height="48" alt="MA1002643"/></a>
-</p>
+<a href="https://github.com/MA1002643" title="MA1002643"><img src="https://images.weserv.nl/?url=avatars.githubusercontent.com%2Fu%2F87866666%3Fv%3D4%26s%3D96&w=48&h=48&fit=cover&mask=circle&border=white&borderwidth=2" alt="MA1002643" width="48" height="48" style="border-radius: 50%;"/></a>
 <!-- CONTRIBUTORS:END -->
 </p>
-
-</details>
 
 ---
 
