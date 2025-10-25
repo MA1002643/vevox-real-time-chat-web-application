@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-          fetch-depth: 0 # full history so we can rebase
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -57,6 +57,31 @@ jobs:
             "sql":"SQL"
           }));
 
+          // Packages we don't want badges for (utility/dev/internal)
+          const EXCLUDE = new Set([
+            'simple-icons','uuid','nanoid','ws','dotenv','cross-env','rimraf','concurrently',
+            'nodemon','nyc','mocha','chai','eslint','prettier','husky','lint-staged'
+          ]);
+
+          // Map package names to nicer display/brands
+          const MAP_DIRECT = {
+            'express':'Express',
+            'vue':'Vue.js',
+            'bootstrap':'Bootstrap',
+            'vite':'Vite',
+            'socket.io':'Socket.IO',
+            'axios':'Axios',
+            'cors':'CORS',
+            'sqlite3':'SQLite',
+            'sqlite':'SQLite',
+            'mysql2':'MySQL',
+            'pg':'PostgreSQL',
+            'mongoose':'Mongoose',
+            'mongodb':'MongoDB',
+            'redis':'Redis',
+            'typescript':'TypeScript',
+          };
+
           function normalizeLabel(s){ return String(s||'').toLowerCase().trim(); }
 
           async function walk(dir) {
@@ -78,33 +103,53 @@ jobs:
           function readTextSafe(p){ try { return fs.readFileSync(p,'utf8'); } catch { return ''; } }
           function parseJSON(t){ try { return JSON.parse(t); } catch { return null; } }
 
+          // Build a Shields badge with brand color + logo if we can find it.
           async function makeBadgeFactory() {
-            const SI = await import('simple-icons');
+            const si = await import('simple-icons'); // ESM
 
+            // Try multiple strategies to find a Simple Icons entry
             function siLookup(label) {
-              // try a few common slug variants
-              const variants = [
-                label,
+              const attempts = [
+                label,                                      // e.g., "Express"
                 label.replace(/\./g,'dot'),
-                label.replace(/\s+/g,''),
                 label.replace(/\+/g,'plus'),
                 label.replace(/#/g,'sharp'),
+                label.replace(/\s+/g,' '),                  // normalize spaces
+                label.replace(/\s+/g,'-').toLowerCase(),    // slug-style guess
                 label.toLowerCase(),
               ];
-              for (const v of variants) {
-                const icon = SI.get?.(v) || SI.get?.(v.replace(/\s+/g,'')); // simple-icons v13+
+
+              // Prefer si.get if available (v13)
+              const getFn = si.get || si.Get || null;
+
+              for (const attempt of attempts) {
+                let icon = null;
+                if (getFn) {
+                  icon = getFn(attempt) || getFn(String(attempt).replace(/\s+/g,''));
+                }
+                // Fallback: scan exported icons by title (slower, but robust)
+                if (!icon) {
+                  for (const k of Object.keys(si)) {
+                    const v = si[k];
+                    if (v && typeof v === 'object' && 'title' in v && 'slug' in v) {
+                      if (normalizeLabel(v.title) === normalizeLabel(attempt)) { icon = v; break; }
+                      if (normalizeLabel(v.slug)  === normalizeLabel(attempt)) { icon = v; break; }
+                    }
+                  }
+                }
                 if (icon) return icon;
               }
               return null;
             }
 
-            return (label, opts={}) => {
+            return (label) => {
               const icon = siLookup(label);
-              const hex = (opts.hex || icon?.hex || '444444').replace(/^#/, '');
-              const logo = opts.logo || (icon ? encodeURIComponent(icon.slug) : undefined);
+              // If we found a brand, use its color & slug; otherwise, try a best-effort slug
+              const hex  = (icon?.hex || '444444').replace(/^#/, '');
+              const slug = icon?.slug || label.replace(/\s+/g,'-').toLowerCase(); // guess slug for Shields
               const encLabel = encodeURIComponent(label);
               let url = `https://img.shields.io/badge/${encLabel}-${hex}.svg?style=${BADGE_STYLE}`;
-              if (logo) url += `&logo=${logo}&logoColor=white`;
+              if (slug) url += `&logo=${encodeURIComponent(slug)}&logoColor=white`;
               return `<img src="${url}" alt="${label}">`;
             };
           }
@@ -126,61 +171,34 @@ jobs:
             return existingTags.concat(add);
           }
 
-          // Minimal mapping to nicer display names where package name ≠ icon label
-          const MAP_DIRECT = {
-            'express':'Express',
-            'vue':'Vue.js',
-            'bootstrap':'Bootstrap',
-            'vite':'Vite',
-            'socket.io':'Socket.IO',
-            'axios':'Axios',
-            'cors':'CORS',
-            'dotenv':'dotenv',
-            'ws':'ws',
-            'sqlite3':'SQLite',
-            'sqlite':'SQLite',
-            'mongoose':'Mongoose',
-            'mongodb':'MongoDB',
-            'pg':'PostgreSQL',
-            'mysql':'MySQL',
-            'redis':'Redis',
-            'jest':'Jest',
-            'vitest':'Vitest',
-            'cypress':'Cypress',
-            'playwright':'Playwright',
-            'eslint':'ESLint',
-            'prettier':'Prettier',
-            'nodemon':'Nodemon',
-            'pm2':'PM2',
-            'nyc':'nyc/Istanbul',
-            'typescript':'TypeScript'
-          };
-
           (async () => {
             const makeBadge = await makeBadgeFactory();
 
-            // Collect detected badges only (no hardcoded/MUST list)
             const detectedBadges = [];
 
+            // Collect package.json deps/scripts
             const files = await walk(process.cwd());
             const pkgPaths = files.filter(f => /(^|\/)package\.json$/i.test(f));
 
-            // package.json deps and scripts
             for (const p of pkgPaths){
               const j = parseJSON(readTextSafe(p)) || {};
               const depBuckets = [j.dependencies,j.devDependencies,j.peerDependencies,j.optionalDependencies].filter(Boolean);
+
               for (const deps of depBuckets){
                 for (const name of Object.keys(deps)){
-                  const n = normalizeLabel(name);
-                  const label = MAP_DIRECT[n] || name;    // try prettier label if we know it
+                  const raw = String(name);
+                  const n = normalizeLabel(raw);
+                  if (EXCLUDE.has(n)) continue;                      // skip noise
+                  const label = MAP_DIRECT[n] || raw;                 // map to brand if known
                   detectedBadges.push(makeBadge(label));
                 }
               }
+
               for (const s of Object.values(j.scripts || {})){
                 const line = String(s).toLowerCase();
-                if (/vite/.test(line)) detectedBadges.push(makeBadge('Vite'));
-                if (/eslint/.test(line)) detectedBadges.push(makeBadge('ESLint'));
-                if (/prettier/.test(line)) detectedBadges.push(makeBadge('Prettier'));
+                if (/vite/.test(line))      detectedBadges.push(makeBadge('Vite'));
+                if (/eslint/.test(line))    detectedBadges.push(makeBadge('ESLint'));
+                if (/prettier/.test(line))  detectedBadges.push(makeBadge('Prettier'));
               }
             }
 
@@ -195,10 +213,10 @@ jobs:
               detectedBadges.push(makeBadge(lang));
             }
 
-            // De-dupe by alt label
+            // De-dupe
             const render = mergeUnique([], detectedBadges);
 
-            // Build centered, icons-only block
+            // Centered icons-only block
             const section = [
               '',
               '<div align="center" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:0 auto;">',
@@ -224,7 +242,7 @@ jobs:
               process.exit(0);
             }
             fs.writeFileSync(README_PATH, next, 'utf8');
-            console.log('✅ README tech stack badges updated (auto-detected only, centered).');
+            console.log('✅ README tech stack badges updated (auto-detected only, centered, with logos/colors when available).');
           })().catch(e => { console.error('❌ Failed:', e); process.exit(1); });
           NODE
 
@@ -234,19 +252,15 @@ jobs:
           README_PATH: README.md
         run: |
           set -e
-
           if git diff --quiet -- "${README_PATH}"; then
             echo "No changes."
             exit 0
           fi
-
           git config --global --add safe.directory "$(pwd)"
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add "${README_PATH}"
-          git commit -m "chore: refresh Tech Stack badges (auto-detected only, centered, flat style)"
-
+          git commit -m "chore: refresh Tech Stack badges (auto-detected only, centered)"
           BRANCH="${GITHUB_REF_NAME:-}"
           if [ -z "$BRANCH" ]; then
             BRANCH="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
@@ -262,12 +276,8 @@ jobs:
           fi
           echo "Target branch: $BRANCH"
           git checkout -B "$BRANCH"
-
           git fetch origin
-          git pull --rebase origin "$BRANCH" || \
-          git pull --rebase origin main || \
-          git pull --rebase origin master || true
-
+          git pull --rebase origin "$BRANCH" || git pull --rebase origin main || git pull --rebase origin master || true
           PUSH_URL="https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           ( git push "$PUSH_URL" HEAD:"$BRANCH" ) || (
             echo "First push failed, rebasing again and retrying..."
