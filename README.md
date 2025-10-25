@@ -22,7 +22,15 @@
    <img src="https://custom-icon-badges.demolab.com/github/issues-raw/MA1002643/vevox-real-time-chat-web-application?logo=issue" alt="issues" />
 </a>
 <br>
+<br>
+<em>Built with the tools and technologies:</em>
+<br>
+<br>
+<!-- TECH-STACK:START -->
+
+<!-- TECH-STACK:END -->
 </div>
+<br>
 
 ---
 
@@ -31,7 +39,6 @@
 - [Overview](#overview)
 - [UI Preview](#ui-preview)
 - [Key Features](#key-features)
-- [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
   - [Project Index](#project-index)
 - [Getting Started](#getting-started)
@@ -81,73 +88,6 @@
 | 🎨 **Client Interface & Examples**     | `html/` and `example chatroom html & styling/` provide sample UI, scripts and styles for integration.    |
 | 🧰 **npm Scripts & Tooling**           | `package.json` exposes scripts for running servers, installing deps and running tests.                   |
 | 🌐 **Cross-Platform**                  | Works across macOS, Windows and Linux; README includes quick install snippets for each platform.         |
-
----
-
-<a id="tech-stack"></a>
-
-## 🧰 Tech Stack
-
-<details>
-
-<summary><b>👨‍💻 Programming and Markup Languages</b></summary>
-<br/>
-
-<!-- LANG-ICONS:START -->
-
-![JavaScript (ES6+)](<https://img.shields.io/badge/JavaScript%20(ES6%2B)-F7DF1E?style=for-the-badge>)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge)
-![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge)
-
-<!-- LANG-ICONS:END -->
-
-</details>
-
-<details>
-
-<summary><b>🧰 Frameworks and Libraries</b></summary>
-<br/>
-
-<!-- FWLIB-ICONS:START -->
-
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge)
-![ws](https://img.shields.io/badge/ws-444444?style=for-the-badge)
-
-<!-- FWLIB-ICONS:END -->
-
-</details>
-
-<details>
-
-<summary><b>🗄️ Databases and Cloud Hosting</b></summary>
-<br/>
-
-<!-- DBCLOUD-ICONS:START -->
-
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge)
-
-<!-- DBCLOUD-ICONS:END -->
-
-</details>
-
-<details>
-
-<summary><b>💻 Software and Tools</b></summary>
-<br/>
-
-<!-- TOOLS-ICONS:START -->
-
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge)
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge)
-![Mocha](https://img.shields.io/badge/Mocha-444444?style=for-the-badge)
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge)
-![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge)
-
-<!-- TOOLS-ICONS:END -->
-
-</details>
 
 ---
 
@@ -285,7 +225,6 @@
       </ul>
       </details>
    </details>
-
 
 </details>
 

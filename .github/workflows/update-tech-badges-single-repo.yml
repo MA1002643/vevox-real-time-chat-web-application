@@ -1,405 +1,277 @@
 name: Update tech badges
 
 on:
-    schedule:
-        - cron: "0 9 * * 1" # Mondays 09:00 UTC
-    workflow_dispatch:
+  push:
+    branches: ["**"]
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC
+  workflow_dispatch:
 
 permissions:
-    contents: write
+  contents: write
 
 jobs:
-    update-badges:
-        runs-on: ubuntu-latest
+  update-badges:
+    runs-on: ubuntu-latest
+    env:
+      README_PATH: README.md
+      SECTION_START: "<!-- TECH-STACK:START -->"
+      SECTION_END: "<!-- TECH-STACK:END -->"
+      BADGE_STYLE: "flat"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # full history so we can rebase
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Simple Icons (brand colors)
+        run: npm i simple-icons@^13
+
+      - name: Build tech stack section and update README
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+
+          const README_PATH   = process.env.README_PATH || 'README.md';
+          const START_MARKER  = process.env.SECTION_START || '<!-- TECH-STACK:START -->';
+          const END_MARKER    = process.env.SECTION_END   || '<!-- TECH-STACK:END -->';
+          const BADGE_STYLE   = (process.env.BADGE_STYLE || 'flat').trim();
+
+          if (!fs.existsSync(README_PATH)) {
+            console.error(`❌ Missing ${README_PATH}`);
+            process.exit(1);
+          }
+
+          // ----------------- Helpers -----------------
+          const IGNORE_DIRS = new Set(['.git','node_modules','dist','build','coverage','.next','.turbo','.cache','.venv','vendor','target','bin','obj']);
+          const EXT_LANG = new Map(Object.entries({
+            "js":"JavaScript","jsx":"JavaScript","mjs":"JavaScript",
+            "ts":"TypeScript","tsx":"TypeScript",
+            "html":"HTML5","htm":"HTML5",
+            "css":"CSS3",
+            "sql":"SQL"
+          }));
+
+          function normalizeLabel(s){ return String(s||'').toLowerCase().trim(); }
+
+          async function walk(dir) {
+            const out = [];
+            const stack = [dir];
+            while (stack.length) {
+              const cur = stack.pop();
+              const entries = fs.readdirSync(cur, { withFileTypes: true });
+              for (const e of entries) {
+                const p = path.join(cur, e.name);
+                if (e.isDirectory()) {
+                  if (!IGNORE_DIRS.has(e.name)) stack.push(p);
+                } else if (e.isFile()) out.push(p);
+              }
+            }
+            return out;
+          }
+
+          function readTextSafe(p){ try { return fs.readFileSync(p,'utf8'); } catch { return ''; } }
+          function parseJSON(t){ try { return JSON.parse(t); } catch { return null; } }
+
+          async function makeBadgeFactory() {
+            const SI = await import('simple-icons');
+
+            function siLookup(label) {
+              // try a few common slug variants
+              const variants = [
+                label,
+                label.replace(/\./g,'dot'),
+                label.replace(/\s+/g,''),
+                label.replace(/\+/g,'plus'),
+                label.replace(/#/g,'sharp'),
+                label.toLowerCase(),
+              ];
+              for (const v of variants) {
+                const icon = SI.get?.(v) || SI.get?.(v.replace(/\s+/g,'')); // simple-icons v13+
+                if (icon) return icon;
+              }
+              return null;
+            }
+
+            return (label, opts={}) => {
+              const icon = siLookup(label);
+              const hex = (opts.hex || icon?.hex || '444444').replace(/^#/, '');
+              const logo = opts.logo || (icon ? encodeURIComponent(icon.slug) : undefined);
+              const encLabel = encodeURIComponent(label);
+              let url = `https://img.shields.io/badge/${encLabel}-${hex}.svg?style=${BADGE_STYLE}`;
+              if (logo) url += `&logo=${logo}&logoColor=white`;
+              return `<img src="${url}" alt="${label}">`;
+            };
+          }
+
+          function labelFromImgTag(tag){
+            const m = tag.match?.(/alt="([^"]+)"/i);
+            return m ? m[1].trim() : null;
+          }
+
+          function mergeUnique(existingTags, newTags){
+            const seen = new Set(existingTags.map(labelFromImgTag).filter(Boolean).map(normalizeLabel));
+            const add = [];
+            for (const t of newTags){
+              const l = labelFromImgTag(t);
+              if (!l) continue;
+              const n = normalizeLabel(l);
+              if (!seen.has(n)) { seen.add(n); add.push(t); }
+            }
+            return existingTags.concat(add);
+          }
+
+          // Minimal mapping to nicer display names where package name ≠ icon label
+          const MAP_DIRECT = {
+            'express':'Express',
+            'vue':'Vue.js',
+            'bootstrap':'Bootstrap',
+            'vite':'Vite',
+            'socket.io':'Socket.IO',
+            'axios':'Axios',
+            'cors':'CORS',
+            'dotenv':'dotenv',
+            'ws':'ws',
+            'sqlite3':'SQLite',
+            'sqlite':'SQLite',
+            'mongoose':'Mongoose',
+            'mongodb':'MongoDB',
+            'pg':'PostgreSQL',
+            'mysql':'MySQL',
+            'redis':'Redis',
+            'jest':'Jest',
+            'vitest':'Vitest',
+            'cypress':'Cypress',
+            'playwright':'Playwright',
+            'eslint':'ESLint',
+            'prettier':'Prettier',
+            'nodemon':'Nodemon',
+            'pm2':'PM2',
+            'nyc':'nyc/Istanbul',
+            'typescript':'TypeScript'
+          };
+
+          (async () => {
+            const makeBadge = await makeBadgeFactory();
+
+            // Collect detected badges only (no hardcoded/MUST list)
+            const detectedBadges = [];
+
+            const files = await walk(process.cwd());
+            const pkgPaths = files.filter(f => /(^|\/)package\.json$/i.test(f));
+
+            // package.json deps and scripts
+            for (const p of pkgPaths){
+              const j = parseJSON(readTextSafe(p)) || {};
+              const depBuckets = [j.dependencies,j.devDependencies,j.peerDependencies,j.optionalDependencies].filter(Boolean);
+              for (const deps of depBuckets){
+                for (const name of Object.keys(deps)){
+                  const n = normalizeLabel(name);
+                  const label = MAP_DIRECT[n] || name;    // try prettier label if we know it
+                  detectedBadges.push(makeBadge(label));
+                }
+              }
+              for (const s of Object.values(j.scripts || {})){
+                const line = String(s).toLowerCase();
+                if (/vite/.test(line)) detectedBadges.push(makeBadge('Vite'));
+                if (/eslint/.test(line)) detectedBadges.push(makeBadge('ESLint'));
+                if (/prettier/.test(line)) detectedBadges.push(makeBadge('Prettier'));
+              }
+            }
+
+            // File extension language signals
+            const langTotals = new Map();
+            for (const f of files) {
+              const ext = path.extname(f).slice(1).toLowerCase();
+              const lang = EXT_LANG.get(ext);
+              if (lang) langTotals.set(lang, (langTotals.get(lang)||0) + (fs.statSync(f).size || 0));
+            }
+            for (const lang of [...langTotals.keys()]) {
+              detectedBadges.push(makeBadge(lang));
+            }
+
+            // De-dupe by alt label
+            const render = mergeUnique([], detectedBadges);
+
+            // Build centered, icons-only block
+            const section = [
+              '',
+              '<div align="center" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:0 auto;">',
+              ...render,
+              '</div>',
+              '',
+            ].join('\n');
+
+            // Replace between markers
+            let readme = fs.readFileSync(README_PATH,'utf8');
+            const si = readme.indexOf(START_MARKER);
+            const ei = readme.indexOf(END_MARKER);
+            if (si === -1 || ei === -1 || ei < si) {
+              console.error(`❌ Markers not found. Put:\n${START_MARKER}\n${END_MARKER}\ninto your README.md`);
+              process.exit(1);
+            }
+            const before = readme.slice(0, si + START_MARKER.length);
+            const after  = readme.slice(ei);
+            const next = `${before}\n${section}\n${after}`;
+
+            if (next === readme) {
+              console.log('No changes.');
+              process.exit(0);
+            }
+            fs.writeFileSync(README_PATH, next, 'utf8');
+            console.log('✅ README tech stack badges updated (auto-detected only, centered).');
+          })().catch(e => { console.error('❌ Failed:', e); process.exit(1); });
+          NODE
+
+      - name: Commit, pull --rebase, and push
         env:
-            GH_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
-            README_PATH: README.md
-            BADGE_STYLE: "for-the-badge"
-            LANG_START: "<!-- LANG-ICONS:START -->"
-            LANG_END: "<!-- LANG-ICONS:END -->"
-            FWLIB_START: "<!-- FWLIB-ICONS:START -->"
-            FWLIB_END: "<!-- FWLIB-ICONS:END -->"
-            DBCLOUD_START: "<!-- DBCLOUD-ICONS:START -->"
-            DBCLOUD_END: "<!-- DBCLOUD-ICONS:END -->"
-            TOOLS_START: "<!-- TOOLS-ICONS:START -->"
-            TOOLS_END: "<!-- TOOLS-ICONS:END -->"
+          PAT_OR_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
+          README_PATH: README.md
+        run: |
+          set -e
 
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  persist-credentials: false
+          if git diff --quiet -- "${README_PATH}"; then
+            echo "No changes."
+            exit 0
+          fi
 
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 20
+          git config --global --add safe.directory "$(pwd)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: Install Simple Icons (for brand colors)
-              run: npm i simple-icons@^13
+          git add "${README_PATH}"
+          git commit -m "chore: refresh Tech Stack badges (auto-detected only, centered, flat style)"
 
-            - name: Scan this repo and update README badges
-              run: |
-                  node - <<'NODE'
-                  const fs = require('fs');
-                  const path = require('path');
+          BRANCH="${GITHUB_REF_NAME:-}"
+          if [ -z "$BRANCH" ]; then
+            BRANCH="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
+          fi
+          if [ -z "$BRANCH" ]; then
+            if git ls-remote --exit-code --heads origin main >/dev/null 2>&1; then
+              BRANCH="main"
+            elif git ls-remote --exit-code --heads origin master >/dev/null 2>&1; then
+              BRANCH="master"
+            else
+              BRANCH="$(git branch --show-current)"
+            fi
+          fi
+          echo "Target branch: $BRANCH"
+          git checkout -B "$BRANCH"
 
-                  const {
-                    GH_TOKEN, README_PATH, BADGE_STYLE,
-                    LANG_START, LANG_END, FWLIB_START, FWLIB_END,
-                    DBCLOUD_START, DBCLOUD_END, TOOLS_START, TOOLS_END
-                  } = process.env;
+          git fetch origin
+          git pull --rebase origin "$BRANCH" || \
+          git pull --rebase origin main || \
+          git pull --rebase origin master || true
 
-                  if (!fs.existsSync(README_PATH)) { console.error(`❌ Missing ${README_PATH}`); process.exit(1); }
-
-                  // ---------- helpers ----------
-                  const fetchJSON = async (url, headers={}) => {
-                    const res = await fetch(url, { headers });
-                    if (!res.ok) throw new Error(`${res.status} ${url}: ${await res.text()}`);
-                    return res.json();
-                  };
-
-                  function mergeSection(readme, start, end, badges) {
-                    const si = readme.indexOf(start), ei = readme.indexOf(end);
-                    if (si === -1 || ei === -1 || ei < si) throw new Error(`Markers not found: ${start} / ${end}`);
-                    const before = readme.slice(0, si + start.length);
-                    const between = readme.slice(si + start.length, ei);
-                    const after = readme.slice(ei);
-                    const existing = between.trim();
-                    const existingBadges = (existing.match(/!\[[^\]]*\]\([^)]+\)/g)||[]).map(s=>s.trim());
-                    const existingLabels = new Set(existingBadges.map(b => (b.match(/!\[([^\]]+)\]/)||[])[1]).filter(Boolean));
-                    const filtered = badges.filter(b => {
-                      const m = b.match(/!\[([^\]]+)\]/); const lbl = m && m[1];
-                      return lbl && !existingLabels.has(lbl);
-                    });
-                    const next = ['\n', existing, existing?'\n':'', filtered.join('\n'), '\n'].join('');
-                    return before + next + after;
-                  }
-
-                  // ===== Badge builder with fallbacks (Simple Icons → alexandresanlim → Ileriayo) =====
-                  async function buildBadgeFn() {
-                    const SI = await import('simple-icons');
-
-                    const normalize = (s) =>
-                      String(s || '')
-                        .normalize('NFKD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .toLowerCase()
-                        .trim();
-
-                    function candidatesFor(label) {
-                      const compact = (x) => x.replace(/[\s._-]+/g, '');
-                      const noDots  = (x) => x.replace(/\./g, '');
-                      const andFix  = (x) => x.replace(/&/g, 'and');
-                      const plusFix = (x) => x.replace(/\+/g, 'plus');
-
-                      let base = normalize(label);
-                      base = base.replace(/\bc\+\+\b/g, 'cplusplus')
-                                 .replace(/\bc#\b/g, 'csharp')
-                                 .replace(/(^|\W)\.net(\W|$)/g, '$1dotnet$2')
-                                 .replace(/node\.?\s*js\b/g, 'nodedotjs')
-                                 .replace(/next\.?\s*js\b/g, 'nextdotjs')
-                                 .replace(/three\.?\s*js\b/g, 'threedotjs')
-                                 .replace(/angular\.?\s*js\b/g, 'angularjs')
-                                 .replace(/\bvs\s*code\b/g, 'visualstudiocode')
-                                 .replace(/\bvisual\s*studio\s*code\b/g, 'visualstudiocode')
-                                 .replace(/\bmicrosoft\s*azure\b/g, 'microsoftazure')
-                                 .replace(/\bazure\s*dev\s*ops\b/g, 'azuredevops')
-                                 .replace(/\bgoogle\s*cloud\b/g, 'googlecloud')
-                                 .replace(/\bgcp\b/g, 'googlecloud')
-                                 .replace(/\bamazon\s*web\s*services\b/g, 'amazonaws');
-
-                      const forms = [];
-                      const add = (s) => { if (s && !forms.includes(s)) forms.push(s); };
-                      add(compact(base));
-                      add(compact(andFix(base)));
-                      add(compact(plusFix(base)));
-                      add(compact(noDots(base)));
-                      add(compact(andFix(noDots(base))));
-                      add(compact(plusFix(noDots(base))));
-                      add(base); add(andFix(base)); add(plusFix(base));
-                      add(noDots(base)); add(andFix(noDots(base))); add(plusFix(noDots(base)));
-                      return forms;
-                    }
-
-                    async function fetchText(url) {
-                      const res = await fetch(url, { headers: { 'Accept': 'text/plain' } });
-                      if (!res.ok) return '';
-                      return await res.text();
-                    }
-                    function decodeLabelPart(s) { try { return decodeURIComponent(s); } catch { return s; } }
-
-                    function parseBadgeCatalog(md) {
-                      const map = new Map();
-                      if (!md) return map;
-                      const rx = /https:\/\/img\.shields\.io\/badge\/([^?\s)]+)-([0-9A-Fa-f]{3,6})\?[^)\s]*?(?:logo=([^&)\s]+))?/g;
-                      let m;
-                      while ((m = rx.exec(md)) !== null) {
-                        const rawLabel = m[1];
-                        const color = (m[2] || '').replace(/^#/, '');
-                        const logo  = m[3] ? m[3] : null;
-                        const label = decodeLabelPart(rawLabel).replace(/-/g, ' ').trim();
-                        const key = normalize(label);
-                        if (!map.has(key)) map.set(key, { logo, color: color || null });
-                      }
-                      return map;
-                    }
-
-                    const alexMd = await fetchText('https://raw.githubusercontent.com/alexandresanlim/Badges4-README.md-Profile/main/README.md');
-                    const ileriayoMd = await fetchText('https://raw.githubusercontent.com/Ileriayo/markdown-badges/master/README.md');
-                    const ALEX = parseBadgeCatalog(alexMd);
-                    const ILERIAYO = parseBadgeCatalog(ileriayoMd);
-
-                    function hexFromSimpleIcons(label) {
-                      for (const slug of candidatesFor(label)) {
-                        const icon = SI.get?.(slug);
-                        if (icon?.hex) return icon.hex;
-                      }
-                      if (typeof COLOR_MAP !== 'undefined' && COLOR_MAP[label]) return COLOR_MAP[label];
-                      return null;
-                    }
-                    function logoFromAllSources(label) {
-                      for (const slug of candidatesFor(label)) {
-                        const icon = SI.get?.(slug);
-                        if (icon) return { logo: slug, source: 'si' };
-                      }
-                      const keysToTry = new Set([normalize(label)]);
-                      for (const c of candidatesFor(label)) keysToTry.add(c);
-                      for (const key of keysToTry) {
-                        const hitA = ALEX.get(key);
-                        if (hitA?.logo) return { logo: hitA.logo, source: 'alex' };
-                        const hitI = ILERIAYO.get(key);
-                        if (hitI?.logo) return { logo: hitI.logo, source: 'ileriayo' };
-                      }
-                      return { logo: null, source: null };
-                    }
-                    function colorFromAllSources(label) {
-                      const siHex = hexFromSimpleIcons(label);
-                      if (siHex) return { hex: siHex, source: 'si' };
-                      const keysToTry = new Set([normalize(label)]);
-                      for (const c of candidatesFor(label)) keysToTry.add(c);
-                      for (const key of keysToTry) {
-                        const hitA = ALEX.get(key);
-                        if (hitA?.color) return { hex: hitA.color, source: 'alex' };
-                        const hitI = ILERIAYO.get(key);
-                        if (hitI?.color) return { hex: hitI.color, source: 'ileriayo' };
-                      }
-                      return { hex: null, source: null };
-                    }
-
-                    return (label, preferredHex) => {
-                      const { logo } = logoFromAllSources(label);
-                      const colorPref = preferredHex || (colorFromAllSources(label).hex);
-                      const hex = (colorPref || '444444').replace(/^#/, '');
-                      const encLabel = encodeURIComponent(label);
-                      let url = `https://img.shields.io/badge/${encLabel}-${hex}?style=${BADGE_STYLE}`;
-                      if (logo) {
-                        const encLogo = encodeURIComponent(logo);
-                        url += `&logo=${encLogo}&logoColor=white`;
-                      }
-                      return `![${label}](${url})`;
-                    };
-                  }
-                  // ---------- minimal fallback colors ----------
-                  const COLOR_MAP = {
-                    "Python":"3776AB","JavaScript (ES6+)":"F7DF1E","TypeScript":"3178C6","HTML5":"E34F26","CSS3":"1572B6",
-                    "Java":"007396","C#":"239120","C++":"00599C","Go":"00ADD8","Rust":"000000","SQL":"4479A1",
-                    "MySQL":"4479A1","SQLite":"003B57","MongoDB":"47A248","Redis":"DC382D",
-                    "Git":"F05032","GitHub":"181717","Postman":"FF6C37","Ubuntu":"E95420","VS Code":"007ACC","Visual Studio":"5C2D91",
-                    "Node.js":"339933","Express":"000000","Socket.IO":"010101"
-                  };
-
-                  // ---------- file patterns & keyword maps ----------
-                  const FILE_PATTERNS = [
-                    /(^|\/)package\.json$/i, /(^|\/)pnpm\-lock\.yaml$/i, /(^|\/)yarn\.lock$/i, /(^|\/)package\-lock\.json$/i,
-                    /(^|\/)requirements\.txt$/i, /(^|\/)pyproject\.toml$/i, /(^|\/)Pipfile$/i, /(^|\/)Pipfile\.lock$/i,
-                    /(^|\/)Dockerfile$/i, /(^|\/)docker\-compose\.ya?ml$/i,
-                    /(^|\/)README(\.md|\.rst|\.adoc)?$/i
-                  ];
-
-                  const FWLIB_KW = {
-                    "express":"Express","expressjs":"Express","socket.io":"Socket.IO","socketio":"Socket.IO",
-                    "ws":"ws","cors":"CORS","dotenv":"dotenv","nodemon":"Nodemon",
-                    "react":"React","next":"Next.js","tailwindcss":"Tailwind CSS","three":"Three.js"
-                  };
-
-                  const DB_KW = {
-                    "mongoose":"Mongoose","prisma":"Prisma","mysql":"MySQL","mysql2":"MySQL",
-                    "pg":"PostgreSQL","postgres":"PostgreSQL","sqlite":"SQLite","sqlite3":"SQLite",
-                    "mongodb":"MongoDB","redis":"Redis","firebase":"Firebase"
-                  };
-
-                  const TOOLS_KW = {
-                    "eslint":"ESLint","prettier":"Prettier","jest":"Jest","vitest":"Vitest","mocha":"Mocha","chai":"Chai",
-                    "cypress":"Cypress","playwright":"Playwright","ts-node":"TS Node","typescript":"TypeScript",
-                    "nodemon":"Nodemon","pm2":"PM2","nyc":"nyc/Istanbul","webpack":"Webpack","vite":"Vite",
-                    "yarn":"Yarn","npm":"npm","pnpm":"pnpm","docker":"Docker","docker-compose":"Docker Compose",
-                    "commitlint":"commitlint","lint-staged":"lint-staged","husky":"Husky","jest-cli":"Jest"
-                  };
-
-                  const ALWAYS_LANGS = [];
-                  const ALWAYS_FWLIB = [];
-                  const ALWAYS_DBCLOUD = [];
-                  const ALWAYS_TOOLS = ["Git","GitHub","Postman","VS Code","Ubuntu"];
-
-                  // ---------- language sizing by extension ----------
-                  const EXT_LANG = new Map(Object.entries({
-                    "js":"JavaScript (ES6+)","jsx":"JavaScript (ES6+)","mjs":"JavaScript (ES6+)",
-                    "ts":"TypeScript","tsx":"TypeScript",
-                    "py":"Python",
-                    "java":"Java",
-                    "cs":"C#",
-                    "cpp":"C++","cc":"C++","cxx":"C++","hpp":"C++","hh":"C++",
-                    "go":"Go","rs":"Rust",
-                    "html":"HTML5","htm":"HTML5",
-                    "css":"CSS3",
-                    "sql":"SQL"
-                  }));
-
-                  const IGNORE_DIRS = new Set(['.git','node_modules','.next','dist','build','coverage','vendor','target','bin','obj','.venv','.cache']);
-
-                  async function walk(dir) {
-                    const out = [];
-                    const stack = [dir];
-                    while (stack.length) {
-                      const cur = stack.pop();
-                      const entries = fs.readdirSync(cur, { withFileTypes: true });
-                      for (const e of entries) {
-                        const p = path.join(cur, e.name);
-                        if (e.isDirectory()) {
-                          if (!IGNORE_DIRS.has(e.name)) stack.push(p);
-                        } else if (e.isFile()) {
-                          out.push(p);
-                        }
-                      }
-                    }
-                    return out;
-                  }
-
-                  function readTextSafe(p) {
-                    try { return fs.readFileSync(p, 'utf8'); } catch { return ''; }
-                  }
-
-                  function parseJSON(t) { try { return JSON.parse(t); } catch { return null; } }
-
-                  (async () => {
-                    const makeBadge = await buildBadgeFn();
-
-                    // accumulators
-                    const langTotals = new Map();
-                    const fwlib = new Set();
-                    const dbcloud = new Set();
-                    const tools = new Set();
-
-                    // walk current repo
-                    const files = await walk(process.cwd());
-
-                    // language sizes
-                    for (const f of files) {
-                      const ext = path.extname(f).replace('.','').toLowerCase();
-                      const lang = EXT_LANG.get(ext);
-                      if (lang) {
-                        const size = fs.statSync(f).size || 0;
-                        langTotals.set(lang, (langTotals.get(lang)||0) + size);
-                      }
-                    }
-
-                    // parse manifests / configs
-                    for (const f of files) {
-                      const rel = f.replace(process.cwd() + path.sep, '');
-                      if (!FILE_PATTERNS.some(rx => rx.test(rel))) continue;
-
-                      const lower = rel.toLowerCase();
-                      const txt = readTextSafe(f);
-
-                      if (lower.endsWith('package.json')) {
-                        const j = parseJSON(txt) || {};
-                        const buckets = [j.dependencies, j.devDependencies, j.peerDependencies, j.optionalDependencies];
-                        for (const b of buckets) {
-                          if (!b) continue;
-                          for (const [name] of Object.entries(b)) {
-                            const n = name.toLowerCase();
-                            for (const k of Object.keys(FWLIB_KW)) if (n === k || n.startsWith(k)) fwlib.add(FWLIB_KW[k]);
-                            for (const k of Object.keys(DB_KW)) if (n === k || n.startsWith(k)) dbcloud.add(DB_KW[k]);
-                            for (const k of Object.keys(TOOLS_KW)) if (n === k || n.startsWith(k)) tools.add(TOOLS_KW[k]);
-                            if (n === 'node' || n === 'nodejs') tools.add('Node.js');
-                          }
-                        }
-                        for (const cmd of Object.values(j.scripts || {})) {
-                          const c=String(cmd);
-                          if (/eslint/.test(c)) tools.add('ESLint');
-                          if (/prettier/.test(c)) tools.add('Prettier');
-                          if (/jest/.test(c)) tools.add('Jest');
-                          if (/cypress/.test(c)) tools.add('Cypress');
-                          if (/playwright/.test(c)) tools.add('Playwright');
-                          if (/vite/.test(c)) tools.add('Vite');
-                          if (/webpack/.test(c)) tools.add('Webpack');
-                        }
-                      }
-
-                      if (lower.endsWith('requirements.txt')) {
-                        const pkgs = (txt||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>l.split(/[\s<>=!~\[]/,1)[0].toLowerCase());
-                        for (const n of pkgs) {
-                          if (FWLIB_KW[n]) fwlib.add(FWLIB_KW[n]);
-                          if (DB_KW[n]) dbcloud.add(DB_KW[n]);
-                          if (TOOLS_KW[n]) tools.add(TOOLS_KW[n]);
-                        }
-                      }
-
-                      if ((/^dockerfile$/i).test(path.basename(lower))) {
-                        tools.add('Docker');
-                        if (/mongo/i.test(txt)) dbcloud.add('MongoDB');
-                        if (/mysql/i.test(txt)) dbcloud.add('MySQL');
-                        if (/redis/i.test(txt)) dbcloud.add('Redis');
-                      }
-
-                      if (/docker-compose\.ya?ml$/i.test(lower)) {
-                        tools.add('Docker Compose');
-                        const s = txt.toLowerCase();
-                        if (/mongo/.test(s)) dbcloud.add('MongoDB');
-                        if (/postgres/.test(s)) dbcloud.add('PostgreSQL');
-                        if (/mysql/.test(s)) dbcloud.add('MySQL');
-                        if (/redis/.test(s)) dbcloud.add('Redis');
-                      }
-                    }
-
-                    for (const t of ALWAYS_TOOLS) tools.add(t);
-                    for (const l of ALWAYS_LANGS) langTotals.set(l, (langTotals.get(l)||0)+1);
-                    for (const f of ALWAYS_FWLIB) fwlib.add(f);
-                    for (const d of ALWAYS_DBCLOUD) dbcloud.add(d);
-
-                    // sort & badge
-                    const langsSorted = [...langTotals.entries()].sort((a,b)=>b[1]-a[1]).map(([l])=>l);
-                    const fwlibSorted = [...fwlib].sort();
-                    const dbcloudSorted = [...dbcloud].sort();
-                    const toolsSorted = [...tools].sort();
-
-                    const langBadges = langsSorted.map(l => makeBadge(l));
-                    const fwlibBadges = fwlibSorted.map(l => makeBadge(l));
-                    const dbcloudBadges = dbcloudSorted.map(l => makeBadge(l));
-                    const toolsBadges = toolsSorted.map(l => makeBadge(l));
-
-                    let readme = fs.readFileSync(README_PATH, 'utf8');
-                    readme = mergeSection(readme, LANG_START, LANG_END, langBadges);
-                    readme = mergeSection(readme, FWLIB_START, FWLIB_END, fwlibBadges);
-                    readme = mergeSection(readme, DBCLOUD_START, DBCLOUD_END, dbcloudBadges);
-                    readme = mergeSection(readme, TOOLS_START, TOOLS_END, toolsBadges);
-                    fs.writeFileSync(README_PATH, readme, 'utf8');
-
-                    console.log('✅ README updated for THIS repository only.');
-                  })().catch(e => { console.error('❌ Failed:', e); process.exit(1); });
-                  NODE
-
-            - name: Commit & push
-              env:
-                  PAT_OR_TOKEN: ${{ secrets.PERSONAL_TOKEN || secrets.GITHUB_TOKEN }}
-              run: |
-                  if git diff --quiet; then
-                    echo "No changes."
-                    exit 0
-                  fi
-                  git config user.name  "github-actions[bot]"
-                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add "${README_PATH}"
-                  git commit -m "chore: refresh tech badges for this repo only"
-                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:${GITHUB_REF_NAME:-main} || \
-                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main || \
-                  git push https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:master
+          PUSH_URL="https://x-access-token:${PAT_OR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          ( git push "$PUSH_URL" HEAD:"$BRANCH" ) || (
+            echo "First push failed, rebasing again and retrying..."
+            git fetch origin
+            git pull --rebase origin "$BRANCH" || true
+            git push "$PUSH_URL" HEAD:"$BRANCH" || git push --force-with-lease "$PUSH_URL" HEAD:"$BRANCH"
+          )
