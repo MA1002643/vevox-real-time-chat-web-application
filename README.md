@@ -29,17 +29,13 @@
 <!-- TECH-STACK:START -->
 
 <div align="center" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:0 auto;">
-<img src="https://img.shields.io/badge/simple-icons-444444.svg?style=flat" alt="simple-icons">
-<img src="https://img.shields.io/badge/env-cmd-444444.svg?style=flat" alt="env-cmd">
-<img src="https://img.shields.io/badge/Express-444444.svg?style=flat" alt="Express">
-<img src="https://img.shields.io/badge/mocha-444444.svg?style=flat" alt="mocha">
-<img src="https://img.shields.io/badge/mysql2-444444.svg?style=flat" alt="mysql2">
-<img src="https://img.shields.io/badge/uuid-444444.svg?style=flat" alt="uuid">
-<img src="https://img.shields.io/badge/ws-444444.svg?style=flat" alt="ws">
-<img src="https://img.shields.io/badge/JavaScript-444444.svg?style=flat" alt="JavaScript">
-<img src="https://img.shields.io/badge/SQL-444444.svg?style=flat" alt="SQL">
-<img src="https://img.shields.io/badge/HTML5-444444.svg?style=flat" alt="HTML5">
-<img src="https://img.shields.io/badge/CSS3-444444.svg?style=flat" alt="CSS3">
+<img src="https://img.shields.io/badge/env-cmd-444444.svg?style=flat&logo=env-cmd&logoColor=white" alt="env-cmd">
+<img src="https://img.shields.io/badge/Express-000000.svg?style=flat&logo=express&logoColor=white" alt="Express">
+<img src="https://img.shields.io/badge/MySQL-4479A1.svg?style=flat&logo=mysql&logoColor=white" alt="MySQL">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=flat&logo=javascript&logoColor=white" alt="JavaScript">
+<img src="https://img.shields.io/badge/SQL-444444.svg?style=flat&logo=sql&logoColor=white" alt="SQL">
+<img src="https://img.shields.io/badge/HTML5-E34F26.svg?style=flat&logo=html5&logoColor=white" alt="HTML5">
+<img src="https://img.shields.io/badge/CSS3-1572B6.svg?style=flat&logo=css3&logoColor=white" alt="CSS3">
 </div>
 
 <!-- TECH-STACK:END -->
