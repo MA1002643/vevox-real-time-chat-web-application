@@ -28,6 +28,20 @@
 <br>
 <!-- TECH-STACK:START -->
 
+<div align="center" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:0 auto;">
+<img src="https://img.shields.io/badge/simple-icons-444444.svg?style=flat" alt="simple-icons">
+<img src="https://img.shields.io/badge/env-cmd-444444.svg?style=flat" alt="env-cmd">
+<img src="https://img.shields.io/badge/Express-444444.svg?style=flat" alt="Express">
+<img src="https://img.shields.io/badge/mocha-444444.svg?style=flat" alt="mocha">
+<img src="https://img.shields.io/badge/mysql2-444444.svg?style=flat" alt="mysql2">
+<img src="https://img.shields.io/badge/uuid-444444.svg?style=flat" alt="uuid">
+<img src="https://img.shields.io/badge/ws-444444.svg?style=flat" alt="ws">
+<img src="https://img.shields.io/badge/JavaScript-444444.svg?style=flat" alt="JavaScript">
+<img src="https://img.shields.io/badge/SQL-444444.svg?style=flat" alt="SQL">
+<img src="https://img.shields.io/badge/HTML5-444444.svg?style=flat" alt="HTML5">
+<img src="https://img.shields.io/badge/CSS3-444444.svg?style=flat" alt="CSS3">
+</div>
+
 <!-- TECH-STACK:END -->
 </div>
 <br>
