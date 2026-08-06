@@ -203,6 +203,34 @@
    </details>
 
    <details>
+      <summary><b>docs</b></summary>
+      <details>
+         <summary><b>adr</b></summary>
+      <ul>
+         <li><b><a href="docs/adr/ADR-0001-tech-stack.md">ADR-0001-tech-stack.md</a></b> — File.</li>
+      </ul>
+      </details>
+      <details>
+         <summary><b>architecture</b></summary>
+      <ul>
+         <li><b><a href="docs/architecture/infrastructure-and-cost-model.md">infrastructure-and-cost-model.md</a></b> — File.</li>
+      </ul>
+      </details>
+      <details>
+         <summary><b>audit</b></summary>
+      <ul>
+         <li><b><a href="docs/audit/codebase-audit.md">codebase-audit.md</a></b> — File.</li>
+      </ul>
+      </details>
+      <details>
+         <summary><b>migration</b></summary>
+      <ul>
+         <li><b><a href="docs/migration/migration-path.md">migration-path.md</a></b> — File.</li>
+      </ul>
+      </details>
+   </details>
+
+   <details>
       <summary><b>Plenary Chatroom</b></summary>
       <ul>
          <li><b><a href="Plenary Chatroom/htmlServer.js">htmlServer.js</a></b> — Serves static frontend assets for the chat UI.</li>
