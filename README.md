@@ -107,6 +107,15 @@
 
 ```sh
 └── plenary/
+├── docs/
+│   ├── adr/
+│   │   └── ADR-0001-tech-stack.md
+│   ├── architecture/
+│   │   └── infrastructure-and-cost-model.md
+│   ├── audit/
+│   │   └── codebase-audit.md
+│   └── migration/
+│       └── migration-path.md
 ├── Plenary Chatroom/
 │   ├── example chatroom html & styling/
 │   │   ├── newChatroom.html
