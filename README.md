@@ -3,23 +3,23 @@
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<h1 align="center">💬 VEVOX — Real-Time Chat Web Application</h1>
+<h1 align="center">💬 PLENARY — Real-Time Chat Web Application</h1>
 <p align="center"><em>Transforming Conversations • Igniting Instant Collaboration</em></p>
 
 <!-- BADGES -->
 
-<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/LICENSE" alt="license">
+<a href="https://github.com/MA1002643/plenary/blob/main/LICENSE" alt="license">
    <img src="https://img.shields.io/badge/license-MIT-green?style=flat&logo=opensourceinitiative&logoColor=white" alt="MIT License" />
 </a>
-<img src="https://img.shields.io/github/last-commit/MA1002643/vevox-real-time-chat-web-application?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/discussions" alt="Discussions">
-   <img src="https://img.shields.io/github/discussions/MA1002643/vevox-real-time-chat-web-application" alt="Discussions" />
+<img src="https://img.shields.io/github/last-commit/MA1002643/plenary?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+<a href="https://github.com/MA1002643/plenary/discussions" alt="Discussions">
+   <img src="https://img.shields.io/github/discussions/MA1002643/plenary" alt="Discussions" />
 </a>
-<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/stargazers">
-   <img src="https://custom-icon-badges.demolab.com/github/stars/MA1002643/vevox-real-time-chat-web-application?logo=star&style=flat" alt="stars" />
+<a href="https://github.com/MA1002643/plenary/stargazers">
+   <img src="https://custom-icon-badges.demolab.com/github/stars/MA1002643/plenary?logo=star&style=flat" alt="stars" />
 </a>
-<a href="https://github.com/MA1002643/vevox-real-time-chat-web-application/issues">
-   <img src="https://custom-icon-badges.demolab.com/github/issues-raw/MA1002643/vevox-real-time-chat-web-application?logo=issue" alt="issues" />
+<a href="https://github.com/MA1002643/plenary/issues">
+   <img src="https://custom-icon-badges.demolab.com/github/issues-raw/MA1002643/plenary?logo=issue" alt="issues" />
 </a>
 <br>
 <br>
@@ -68,7 +68,7 @@
 
 ## ✨ Overview
 
-**Vevox – Real-Time Chat Web Application** is a full-stack chat platform built on WebSockets for low-latency, bi-directional messaging. It provides real-time messaging, persistent MySQL-backed storage, and dynamic chatroom management for Q&A and group collaboration.
+**Plenary – Real-Time Chat Web Application** is a full-stack chat platform built on WebSockets for low-latency, bi-directional messaging. It provides real-time messaging, persistent MySQL-backed storage, and dynamic chatroom management for Q&A and group collaboration.
 
 ---
 
@@ -106,8 +106,8 @@
 ## 📁 Project Structure
 
 ```sh
-└── vevox-real-time-chat-web-application/
-├── Vevox Chatroom/
+└── plenary/
+├── Plenary Chatroom/
 │   ├── example chatroom html & styling/
 │   │   ├── newChatroom.html
 │   │   └── newStyle.css
@@ -144,7 +144,7 @@
 ### 📑 Project Index
 
 <details open>
-   <summary><b>VEVOX-REAL-TIME-CHAT-WEB-APPLICATION/</b></summary>
+   <summary><b>PLENARY/</b></summary>
    <details>
       <summary><b>__root__</b></summary>
       <ul>
@@ -194,44 +194,44 @@
    </details>
 
    <details>
-      <summary><b>Vevox Chatroom</b></summary>
+      <summary><b>Plenary Chatroom</b></summary>
       <ul>
-         <li><b><a href="Vevox Chatroom/htmlServer.js">htmlServer.js</a></b> — Serves static frontend assets for the chat UI.</li>
-         <li><b><a href="Vevox Chatroom/index.js">index.js</a></b> — Main server entrypoint that wires HTTP and WebSocket servers.</li>
-         <li><b><a href="Vevox Chatroom/package-lock.json">package-lock.json</a></b> — Lockfile with exact dependency versions.</li>
-         <li><b><a href="Vevox Chatroom/package.json">package.json</a></b> — Npm manifest (dependencies & scripts).</li>
-         <li><b><a href="Vevox Chatroom/webSocketServer.js">webSocketServer.js</a></b> — WebSocket server that manages connections, broadcasts and hooks.</li>
+         <li><b><a href="Plenary Chatroom/htmlServer.js">htmlServer.js</a></b> — Serves static frontend assets for the chat UI.</li>
+         <li><b><a href="Plenary Chatroom/index.js">index.js</a></b> — Main server entrypoint that wires HTTP and WebSocket servers.</li>
+         <li><b><a href="Plenary Chatroom/package-lock.json">package-lock.json</a></b> — Lockfile with exact dependency versions.</li>
+         <li><b><a href="Plenary Chatroom/package.json">package.json</a></b> — Npm manifest (dependencies & scripts).</li>
+         <li><b><a href="Plenary Chatroom/webSocketServer.js">webSocketServer.js</a></b> — WebSocket server that manages connections, broadcasts and hooks.</li>
       </ul>
       <details>
          <summary><b>example chatroom html & styling</b></summary>
       <ul>
-         <li><b><a href="Vevox Chatroom/example chatroom html & styling/newChatroom.html">newChatroom.html</a></b> — Example chatroom page demonstrating layout and client-side integration.</li>
-         <li><b><a href="Vevox Chatroom/example chatroom html & styling/newStyle.css">newStyle.css</a></b> — Example stylesheet for the sample chatroom.</li>
+         <li><b><a href="Plenary Chatroom/example chatroom html & styling/newChatroom.html">newChatroom.html</a></b> — Example chatroom page demonstrating layout and client-side integration.</li>
+         <li><b><a href="Plenary Chatroom/example chatroom html & styling/newStyle.css">newStyle.css</a></b> — Example stylesheet for the sample chatroom.</li>
       </ul>
       </details>
       <details>
          <summary><b>html</b></summary>
       <ul>
-         <li><b><a href="Vevox Chatroom/html/Chatroom.html">Chatroom.html</a></b> — Main chatroom UI page.</li>
-         <li><b><a href="Vevox Chatroom/html/clientSide.js">clientSide.js</a></b> — Client-side JS handling WebSocket events and UI updates.</li>
-         <li><b><a href="Vevox Chatroom/html/Index.html">Index.html</a></b> — Login/landing page for users.</li>
-         <li><b><a href="Vevox Chatroom/html/MessageEvents.js">MessageEvents.js</a></b> — Structured WebSocket message/event types.</li>
-         <li><b><a href="Vevox Chatroom/html/Send.png">Send.png</a></b> — File.</li>
-         <li><b><a href="Vevox Chatroom/html/style.css">style.css</a></b> — Stylesheet for the HTML UI.</li>
+         <li><b><a href="Plenary Chatroom/html/Chatroom.html">Chatroom.html</a></b> — Main chatroom UI page.</li>
+         <li><b><a href="Plenary Chatroom/html/clientSide.js">clientSide.js</a></b> — Client-side JS handling WebSocket events and UI updates.</li>
+         <li><b><a href="Plenary Chatroom/html/Index.html">Index.html</a></b> — Login/landing page for users.</li>
+         <li><b><a href="Plenary Chatroom/html/MessageEvents.js">MessageEvents.js</a></b> — Structured WebSocket message/event types.</li>
+         <li><b><a href="Plenary Chatroom/html/Send.png">Send.png</a></b> — File.</li>
+         <li><b><a href="Plenary Chatroom/html/style.css">style.css</a></b> — Stylesheet for the HTML UI.</li>
       </ul>
       </details>
       <details>
          <summary><b>Migrations</b></summary>
       <ul>
-         <li><b><a href="Vevox Chatroom/Migrations/1-AddRoomName.sql">1-AddRoomName.sql</a></b> — Adds room name column/table changes.</li>
-         <li><b><a href="Vevox Chatroom/Migrations/2-AddQuestions.sql">2-AddQuestions.sql</a></b> — Adds question support schema.</li>
+         <li><b><a href="Plenary Chatroom/Migrations/1-AddRoomName.sql">1-AddRoomName.sql</a></b> — Adds room name column/table changes.</li>
+         <li><b><a href="Plenary Chatroom/Migrations/2-AddQuestions.sql">2-AddQuestions.sql</a></b> — Adds question support schema.</li>
       </ul>
       </details>
       <details>
          <summary><b>test</b></summary>
       <ul>
-         <li><b><a href="Vevox Chatroom/test/database.sql">database.sql</a></b> — SQL for testing DB schemas and sample data.</li>
-         <li><b><a href="Vevox Chatroom/test/serverSide.js">serverSide.js</a></b> — Test helpers and scripts.</li>
+         <li><b><a href="Plenary Chatroom/test/database.sql">database.sql</a></b> — SQL for testing DB schemas and sample data.</li>
+         <li><b><a href="Plenary Chatroom/test/serverSide.js">serverSide.js</a></b> — Test helpers and scripts.</li>
       </ul>
       </details>
    </details>
@@ -307,8 +307,8 @@ sudo mysql_secure_installation
 Clone the repository, install dependencies and configure the database connection.
 
 ```bash
-git clone https://github.com/MA1002643/vevox-real-time-chat-web-application.git
-cd vevox-real-time-chat-web-application/Vevox\ Chatroom
+git clone https://github.com/MA1002643/plenary.git
+cd plenary/Plenary\ Chatroom
 npm install
 # Configure your MySQL connection (see README Prerequisites) before starting the servers.
 ```
@@ -394,7 +394,7 @@ For a focused run, you can run individual test files with Mocha directly, e.g.: 
 
 ## 📜 License
 
-This project is licensed under the **[MIT License](https://github.com/MA1002643/vevox-real-time-chat-web-application/blob/main/LICENSE)**. See the **[LICENSE](https://choosealicense.com/licenses/)** file for full details.
+This project is licensed under the **[MIT License](https://github.com/MA1002643/plenary/blob/main/LICENSE)**. See the **[LICENSE](https://choosealicense.com/licenses/)** file for full details.
 
 #
 

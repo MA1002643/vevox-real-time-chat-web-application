@@ -1,6 +1,6 @@
 # Security Policy
 
-We take security seriously for **vevox-real-time-chat-web-application**.
+We take security seriously for **plenary**.
 
 ## Supported Versions
 

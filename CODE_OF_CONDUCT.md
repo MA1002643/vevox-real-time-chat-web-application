@@ -1,6 +1,6 @@
 # Contributor Covenant Code of Conduct
 
-_This Code of Conduct applies to the **[vevox-real-time-chat-web-application](https://github.com/MA1002643/vevox-real-time-chat-web-application)** project and all related community spaces._
+_This Code of Conduct applies to the **[plenary](https://github.com/MA1002643/plenary)** project and all related community spaces._
 
 ## Our Pledge
 

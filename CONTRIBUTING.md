@@ -1,13 +1,13 @@
 # Contributing Guide
 
-Thanks for your interest in contributing to **vevox-real-time-chat-web-application** 🎉  
+Thanks for your interest in contributing to **plenary** 🎉  
 We welcome issues, feature requests, bug reports, and pull requests.
 
 ## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
-- [Vevox — Community & Issue Hub](#vevox---community--issue-hub)
+- [Plenary — Community & Issue Hub](#plenary---community--issue-hub)
   - [Purpose](#purpose)
   - [How to Contribute](#how-to-contribute)
     - [Reporting an Issue](#reporting-an-issue)
@@ -31,13 +31,13 @@ Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## 🧭 Getting Started
 
-- **💬 [Join the Discussions](https://github.com/MA1002643/vevox-real-time-chat-web-application/discussions)**: Share your insights, provide feedback, or ask questions about Vevox.
-- **🐛 [Report Issues](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues)**: Submit bugs found or log feature requests for the `vevox-real-time-chat-web-application` project.
-- **💡 [Submit Pull Requests](https://github.com/MA1002643/vevox-real-time-chat-web-application/pulls)**: Review open PRs, and submit your own PRs.
+- **💬 [Join the Discussions](https://github.com/MA1002643/plenary/discussions)**: Share your insights, provide feedback, or ask questions about Plenary.
+- **🐛 [Report Issues](https://github.com/MA1002643/plenary/issues)**: Submit bugs found or log feature requests for the `plenary` project.
+- **💡 [Submit Pull Requests](https://github.com/MA1002643/plenary/pulls)**: Review open PRs, and submit your own PRs.
 
-<a id="vevox---community--issue-hub"></a>
+<a id="plenary---community--issue-hub"></a>
 
-## 🗂️ Vevox — Community & Issue Hub
+## 🗂️ Plenary — Community & Issue Hub
 
 This project welcomes community feedback and feature suggestions.
 
@@ -47,9 +47,9 @@ This project welcomes community feedback and feature suggestions.
 
 This repository serves as a community space to:
 
-- Report bugs and unexpected behaviours in Vevox
+- Report bugs and unexpected behaviours in Plenary
 - Request new features or improvements
-- Propose integrations or ideas for extending Vevox (for example: MCP-style adapters, plugins, or example integrations)
+- Propose integrations or ideas for extending Plenary (for example: MCP-style adapters, plugins, or example integrations)
 - Track the status of reported issues and feature requests
 
 <a id="how-to-contribute"></a>
@@ -60,7 +60,7 @@ This repository serves as a community space to:
 
 #### 🐞 Reporting an Issue
 
-1. Open the Bug Report form: [Create a Bug Report](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new?assignees=&labels=bug%2C+needs+triage&template=bug_report.yml&title=%5BUG%5D+)
+1. Open the Bug Report form: [Create a Bug Report](https://github.com/MA1002643/plenary/issues/new?assignees=&labels=bug%2C+needs+triage&template=bug_report.yml&title=%5BUG%5D+)
 2. Choose the appropriate template (Bug Report or Feature Request)
 3. Provide as much detail as possible:
    - Steps to reproduce
@@ -73,11 +73,11 @@ This repository serves as a community space to:
 
 #### ✨ Requesting a New Feature
 
-1. Open the Feature Request form: [Create a Feature Request](https://github.com/MA1002643/vevox-real-time-chat-web-application/issues/new?assignees=&labels=enhancement%2C+idea&template=feature_request.yml&title=%5BFEATURE%5D+)
+1. Open the Feature Request form: [Create a Feature Request](https://github.com/MA1002643/plenary/issues/new?assignees=&labels=enhancement%2C+idea&template=feature_request.yml&title=%5BFEATURE%5D+)
 2. Use the Feature Request template
 3. Describe clearly:
    - The feature you'd like to see
-   - Why it would be valuable for Vevox users
+   - Why it would be valuable for Plenary users
    - Any design/implementation ideas or trade-offs
 
 <a id="proposing-an-integration-or-extension"></a>
@@ -106,7 +106,7 @@ We use labels to indicate issue state. Common labels include:
 
 ## 🙌 Contributing Guide
 
-Thanks for considering contributing to Vevox! Below is a short, friendly guide to make it easy for first-time contributors.
+Thanks for considering contributing to Plenary! Below is a short, friendly guide to make it easy for first-time contributors.
 
 <a id="what-you-can-contribute"></a>
 
@@ -116,7 +116,7 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
 - Suggest or add useful scripts, tools, or configurations (build scripts, example clients)
 - Add UI/UX improvements to the chat frontend
 - Report bugs or suggest new features
-- Add sample integrations or adapters (e.g., connecting Vevox to other platforms)
+- Add sample integrations or adapters (e.g., connecting Plenary to other platforms)
 - Add tests or improve existing test coverage
 
 <a id="quick-contribution-steps"></a>
@@ -124,9 +124,9 @@ Thanks for considering contributing to Vevox! Below is a short, friendly guide t
 ### ⚡ Quick Contribution Steps
 
 1. Fork the repository using the GitHub web UI.
-2. Clone your fork and install dependencies in `Vevox Chatroom`:
+2. Clone your fork and install dependencies in `Plenary Chatroom`:
    ```bash
-   cd "Vevox Chatroom"
+   cd "Plenary Chatroom"
    npm install
    ```
 3. Create a new branch with a descriptive name:
